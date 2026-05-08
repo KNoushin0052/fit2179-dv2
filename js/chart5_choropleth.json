@@ -4,48 +4,47 @@
   "width": "container",
   "height": 420,
   "projection": { "type": "mercator" },
-  "layer": [
+  "data": {
+    "url": "data/malaysia-states.geojson",
+    "format": { "type": "json", "property": "features" }
+  },
+  "transform": [
     {
-      "data": {
-        "url": "data/malaysia-states.geojson",
-        "format": { "type": "json", "property": "features" }
-      },
-      "transform": [
-        {
-          "calculate": "datum.properties.name == 'Kuala Lumpur' ? 'W.P. Kuala Lumpur' : datum.properties.name == 'Labuan' ? 'W.P. Labuan' : datum.properties.name == 'Putrajaya' ? 'W.P. Putrajaya' : datum.properties.name",
-          "as": "state_name"
-        },
-        {
-          "lookup": "state_name",
-          "from": {
-            "data": { "url": "data/birth_state.csv" },
-            "transform": [
-              { "calculate": "year(datum.date)", "as": "year" },
-              { "filter": "datum.year == 2023" }
-            ],
-            "key": "state",
-            "fields": ["rate", "abs"]
-          }
-        }
-      ],
-      "mark": { "type": "geoshape", "stroke": "#30363d", "strokeWidth": 0.8 },
-      "encoding": {
-        "color": {
-          "field": "rate",
-          "type": "quantitative",
-          "title": "Birth Rate\n(per 1,000)",
-          "scale": {
-            "domain": [10, 22],
-            "scheme": "orangered"
-          },
-          "legend": { "orient": "right", "gradientLength": 200, "titleLimit": 120 }
-        },
-        "tooltip": [
-          { "field": "state_name", "title": "State" },
-          { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" },
-          { "field": "abs", "title": "Total Births", "format": "," }
-        ]
+      "lookup": "properties.name",
+      "from": {
+        "data": { "url": "data/birth_state.csv" },
+        "transform": [
+          { "calculate": "year(datum.date)", "as": "year" },
+          { "filter": "datum.year == 2023" }
+        ],
+        "key": "state",
+        "fields": ["rate", "abs"]
       }
     }
-  ]
+  ],
+  "mark": {
+    "type": "geoshape",
+    "stroke": "#30363d",
+    "strokeWidth": 0.8
+  },
+  "encoding": {
+    "color": {
+      "field": "rate",
+      "type": "quantitative",
+      "title": "Birth Rate (per 1,000)",
+      "scale": {
+        "domain": [10, 22],
+        "scheme": "orangered"
+      },
+      "legend": {
+        "orient": "right",
+        "gradientLength": 200
+      }
+    },
+    "tooltip": [
+      { "field": "properties.name", "title": "State" },
+      { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" },
+      { "field": "abs", "title": "Total Births", "format": "," }
+    ]
+  }
 }

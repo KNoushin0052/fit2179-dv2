@@ -7,19 +7,16 @@
   "transform": [
     { "calculate": "year(datum.date)", "as": "year" },
     { "filter": "datum.sex == 'both'" },
+    { "filter": "datum.ethnicity == 'chinese' || datum.ethnicity == 'overall'" },
     {
-      "aggregate": [{ "op": "sum", "field": "abs", "as": "births" }],
-      "groupby": ["state", "year", "ethnicity"]
-    },
-    {
-      "joinaggregate": [{ "op": "sum", "field": "births", "as": "state_year_total" }],
+      "pivot": "ethnicity",
+      "value": "abs",
       "groupby": ["state", "year"]
     },
     {
-      "calculate": "datum.births / datum.state_year_total * 100",
-      "as": "share_pct"
+      "calculate": "datum.chinese / datum.overall * 100",
+      "as": "chinese_share_pct"
     },
-    { "filter": "datum.ethnicity == 'chinese'" },
     {
       "filter": "datum.state != 'W.P. Putrajaya' && datum.state != 'W.P. Labuan' && datum.state != 'Perlis'"
     }
@@ -35,12 +32,12 @@
     "y": {
       "field": "state",
       "type": "nominal",
-      "sort": { "field": "share_pct", "op": "mean", "order": "descending" },
+      "sort": { "field": "chinese_share_pct", "op": "mean", "order": "descending" },
       "title": null,
       "axis": { "labelFontSize": 11 }
     },
     "color": {
-      "field": "share_pct",
+      "field": "chinese_share_pct",
       "type": "quantitative",
       "title": "Chinese\nBirth Share (%)",
       "scale": { "scheme": "orangered", "domain": [0, 55] },
@@ -49,7 +46,7 @@
     "tooltip": [
       { "field": "state", "title": "State" },
       { "field": "year", "title": "Year" },
-      { "field": "share_pct", "title": "Chinese Share (%)", "format": ".1f" }
+      { "field": "chinese_share_pct", "title": "Chinese Share (%)", "format": ".1f" }
     ]
   }
 }
