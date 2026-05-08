@@ -1,0 +1,46 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Slope chart: birth rate per 1000 population, 2000 vs 2023 by state",
+  "width": "container",
+  "height": 380,
+  "data": { "url": "data/birth_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    { "filter": "datum.year == 2000 || datum.year == 2023" },
+    { "filter": "datum.state != 'W.P. Putrajaya'" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "line", "strokeWidth": 1.5, "opacity": 0.7 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal", "axis": { "title": null, "labelFontSize": 12 } },
+        "y": { "field": "rate", "type": "quantitative", "title": "Birth Rate (per 1,000)", "scale": { "zero": false } },
+        "detail": { "field": "state" },
+        "color": {
+          "field": "rate",
+          "type": "quantitative",
+          "scale": { "scheme": "orangered", "domain": [10, 30] },
+          "legend": null
+        },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "year", "title": "Year" },
+          { "field": "rate", "title": "Birth Rate", "format": ".1f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "size": 60 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal" },
+        "y": { "field": "rate", "type": "quantitative" },
+        "color": {
+          "field": "rate",
+          "type": "quantitative",
+          "scale": { "scheme": "orangered", "domain": [10, 30] },
+          "legend": null
+        }
+      }
+    }
+  ]
+}

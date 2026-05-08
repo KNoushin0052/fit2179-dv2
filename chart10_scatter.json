@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Scatter plot: household income vs birth rate by state 2022/2023",
+  "width": "container",
+  "height": 380,
+  "data": { "url": "data/state_snapshot.csv" },
+  "layer": [
+    {
+      "mark": { "type": "point", "filled": true, "opacity": 0.9 },
+      "encoding": {
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Household Income (RM/month)",
+          "axis": { "format": "," }
+        },
+        "y": {
+          "field": "birth_rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000 population)",
+          "scale": { "zero": false }
+        },
+        "size": {
+          "field": "poverty",
+          "type": "quantitative",
+          "title": "Poverty Rate (%)",
+          "scale": { "range": [80, 800] },
+          "legend": { "orient": "top-right" }
+        },
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "title": "Income Group",
+          "scale": {
+            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
+            "range": ["#ff6b6b", "#f0883e", "#58a6ff"]
+          },
+          "legend": { "orient": "top" }
+        },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," },
+          { "field": "birth_rate", "title": "Birth Rate", "format": ".1f" },
+          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" },
+          { "field": "gini", "title": "Gini Coefficient", "format": ".3f" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -12,
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "color": "#8b949e"
+      },
+      "encoding": {
+        "x": { "field": "income_mean", "type": "quantitative" },
+        "y": { "field": "birth_rate", "type": "quantitative" },
+        "text": { "field": "state" }
+      }
+    },
+    {
+      "mark": { "type": "line", "color": "#30363d", "strokeDash": [4, 3] },
+      "transform": [{ "regression": "birth_rate", "on": "income_mean" }],
+      "encoding": {
+        "x": { "field": "income_mean", "type": "quantitative" },
+        "y": { "field": "birth_rate", "type": "quantitative" }
+      }
+    }
+  ]
+}

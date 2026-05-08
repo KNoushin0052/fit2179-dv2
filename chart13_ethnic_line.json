@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Chinese vs Malay births nationally 2000-2023",
+  "width": "container",
+  "height": 300,
+  "data": { "url": "data/birth_sex_ethnic_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    {
+      "filter": "datum.sex == 'both' && (datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese')"
+    },
+    {
+      "aggregate": [{ "op": "sum", "field": "abs", "as": "births" }],
+      "groupby": ["year", "ethnicity"]
+    },
+    {
+      "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : 'Chinese'",
+      "as": "group"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "line", "strokeWidth": 2.5 },
+      "encoding": {
+        "x": { "field": "year", "type": "quantitative", "axis": { "format": "d", "title": null } },
+        "y": {
+          "field": "births",
+          "type": "quantitative",
+          "title": "National Births",
+          "axis": { "format": "~s" },
+          "scale": { "zero": false }
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Bumiputera Malay", "Chinese"],
+            "range": ["#58a6ff", "#f0883e"]
+          },
+          "legend": { "orient": "top-left", "title": null }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -6,
+        "fontSize": 11,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold"
+      },
+      "transform": [{ "filter": "datum.year == 2000" }],
+      "encoding": {
+        "x": { "field": "year", "type": "quantitative" },
+        "y": { "field": "births", "type": "quantitative" },
+        "text": { "field": "group" },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Bumiputera Malay", "Chinese"],
+            "range": ["#58a6ff", "#f0883e"]
+          }
+        }
+      }
+    }
+  ]
+}

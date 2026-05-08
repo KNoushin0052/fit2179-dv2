@@ -1,0 +1,68 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Bump chart: state rankings by birth rate 2000-2023",
+  "width": "container",
+  "height": 420,
+  "data": { "url": "data/birth_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    { "filter": "datum.year % 3 == 0" },
+    { "filter": "datum.state != 'W.P. Putrajaya' && datum.state != 'W.P. Labuan'" },
+    {
+      "window": [{ "op": "rank", "as": "rank" }],
+      "sort": [{ "field": "rate", "order": "descending" }],
+      "groupby": ["year"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "line", "strokeWidth": 2, "opacity": 0.6 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal", "title": null },
+        "y": {
+          "field": "rank",
+          "type": "ordinal",
+          "sort": "ascending",
+          "title": "Rank (1 = highest birth rate)"
+        },
+        "color": {
+          "field": "state",
+          "type": "nominal",
+          "legend": null,
+          "scale": { "scheme": "tableau20" }
+        },
+        "detail": { "field": "state" }
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "size": 80 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal" },
+        "y": { "field": "rank", "type": "ordinal", "sort": "ascending" },
+        "color": { "field": "state", "type": "nominal", "legend": null, "scale": { "scheme": "tableau20" } },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "year", "title": "Year" },
+          { "field": "rank", "title": "Rank" },
+          { "field": "rate", "title": "Birth Rate", "format": ".1f" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.year == 2021" }],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "fontSize": 10,
+        "font": "JetBrains Mono"
+      },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal" },
+        "y": { "field": "rank", "type": "ordinal", "sort": "ascending" },
+        "text": { "field": "state" },
+        "color": { "field": "state", "type": "nominal", "legend": null, "scale": { "scheme": "tableau20" } }
+      }
+    }
+  ]
+}

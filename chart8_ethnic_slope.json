@@ -1,0 +1,68 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Ethnic share of national births: 2000 vs 2023",
+  "width": "container",
+  "height": 300,
+  "data": { "url": "data/birth_sex_ethnic_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    { "filter": "datum.year == 2000 || datum.year == 2023" },
+    {
+      "filter": "datum.sex == 'both' && (datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese' || datum.ethnicity == 'indian' || datum.ethnicity == 'bumi_other')"
+    },
+    {
+      "aggregate": [{ "op": "sum", "field": "abs", "as": "births" }],
+      "groupby": ["year", "ethnicity"]
+    },
+    {
+      "joinaggregate": [{ "op": "sum", "field": "births", "as": "year_total" }],
+      "groupby": ["year"]
+    },
+    {
+      "calculate": "datum.births / datum.year_total * 100",
+      "as": "share_pct"
+    },
+    {
+      "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
+      "as": "ethnicity_label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "line", "strokeWidth": 2.5 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal", "axis": { "title": null, "labelFontSize": 13, "labelFontWeight": "bold" } },
+        "y": {
+          "field": "share_pct",
+          "type": "quantitative",
+          "title": "Share of National Births (%)",
+          "axis": { "format": ".1f" },
+          "scale": { "zero": false }
+        },
+        "color": {
+          "field": "ethnicity_label",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Bumiputera Malay", "Other Bumiputera", "Chinese", "Indian"],
+            "range": ["#58a6ff", "#388bfd", "#f0883e", "#3fb950"]
+          },
+          "legend": { "orient": "top", "columns": 2 }
+        },
+        "detail": { "field": "ethnicity_label" }
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "size": 80 },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal" },
+        "y": { "field": "share_pct", "type": "quantitative" },
+        "color": { "field": "ethnicity_label", "type": "nominal", "legend": null },
+        "tooltip": [
+          { "field": "year", "title": "Year" },
+          { "field": "ethnicity_label", "title": "Ethnicity" },
+          { "field": "share_pct", "title": "Share (%)", "format": ".1f" }
+        ]
+      }
+    }
+  ]
+}
