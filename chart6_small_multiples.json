@@ -1,0 +1,49 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Small multiples: birth rate trend per state 2000-2023",
+  "width": 140,
+  "height": 80,
+  "data": { "url": "data/birth_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" }
+  ],
+  "facet": {
+    "field": "state",
+    "type": "nominal",
+    "header": {
+      "labelFontSize": 10,
+      "labelFont": "JetBrains Mono",
+      "labelColor": "#8b949e",
+      "title": null
+    }
+  },
+  "columns": 4,
+  "spec": {
+    "layer": [
+      {
+        "mark": {
+          "type": "area",
+          "line": { "color": "#f0883e", "strokeWidth": 1.5 },
+          "color": { "gradient": "linear", "stops": [
+            { "offset": 0, "color": "rgba(240,136,62,0.3)" },
+            { "offset": 1, "color": "rgba(240,136,62,0)" }
+          ]},
+          "x": "width", "x2": 0
+        },
+        "encoding": {
+          "x": {
+            "field": "year",
+            "type": "quantitative",
+            "axis": { "format": "d", "labelFontSize": 9, "tickCount": 3, "title": null }
+          },
+          "y": {
+            "field": "rate",
+            "type": "quantitative",
+            "axis": { "labelFontSize": 9, "tickCount": 3, "title": null },
+            "scale": { "zero": false }
+          }
+        }
+      }
+    ]
+  }
+}

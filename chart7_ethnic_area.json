@@ -1,0 +1,51 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "National births by ethnicity 2000-2023",
+  "width": "container",
+  "height": 300,
+  "data": { "url": "data/birth_sex_ethnic_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    {
+      "filter": "datum.sex == 'both' && (datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese' || datum.ethnicity == 'indian' || datum.ethnicity == 'bumi_other')"
+    },
+    {
+      "aggregate": [{ "op": "sum", "field": "abs", "as": "births" }],
+      "groupby": ["year", "ethnicity"]
+    },
+    {
+      "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
+      "as": "ethnicity_label"
+    }
+  ],
+  "mark": { "type": "area", "opacity": 0.85 },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "quantitative",
+      "axis": { "format": "d", "title": null }
+    },
+    "y": {
+      "field": "births",
+      "type": "quantitative",
+      "title": "Live Births",
+      "axis": { "format": "~s" },
+      "stack": "zero"
+    },
+    "color": {
+      "field": "ethnicity_label",
+      "type": "nominal",
+      "title": "Ethnicity",
+      "scale": {
+        "domain": ["Bumiputera Malay", "Other Bumiputera", "Chinese", "Indian"],
+        "range": ["#58a6ff", "#388bfd", "#f0883e", "#3fb950"]
+      },
+      "legend": { "orient": "top", "columns": 4 }
+    },
+    "tooltip": [
+      { "field": "year", "title": "Year" },
+      { "field": "ethnicity_label", "title": "Ethnicity" },
+      { "field": "births", "title": "Births", "format": "," }
+    ]
+  }
+}

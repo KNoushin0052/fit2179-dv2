@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Total live births in Malaysia 2000-2023",
+  "width": "container",
+  "height": 280,
+  "data": { "url": "data/birth_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" },
+    {
+      "aggregate": [{ "op": "sum", "field": "abs", "as": "total_births" }],
+      "groupby": ["year"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "line": { "color": "#f0883e", "strokeWidth": 2.5 },
+        "color": { "gradient": "linear", "stops": [
+          { "offset": 0, "color": "rgba(240,136,62,0.35)" },
+          { "offset": 1, "color": "rgba(240,136,62,0.02)" }
+        ]},
+        "x": "width", "x2": 0
+      },
+      "encoding": {
+        "x": { "field": "year", "type": "quantitative", "axis": { "format": "d", "title": null } },
+        "y": { "field": "total_births", "type": "quantitative", "title": "Live Births", "axis": { "format": "~s" } }
+      }
+    },
+    {
+      "mark": { "type": "rule", "color": "#58a6ff", "strokeDash": [4, 3], "strokeWidth": 1.5 },
+      "encoding": { "y": { "datum": 456000 } }
+    },
+    {
+      "mark": { "type": "text", "align": "right", "dx": -6, "dy": -8, "color": "#58a6ff", "fontSize": 11, "font": "JetBrains Mono" },
+      "encoding": {
+        "x": { "datum": 2022 },
+        "y": { "datum": 456000 },
+        "text": { "value": "2023 total: ~456k" }
+      }
+    }
+  ]
+}

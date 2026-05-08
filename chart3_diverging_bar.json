@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Change in birth rate 2000 to 2023 by state",
+  "width": "container",
+  "height": 380,
+  "data": { "url": "data/state_snapshot.csv" },
+  "transform": [
+    { "filter": "datum.state != 'W.P. Putrajaya'" },
+    { "calculate": "datum.birth_rate - datum.rate_2000", "as": "rate_change" },
+    { "calculate": "datum.rate_change >= 0 ? 'Increase' : 'Decrease'", "as": "direction" }
+  ],
+  "mark": { "type": "bar", "cornerRadiusEnd": 3 },
+  "encoding": {
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": { "field": "rate_change", "order": "descending" },
+      "title": null,
+      "axis": { "labelFontSize": 11 }
+    },
+    "x": {
+      "field": "rate_change",
+      "type": "quantitative",
+      "title": "Change in birth rate (per 1,000)",
+      "axis": { "format": "+.1f" }
+    },
+    "color": {
+      "field": "direction",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Increase", "Decrease"],
+        "range": ["#3fb950", "#f0883e"]
+      },
+      "legend": { "title": null, "orient": "top" }
+    },
+    "tooltip": [
+      { "field": "state", "title": "State" },
+      { "field": "rate_2000", "title": "Rate 2000", "format": ".1f" },
+      { "field": "birth_rate", "title": "Rate 2023", "format": ".1f" },
+      { "field": "rate_change", "title": "Change", "format": "+.1f" }
+    ]
+  }
+}

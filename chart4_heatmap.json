@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Birth rate heatmap: state by year 2000-2023",
+  "width": "container",
+  "height": 340,
+  "data": { "url": "data/birth_state.csv" },
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year" }
+  ],
+  "mark": { "type": "rect" },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": { "labelAngle": -45, "labelFontSize": 10 }
+    },
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": { "field": "rate", "op": "mean", "order": "descending" },
+      "title": null,
+      "axis": { "labelFontSize": 11 }
+    },
+    "color": {
+      "field": "rate",
+      "type": "quantitative",
+      "title": "Birth Rate",
+      "scale": { "scheme": "orangered", "domain": [8, 32] },
+      "legend": { "orient": "right", "gradientLength": 200 }
+    },
+    "tooltip": [
+      { "field": "state", "title": "State" },
+      { "field": "year", "title": "Year" },
+      { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" }
+    ]
+  }
+}

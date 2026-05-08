@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Poverty rate vs birth rate 2022/2023",
+  "width": "container",
+  "height": 320,
+  "data": { "url": "data/state_snapshot.csv" },
+  "layer": [
+    {
+      "mark": { "type": "point", "filled": true, "size": 120, "opacity": 0.85 },
+      "encoding": {
+        "x": {
+          "field": "poverty",
+          "type": "quantitative",
+          "title": "Poverty Rate (%)",
+          "scale": { "zero": false }
+        },
+        "y": {
+          "field": "birth_rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000)",
+          "scale": { "zero": false }
+        },
+        "color": {
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Income (RM)",
+          "scale": { "scheme": "blueorange", "reverse": true },
+          "legend": { "orient": "right", "gradientLength": 200 }
+        },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" },
+          { "field": "birth_rate", "title": "Birth Rate", "format": ".1f" },
+          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -12,
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "color": "#8b949e"
+      },
+      "encoding": {
+        "x": { "field": "poverty", "type": "quantitative" },
+        "y": { "field": "birth_rate", "type": "quantitative" },
+        "text": { "field": "state" }
+      }
+    }
+  ]
+}
