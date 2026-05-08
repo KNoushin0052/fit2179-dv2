@@ -5,12 +5,16 @@
   "height": 420,
   "projection": { "type": "mercator" },
   "data": {
-    "url": "data/malaysia-states.geojson",
-    "format": { "type": "json", "property": "features" }
+    "url": "https://cdn.jsdelivr.net/npm/datamaps@0.5.10/src/js/data/mys.topo.json",
+    "format": { "type": "topojson", "feature": "mys" }
   },
   "transform": [
     {
-      "lookup": "properties.name",
+      "calculate": "datum.properties.name == 'Kuala Lumpur' ? 'W.P. Kuala Lumpur' : datum.properties.name == 'Labuan' ? 'W.P. Labuan' : datum.properties.name == 'Putrajaya' ? 'W.P. Putrajaya' : datum.properties.name",
+      "as": "state_name"
+    },
+    {
+      "lookup": "state_name",
       "from": {
         "data": { "url": "data/birth_state.csv" },
         "transform": [
@@ -32,17 +36,11 @@
       "field": "rate",
       "type": "quantitative",
       "title": "Birth Rate (per 1,000)",
-      "scale": {
-        "domain": [10, 22],
-        "scheme": "orangered"
-      },
-      "legend": {
-        "orient": "right",
-        "gradientLength": 200
-      }
+      "scale": { "domain": [10, 22], "scheme": "orangered" },
+      "legend": { "orient": "right", "gradientLength": 200 }
     },
     "tooltip": [
-      { "field": "properties.name", "title": "State" },
+      { "field": "state_name", "title": "State" },
       { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" },
       { "field": "abs", "title": "Total Births", "format": "," }
     ]
