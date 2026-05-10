@@ -1,582 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malaysia's Baby Drought — A Demographic Story</title>
-
-  <!-- Google Fonts -->
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Vega-Lite -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-
-  <style>
-    /* ── Design Tokens ─────────────────────────────────────────── */
-    :root {
-      --bg:          #0d1117;
-      --surface:     #161b22;
-      --surface-2:   #1c2333;
-      --border:      #30363d;
-      --text:        #e6edf3;
-      --muted:       #8b949e;
-      --accent:      #f0883e;
-      --accent-dim:  rgba(240,136,62,0.12);
-      --blue:        #58a6ff;
-      --red:         #ff6b6b;
-      --green:       #3fb950;
-      --font-display: 'DM Serif Display', Georgia, serif;
-      --font-body:    'Source Serif 4', Georgia, serif;
-      --font-mono:    'JetBrains Mono', monospace;
-    }
-
-    /* ── Reset ─────────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 18px;
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Layout ────────────────────────────────────────────────── */
-    .container  { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-    .container--narrow { max-width: 720px; margin: 0 auto; padding: 0 2rem; }
-
-    /* ── Navigation ────────────────────────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-brand {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-
-    /* ── Hero ───────────────────────────────────────────────────── */
-    .hero {
-      padding: 6rem 2rem 4rem;
-      max-width: 1100px; margin: 0 auto;
-    }
-    .hero-kicker {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      line-height: 1.05;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-      max-width: 900px;
-    }
-    .hero-title em {
-      color: var(--accent);
-      font-style: italic;
-    }
-    .hero-subtitle {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 680px;
-      margin-bottom: 3rem;
-      line-height: 1.7;
-    }
-
-    /* ── Stat Callouts ─────────────────────────────────────────── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 4rem;
-    }
-    .stat-card {
-      background: var(--surface);
-      padding: 2rem 1.75rem;
-    }
-    .stat-number {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-    .stat-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      line-height: 1.5;
-    }
-
-    /* ── Sections ───────────────────────────────────────────────── */
-    .section {
-      padding: 5rem 0;
-      border-top: 1px solid var(--border);
-    }
-    .section-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      color: var(--text);
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-    .section-body {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 640px;
-      margin-bottom: 2.5rem;
-      line-height: 1.8;
-    }
-    .section-body strong { color: var(--text); font-weight: 600; }
-
-    /* ── Chart containers ───────────────────────────────────────── */
-    .chart-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .chart-title {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .chart-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .chart-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .chart-note {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 0.75rem;
-      opacity: 0.7;
-    }
-
-    /* ── Pull Quote ─────────────────────────────────────────────── */
-    .pullquote {
-      border-left: 3px solid var(--accent);
-      padding: 1.5rem 2rem;
-      margin: 3rem 0;
-      background: var(--accent-dim);
-    }
-    .pullquote p {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      color: var(--text);
-      line-height: 1.4;
-      font-style: italic;
-    }
-
-    /* ── Highlight box ──────────────────────────────────────────── */
-    .insight-box {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--blue);
-      padding: 1.25rem 1.5rem;
-      margin: 2rem 0;
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-    .insight-box strong { color: var(--blue); }
-
-    /* ── Footer ─────────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 3rem 2rem;
-      margin-top: 4rem;
-    }
-    .footer-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
-    }
-    .footer-heading {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
-    }
-    .footer-text {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .footer-text a { color: var(--blue); text-decoration: none; }
-
-    /* ── Vega embed override ────────────────────────────────────── */
-    .vega-embed { width: 100% !important; }
-    .vega-embed summary { display: none !important; }
-
-    /* ── Divider ────────────────────────────────────────────────── */
-    .divider {
-      width: 40px; height: 2px;
-      background: var(--accent);
-      margin: 1.5rem 0;
-    }
-
-    @media (max-width: 768px) {
-      .stats-grid { grid-template-columns: 1fr; }
-      .chart-grid-2 { grid-template-columns: 1fr; }
-      .chart-grid-3 { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
-  </style>
 </head>
+
 <body>
 
-<!-- ── Navigation ──────────────────────────────────────────────────── -->
-<nav>
-  <span class="nav-brand">FIT2179 · Data Visualisation 2</span>
-  <ul class="nav-links">
-    <li><a href="#act1">The Decline</a></li>
-    <li><a href="#act2">The Map</a></li>
-    <li><a href="#act3">The Divide</a></li>
-    <li><a href="#act4">The Cause</a></li>
-  </ul>
-</nav>
+  <nav>
+    <span class="nav-brand">FIT2179 · Data Visualisation 2</span>
+    <ul class="nav-links">
+      <li><a href="#act1">The Decline</a></li>
+      <li><a href="#act2">The Map</a></li>
+      <li><a href="#act3">The Divide</a></li>
+      <li><a href="#act4">The Cause</a></li>
+      <li>
+        <button class="theme-toggle" id="themeBtn" aria-label="Toggle light/dark mode">
+          <span id="themeIcon">☀</span> <span id="themeLabel">Light</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
 
-<!-- ── Hero ────────────────────────────────────────────────────────── -->
-<header class="hero">
-  <p class="hero-kicker">Malaysia · 2000–2023 · Demographic Crisis</p>
-  <h1 class="hero-title">Malaysia is running<br>out of <em>babies.</em></h1>
-  <p class="hero-subtitle">
-    Over 23 years, Malaysia's birth rate has collapsed across every state — 
-    but the decline is not equal. Rich states barely reproduce themselves 
-    while rural states hold on. Behind the numbers lies an economic story 
-    that will reshape the nation.
-  </p>
-
-  <!-- Stat callouts -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-number">−37%</div>
-      <div class="stat-label">Perak's births fell<br>2000 → 2023<br>(steepest of any state)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">9.8%</div>
-      <div class="stat-label">Chinese share of births<br>in 2023, down from<br>21.5% in 2000</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">1 of 15</div>
-      <div class="stat-label">Only Terengganu<br>had more births in 2023<br>than in 2000</div>
-    </div>
-  </div>
-
-  <!-- Chart 1: Hero line -->
-  <div class="chart-wrap">
-    <p class="chart-title">Chart 1 — Total live births in Malaysia, 2000–2023</p>
-    <div id="chart1"></div>
-    <p class="chart-note">Source: Department of Statistics Malaysia (DOSM) · Vital Statistics 2024</p>
-  </div>
-</header>
-
-<!-- ── ACT 1: The National Decline ─────────────────────────────────── -->
-<section class="section" id="act1">
-  <div class="container">
-    <p class="section-label">Act 1 — The decline</p>
-    <h2 class="section-title">Every state is having fewer babies. But some are falling off a cliff.</h2>
-    <div class="divider"></div>
-    <p class="section-body">
-      In 2000, Malaysia recorded over <strong>540,000 live births</strong>. By 2023, that number had 
-      fallen to around <strong>456,000</strong> — a drop of 16% at the national level. But national 
-      averages hide dramatic state-level differences. Perak lost more than a third of its births. 
-      Pulau Pinang and Kuala Lumpur lost more than a quarter. Only Terengganu bucked the trend.
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <p class="hero-kicker">Malaysia · 2000–2023 · Demographic Crisis</p>
+    <h1 class="hero-title">Malaysia is running<br>out of <em>babies.</em></h1>
+    <p class="hero-subtitle">
+      Over 23 years, Malaysia's birth rate has collapsed across every state —
+      but the decline is not equal. Rich states barely reproduce themselves
+      while rural states hold on. Behind the numbers lies an economic story
+      that will reshape the nation.
     </p>
 
-    <div class="chart-grid-2">
-      <!-- Chart 2: Slope chart -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 2 — Birth rate per 1,000 population: 2000 vs 2023</p>
-        <div id="chart2"></div>
-        <p class="chart-note">Each line = one state. Steeper fall = faster demographic decline.</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">−37%</div>
+        <div class="stat-label">Perak's births fell<br>2000 → 2023<br>(steepest of any state)</div>
       </div>
-
-      <!-- Chart 3: Diverging bar -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 3 — Change in birth rate 2000–2023 by state</p>
-        <div id="chart3"></div>
-        <p class="chart-note">All states except Terengganu recorded a declining birth rate.</p>
+      <div class="stat-card">
+        <div class="stat-number">9.8%</div>
+        <div class="stat-label">Chinese share of births<br>in 2023, down from<br>21.5% in 2000</div>
       </div>
-    </div>
-
-    <!-- Chart 4: Heatmap -->
-    <div class="chart-wrap">
-      <p class="chart-title">Chart 4 — Birth rate heatmap: every state, every year (2000–2023)</p>
-      <div id="chart4"></div>
-      <p class="chart-note">Darker orange = higher birth rate. The shift to blue over time is unmistakable.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── ACT 2: The Map ───────────────────────────────────────────────── -->
-<section class="section" id="act2">
-  <div class="container">
-    <p class="section-label">Act 2 — The geography</p>
-    <h2 class="section-title">Where you live in Malaysia determines how many children you have.</h2>
-    <div class="divider"></div>
-    <p class="section-body">
-      The geography of fertility mirrors the geography of wealth. Kuala Lumpur — Malaysia's 
-      richest territory — now has a birth rate of just <strong>10.7 per 1,000 people</strong>, 
-      well below the 14.0 needed to sustain population without migration. 
-      Meanwhile, Terengganu and Kelantan, among Malaysia's poorest states, maintain 
-      birth rates of <strong>21.6 and 19.2</strong> respectively.
-    </p>
-
-    <!-- Chart 5: Choropleth map -->
-    <div class="chart-wrap">
-      <p class="chart-title">Chart 5 — Birth rate per 1,000 population by state, 2023</p>
-      <div id="chart5"></div>
-      <p class="chart-note">Projection: Mercator · Source: DOSM Vital Statistics 2024</p>
-    </div>
-
-    <!-- Chart 6: Small multiples -->
-    <div class="chart-wrap">
-      <p class="chart-title">Chart 6 — Birth rate trend by state, 2000–2023 (small multiples)</p>
-      <div id="chart6"></div>
-      <p class="chart-note">Each panel shows one state. Note the different scales — rural states start higher and fall slower.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── ACT 3: The Ethnic Divergence ────────────────────────────────── -->
-<section class="section" id="act3">
-  <div class="container">
-    <p class="section-label">Act 3 — The divide</p>
-    <h2 class="section-title">Chinese births have halved. Malay births have grown. This is an economic story.</h2>
-    <div class="divider"></div>
-    <p class="section-body">
-      The national birth decline is not evenly distributed across ethnic groups. 
-      Chinese Malaysians, who are disproportionately urban and higher-income, 
-      recorded only <strong>44,818 births in 2023</strong> — down from <strong>115,429 in 2000</strong>. 
-      Their share of total national births collapsed from 21.5% to just 9.8%. 
-      This is not a cultural anomaly — it is the same pattern seen in South Korea, Japan, 
-      and Taiwan. When incomes rise, families shrink.
-    </p>
-
-    <div class="pullquote">
-      <p>"In 2000, 1 in every 5 Malaysian babies was Chinese. By 2023, it was fewer than 1 in 10."</p>
-    </div>
-
-    <div class="chart-grid-2">
-      <!-- Chart 7: Ethnic stacked area -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 7 — National births by ethnicity, 2000–2023</p>
-        <div id="chart7"></div>
-        <p class="chart-note">Absolute birth counts. Chinese (orange) decline is stark against Malay (blue) stability.</p>
-      </div>
-
-      <!-- Chart 8: Ethnic share slope -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 8 — Share of national births by ethnicity: 2000 vs 2023</p>
-        <div id="chart8"></div>
-        <p class="chart-note">Each line connects 2000 share (left) to 2023 share (right).</p>
+      <div class="stat-card">
+        <div class="stat-number">1 of 16</div>
+        <div class="stat-label">Only Terengganu<br>had more births in 2023<br>than in 2000</div>
       </div>
     </div>
 
-    <!-- Chart 9: Chinese share heatmap by state -->
     <div class="chart-wrap">
-      <p class="chart-title">Chart 9 — Chinese share of births by state, 2000–2023 (%)</p>
-      <div id="chart9"></div>
-      <p class="chart-note">The systematic decline of Chinese birth share is visible across every state that has a significant Chinese population.</p>
+      <p class="chart-label">Chart 1 — Total live births in Malaysia, 2000–2023</p>
+      <div id="chart1"></div>
+      <p class="chart-note">Source: DOSM · Vital Statistics 2024 · Annotations mark key socioeconomic events</p>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- ── ACT 4: The Cause ─────────────────────────────────────────────── -->
-<section class="section" id="act4">
-  <div class="container">
-    <p class="section-label">Act 4 — The cause</p>
-    <h2 class="section-title">One number predicts birth rate better than any other: household income.</h2>
-    <div class="divider"></div>
-    <p class="section-body">
-      Plot any Malaysian state's average household income against its birth rate and the 
-      relationship is unmistakable — <strong>richer states have fewer babies</strong>. 
-      Every RM1,000 increase in median household income corresponds to roughly 
-      a 1.5-point drop in birth rate per 1,000 people. This is not about religion, 
-      ethnicity, or culture. It is about the economics of raising children in a modern economy.
-    </p>
-
-    <div class="insight-box">
-      <strong>Key insight:</strong> Selangor (income: RM12,233) has a birth rate of 12.6. 
-      Kelantan (income: RM4,885) has a birth rate of 19.2. The income gap is 2.5×. 
-      The birth rate gap is 1.5×. Wealth suppresses fertility — everywhere in the world, 
-      and Malaysia is no exception.
-    </div>
-
-    <!-- Chart 10: Income vs birth rate scatter -->
-    <div class="chart-wrap">
-      <p class="chart-title">Chart 10 — Household income vs birth rate by state, 2022/2023</p>
-      <div id="chart10"></div>
-      <p class="chart-note">Each circle = one Malaysian state. Circle size = poverty rate. Source: DOSM HIES 2022 + Vital Statistics 2023</p>
-    </div>
-
-    <div class="chart-grid-2">
-      <!-- Chart 11: Gini vs birth rate -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 11 — Poverty rate vs birth rate change, 2022/2023</p>
-        <div id="chart11"></div>
-        <p class="chart-note">States with higher poverty have experienced slower birth rate decline.</p>
-      </div>
-
-      <!-- Chart 12: Bump chart -->
-      <div class="chart-wrap">
-        <p class="chart-title">Chart 12 — State rankings by birth rate, 2000–2023</p>
-        <div id="chart12"></div>
-        <p class="chart-note">Terengganu and Kelantan have consistently ranked highest. KL has fallen to last.</p>
-      </div>
-    </div>
-
-    <!-- Chart 13: Ethnic births line -->
-    <div class="chart-wrap">
-      <p class="chart-title">Chart 13 — Chinese vs Malay births: the crossing point</p>
-      <div id="chart13"></div>
-      <p class="chart-note">National totals. The gap between Malay and Chinese births has widened dramatically since 2000.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── Footer ───────────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <p class="footer-heading">Data Sources</p>
-      <p class="footer-text">
-        <strong>Live births by state, sex &amp; ethnicity (2000–2023)</strong><br>
-        Department of Statistics Malaysia (DOSM) · National Registration Department<br>
-        <a href="https://open.dosm.gov.my/data-catalogue/births_annual_sex_ethnic_state" target="_blank">open.dosm.gov.my</a><br><br>
-        <strong>Household Income &amp; Expenditure Survey by State (2022)</strong><br>
-        Department of Statistics Malaysia (DOSM)<br>
-        <a href="https://open.dosm.gov.my/data-catalogue/hies_state" target="_blank">open.dosm.gov.my</a><br><br>
-        <strong>Malaysia State Boundaries (GeoJSON)</strong><br>
-        DOSM Open Data · Administrative boundaries<br>
-        <a href="https://github.com/dosm-malaysia/data-open" target="_blank">github.com/dosm-malaysia</a>
+  <!-- ── ACT 1 ── -->
+  <section class="section" id="act1">
+    <div class="container">
+      <p class="section-act">Act 1 — The Decline</p>
+      <h2 class="section-title">Every state is having fewer babies. But some are falling off a cliff.</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        In 2000, Malaysia recorded over <strong>540,000 live births</strong>. By 2023 that number had fallen to around
+        <strong>456,000</strong> — a drop of 16% nationally. But national averages hide dramatic state-level
+        differences.
+        Perak lost more than a third of its births. Pulau Pinang and Kuala Lumpur lost more than a quarter.
+        Only Terengganu bucked the trend.
       </p>
-    </div>
-    <div>
-      <p class="footer-heading">About this visualisation</p>
-      <p class="footer-text">
-        Created as part of FIT2179 Data Visualisation 2, Monash University Malaysia, Semester 1 2026.<br><br>
-        All Vega-Lite chart specifications are available as human-readable JSON files in the
-        <code>js/</code> directory of this repository.<br><br>
-        AI tools (Claude) were used to assist with data wrangling and code generation. 
-        All data interpretation, design decisions, and narrative are the author's own.<br><br>
-        <strong>Author:</strong> [Your Name] · [Student ID]<br>
-        <strong>Published:</strong> May 2026
-      </p>
-    </div>
-  </div>
-</footer>
 
-<!-- ── Chart Scripts ─────────────────────────────────────────────────── -->
-<script>
-  // Vega-Lite embed options applied to all charts
-  const OPTS = {
-    actions: false,
-    theme: "dark",
-    config: {
-      background: "transparent",
-      view: { stroke: "transparent" },
-      axis: {
-        gridColor: "#30363d",
-        domainColor: "#30363d",
-        tickColor: "#30363d",
-        labelColor: "#8b949e",
-        titleColor: "#8b949e",
-        labelFont: "JetBrains Mono",
-        titleFont: "JetBrains Mono",
-        labelFontSize: 11,
-        titleFontSize: 11
-      },
-      legend: {
-        labelColor: "#8b949e",
-        titleColor: "#8b949e",
-        labelFont: "JetBrains Mono",
-        titleFont: "JetBrains Mono",
-        labelFontSize: 11
-      },
-      title: { color: "#e6edf3", font: "Source Serif 4", fontSize: 13 }
+      <div class="callout">
+        <p>"Every single Malaysian state — except one — recorded fewer births in 2023 than in 2000."</p>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 2 — Birth rate per 1,000: 2000 vs 2023 by state</p>
+          <div id="chart2"></div>
+          <p class="chart-note">Sky blue = 2000 · Amber = 2023 · Line colour shows direction of change</p>
+        </div>
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 3 — Change in birth rate 2000–2023 by state</p>
+          <div id="chart3"></div>
+          <p class="chart-note">All states except Terengganu recorded a declining birth rate</p>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <strong>Reading the parallel coordinates below:</strong>
+        Each line = one Malaysian state, crossing four axes: birth rate, rate change, mean income, and poverty rate.
+        Lines that cross sharply between income and birth rate show the inverse relationship — richer states have lower
+        birth rates.
+      </div>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 4 — Multi-metric state profile: parallel coordinates</p>
+        <div id="chart4"></div>
+        <p class="chart-note">Each line = one state · Colour = income group · Hover for full state data · Axes are
+          normalised 0–1 for comparability</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACT 2 ── -->
+  <section class="section" id="act2">
+    <div class="container">
+      <p class="section-act">Act 2 — The Geography</p>
+      <h2 class="section-title">Where you live in Malaysia determines how many children you have.</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        The geography of fertility mirrors the geography of wealth. Kuala Lumpur — Malaysia's
+        richest territory — now has a birth rate of just <strong>10.7 per 1,000 people</strong>,
+        well below the 14.0 needed to sustain population without migration.
+        Meanwhile, Terengganu and Kelantan, among Malaysia's poorest states, maintain
+        birth rates of <strong>21.6 and 19.2</strong> respectively.
+      </p>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 5 — Birth rate per 1,000 by state · drag slider to travel through time</p>
+        <div id="chart5"></div>
+        <p class="chart-note">Projection: Mercator · Drag the year slider to watch Malaysia's birth rate decline
+          2000→2023 · Source: DOSM Vital Statistics</p>
+      </div>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 6 — Ethnic composition of births by state, 2023</p>
+        <div id="chart6"></div>
+        <p class="chart-note">Each donut = one state · Segments show share of births by ethnicity · Click legend to
+          isolate one group · Colour-blind safe palette (Okabe-Ito)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACT 3 ── -->
+  <section class="section" id="act3">
+    <div class="container">
+      <p class="section-act">Act 3 — The Divide</p>
+      <h2 class="section-title">Chinese births have halved. Malay births have grown. This is an economic story.</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        The national birth decline is not evenly distributed across ethnic groups. Chinese Malaysians,
+        who are disproportionately urban and higher-income, recorded only
+        <strong>44,818 births in 2023</strong> — down from <strong>115,429 in 2000</strong>.
+        Their share of total national births collapsed from 21.5% to just 9.8%.
+        This is not a cultural anomaly. It is the same pattern seen in South Korea, Japan, and Taiwan.
+        When incomes rise, families shrink.
+      </p>
+
+      <div class="callout">
+        <p>"In 2000, 1 in every 5 Malaysian babies was Chinese. By 2023, it was fewer than 1 in 10."</p>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 7 — National births by ethnicity: the stream</p>
+          <div id="chart7"></div>
+          <p class="chart-note">Click legend items to isolate one group · Chinese (amber) stream visibly narrows · Malay
+            (blue) stream holds steady</p>
+        </div>
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 8 — Ethnic birth share: 2000 vs 2023</p>
+          <div id="chart8"></div>
+          <p class="chart-note">Sky blue dot = 2000 share · Amber dot = 2023 share · Gap shows scale of demographic
+            shift</p>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 9 — Chinese share of births by state (%), 2000–2023</p>
+        <div id="chart9"></div>
+        <p class="chart-note">Darker = higher Chinese birth share · The systematic decline is visible across every state
+          with a significant Chinese population · Hover for exact values</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACT 4 ── -->
+  <section class="section" id="act4">
+    <div class="container">
+      <p class="section-act">Act 4 — The Cause</p>
+      <h2 class="section-title">One number predicts birth rate better than any other: household income.</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        Plot any Malaysian state's average household income against its birth rate and the
+        relationship is unmistakable — <strong>richer states have fewer babies</strong>.
+        Every RM1,000 increase in median household income corresponds to roughly
+        a 1.5-point drop in birth rate per 1,000 people. This is not about religion,
+        ethnicity, or culture. It is about the economics of raising children in a modern economy.
+      </p>
+
+      <div class="insight-box">
+        <strong>Key insight:</strong> Selangor (income: RM12,233) has a birth rate of 12.6.
+        Kelantan (income: RM4,885) has a birth rate of 19.2. The income gap is 2.5×.
+        The birth rate gap is 1.5×. Wealth suppresses fertility everywhere in the world —
+        and Malaysia is no exception.
+      </div>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 10 — Household income vs birth rate · 2022/2023</p>
+        <div id="chart10"></div>
+        <p class="chart-note">Each circle = one Malaysian state · Circle size = poverty rate · Dashed line = regression
+          trend · Hover for full state data · Source: DOSM HIES 2022 + Vital Statistics 2023</p>
+      </div>
+
+      <div class="chart-grid-2">
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 11 — How many states are below replacement rate?</p>
+          <div id="chart11"></div>
+          <p class="chart-note">Blue = above replacement (≥ 14.0 per 1,000) · Amber = below replacement · Hover each
+            square for state details</p>
+        </div>
+        <div class="chart-wrap">
+          <p class="chart-label">Chart 12 — State rankings by birth rate, 2000–2023</p>
+          <div id="chart12"></div>
+          <p class="chart-note">Terengganu and Kelantan have consistently ranked highest · KL has fallen to last</p>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <p class="chart-label">Chart 13 — Chinese vs Malay births: the widening gap</p>
+        <div id="chart13"></div>
+        <p class="chart-note">National totals · The gap between Malay and Chinese births has widened dramatically since
+          2000</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <p class="footer-heading">Data Sources</p>
+        <p class="footer-text">
+          <strong>Live births by state, sex &amp; ethnicity (2000–2023)</strong><br>
+          Department of Statistics Malaysia (DOSM) · National Registration Department<br>
+          <a href="https://open.dosm.gov.my" target="_blank">open.dosm.gov.my</a><br><br>
+          <strong>Household Income &amp; Expenditure Survey by State (2022)</strong><br>
+          Department of Statistics Malaysia (DOSM)<br>
+          <a href="https://open.dosm.gov.my" target="_blank">open.dosm.gov.my</a><br><br>
+          <strong>Malaysia State Boundaries</strong><br>
+          datamaps · Natural Earth · Administrative boundaries
+        </p>
+      </div>
+      <div>
+        <p class="footer-heading">About this Visualisation</p>
+        <p class="footer-text">
+          Created as part of FIT2179 Data Visualisation 2,<br>
+          Monash University Malaysia, Semester 1 2026.<br><br>
+          All Vega-Lite specifications are available as human-readable
+          JSON files in the <code>js/</code> directory of this repository.<br><br>
+          AI tools (Claude) were used to assist with data wrangling and code generation.
+          All data interpretation, design decisions, and narrative are the author's own.<br><br>
+          <strong>Author:</strong> [Your Name] · [Student ID]<br>
+          <strong>Published:</strong> May 2026
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme Toggle ──────────────────────────────────────────────────────────
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+
+    function applyTheme(isLight) {
+      document.body.classList.toggle('light', isLight);
+      icon.textContent = isLight ? '☾' : '☀';
+      label.textContent = isLight ? 'Dark' : 'Light';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      renderAllCharts(isLight);
     }
-  };
 
-  // Load each chart spec from separate JSON files
-  const charts = [
-    { id: "chart1",  spec: "js/chart1_national_trend.json" },
-    { id: "chart2",  spec: "js/chart2_slope.json" },
-    { id: "chart3",  spec: "js/chart3_diverging_bar.json" },
-    { id: "chart4",  spec: "js/chart4_heatmap.json" },
-    { id: "chart5",  spec: "js/chart5_choropleth.json" },
-    { id: "chart6",  spec: "js/chart6_small_multiples.json" },
-    { id: "chart7",  spec: "js/chart7_ethnic_area.json" },
-    { id: "chart8",  spec: "js/chart8_ethnic_slope.json" },
-    { id: "chart9",  spec: "js/chart9_chinese_heatmap.json" },
-    { id: "chart10", spec: "js/chart10_scatter.json" },
-    { id: "chart11", spec: "js/chart11_poverty_scatter.json" },
-    { id: "chart12", spec: "js/chart12_bump.json" },
-    { id: "chart13", spec: "js/chart13_ethnic_line.json" }
-  ];
-
-  charts.forEach(({ id, spec }) => {
-    vegaEmbed(`#${id}`, spec, OPTS).catch(err => {
-      document.getElementById(id).innerHTML =
-        `<p style="color:#ff6b6b;font-family:monospace;font-size:12px;padding:1rem;">
-          Chart failed to load: ${spec}<br>${err.message}
-        </p>`;
+    btn.addEventListener('click', () => {
+      applyTheme(!document.body.classList.contains('light'));
     });
-  });
-</script>
+
+    // Restore saved preference
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') applyTheme(true);
+
+    // ── Vega-Lite Config ──────────────────────────────────────────────────────
+    function getOpts(isLight) {
+      const fontColor = isLight ? '#1a1611' : '#e6edf3';
+      const mutedColor = isLight ? '#6b6456' : '#8b949e';
+      const gridColor = isLight ? '#d9d3c7' : '#30363d';
+      const bgColor = isLight ? '#ffffff' : 'transparent';
+
+      return {
+        actions: false,
+        config: {
+          background: bgColor,
+          view: { stroke: 'transparent' },
+          axis: {
+            gridColor: gridColor, domainColor: gridColor, tickColor: gridColor,
+            labelColor: mutedColor, titleColor: mutedColor,
+            labelFont: 'JetBrains Mono', titleFont: 'JetBrains Mono',
+            labelFontSize: 11, titleFontSize: 11
+          },
+          legend: {
+            labelColor: mutedColor, titleColor: mutedColor,
+            labelFont: 'JetBrains Mono', titleFont: 'JetBrains Mono',
+            labelFontSize: 11, titleFontSize: 11
+          },
+          title: { color: fontColor, font: 'Source Serif 4', fontSize: 13 },
+          arc: { stroke: isLight ? '#ffffff' : '#161b22', strokeWidth: 1 }
+        }
+      };
+    }
+
+    // ── Chart Specs ───────────────────────────────────────────────────────────
+    const CHART_SPECS = [
+      { id: 'chart1', spec: 'js/chart1_national_trend.json' },
+      { id: 'chart2', spec: 'js/chart2_slope.json' },
+      { id: 'chart3', spec: 'js/chart3_diverging_bar.json' },
+      { id: 'chart4', spec: 'js/chart4_heatmap.json' },
+      { id: 'chart5', spec: 'js/chart5_choropleth.json' },
+      { id: 'chart6', spec: 'js/chart6_ethnic_pies.json' },
+      { id: 'chart7', spec: 'js/chart7_stream.json' },
+      { id: 'chart8', spec: 'js/chart8_ethnic_slope.json' },
+      { id: 'chart9', spec: 'js/chart9_chinese_heatmap.json' },
+      { id: 'chart10', spec: 'js/chart10_scatter.json' },
+      { id: 'chart11', spec: 'js/chart11_unit.json' },
+      { id: 'chart12', spec: 'js/chart12_bump.json' },
+      { id: 'chart13', spec: 'js/chart13_ethnic_line.json' }
+    ];
+
+    let views = {};
+
+    function renderAllCharts(isLight) {
+      const opts = getOpts(isLight);
+      CHART_SPECS.forEach(({ id, spec }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        vegaEmbed('#' + id, spec, opts)
+          .then(result => { views[id] = result.view; })
+          .catch(err => {
+            el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
+          ⚠ ${spec} — ${err.message}</p>`;
+          });
+      });
+    }
+
+    // Initial render
+    renderAllCharts(document.body.classList.contains('light'));
+  </script>
 
 </body>
+
 </html>

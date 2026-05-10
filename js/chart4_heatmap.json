@@ -1,38 +1,223 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Birth rate heatmap: state by year 2000-2023",
+  "description": "Parallel coordinates: multi-metric state profile — birth rate, income, poverty, Gini",
   "width": "container",
   "height": 340,
-  "data": { "url": "data/birth_state.csv" },
+  "data": {
+    "url": "data/state_snapshot.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" }
+    {
+      "filter": "datum.state != 'W.P. Putrajaya' && datum.state != 'W.P. Labuan'"
+    },
+    {
+      "fold": [
+        "birth_rate",
+        "rate_change",
+        "income_mean",
+        "poverty"
+      ],
+      "as": [
+        "metric",
+        "raw_value"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "raw_value",
+          "as": "min_v"
+        },
+        {
+          "op": "max",
+          "field": "raw_value",
+          "as": "max_v"
+        }
+      ],
+      "groupby": [
+        "metric"
+      ]
+    },
+    {
+      "calculate": "(datum.raw_value - datum.min_v) / (datum.max_v - datum.min_v)",
+      "as": "norm"
+    },
+    {
+      "calculate": "datum.metric == 'birth_rate' ? '① Birth Rate' : datum.metric == 'rate_change' ? '② Rate Change' : datum.metric == 'income_mean' ? '③ Mean Income' : '④ Poverty Rate'",
+      "as": "axis_label"
+    }
   ],
-  "mark": { "type": "rect" },
-  "encoding": {
-    "x": {
-      "field": "year",
-      "type": "ordinal",
-      "title": null,
-      "axis": { "labelAngle": -45, "labelFontSize": 10 }
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 1.8,
+        "opacity": 0.6
+      },
+      "encoding": {
+        "x": {
+          "field": "axis_label",
+          "type": "ordinal",
+          "sort": [
+            "① Birth Rate",
+            "② Rate Change",
+            "③ Mean Income",
+            "④ Poverty Rate"
+          ],
+          "title": null,
+          "axis": {
+            "labelFontSize": 11,
+            "labelFont": "JetBrains Mono",
+            "labelColor": "#8b949e",
+            "ticks": false,
+            "domainColor": "#30363d",
+            "grid": false
+          }
+        },
+        "y": {
+          "field": "norm",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -0.05,
+              1.05
+            ]
+          }
+        },
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5–8k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "#E69F00",
+              "#56B4E9",
+              "#0072B2"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": "Income Group",
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 11,
+            "titleFont": "JetBrains Mono",
+            "titleFontSize": 11
+          }
+        },
+        "detail": {
+          "field": "state"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate 2023",
+            "format": ".1f"
+          },
+          {
+            "field": "rate_change",
+            "title": "Change since 2000",
+            "format": "+.1f"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "gini",
+            "title": "Gini Coefficient",
+            "format": ".3f"
+          }
+        ]
+      }
     },
-    "y": {
-      "field": "state",
-      "type": "nominal",
-      "sort": { "field": "rate", "op": "mean", "order": "descending" },
-      "title": null,
-      "axis": { "labelFontSize": 11 }
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 55,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "axis_label",
+          "type": "ordinal",
+          "sort": [
+            "① Birth Rate",
+            "② Rate Change",
+            "③ Mean Income",
+            "④ Poverty Rate"
+          ]
+        },
+        "y": {
+          "field": "norm",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5–8k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "#E69F00",
+              "#56B4E9",
+              "#0072B2"
+            ]
+          }
+        }
+      }
     },
-    "color": {
-      "field": "rate",
-      "type": "quantitative",
-      "title": "Birth Rate",
-      "scale": { "scheme": "orangered", "domain": [8, 32] },
-      "legend": { "orient": "right", "gradientLength": 200 }
-    },
-    "tooltip": [
-      { "field": "state", "title": "State" },
-      { "field": "year", "title": "Year" },
-      { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" }
-    ]
-  }
+    {
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          3,
+          3
+        ],
+        "strokeWidth": 0.8,
+        "opacity": 0.4
+      },
+      "encoding": {
+        "x": {
+          "field": "axis_label",
+          "type": "ordinal",
+          "sort": [
+            "① Birth Rate",
+            "② Rate Change",
+            "③ Mean Income",
+            "④ Poverty Rate"
+          ]
+        },
+        "y": {
+          "datum": 0
+        },
+        "y2": {
+          "datum": 1
+        },
+        "color": {
+          "value": "#30363d"
+        }
+      }
+    }
+  ]
 }

@@ -1,43 +1,209 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Change in birth rate 2000 to 2023 by state",
+  "description": "Arrow diverging plot: birth rate change 2000-2023 by state",
   "width": "container",
-  "height": 380,
-  "data": { "url": "data/state_snapshot.csv" },
+  "height": 400,
+  "data": {
+    "url": "data/state_snapshot.csv"
+  },
   "transform": [
-    { "filter": "datum.state != 'W.P. Putrajaya'" },
-    { "calculate": "datum.birth_rate - datum.rate_2000", "as": "rate_change" },
-    { "calculate": "datum.rate_change >= 0 ? 'Increase' : 'Decrease'", "as": "direction" }
+    {
+      "filter": "datum.state != 'W.P. Putrajaya'"
+    },
+    {
+      "calculate": "datum.birth_rate - datum.rate_2000",
+      "as": "rate_change"
+    },
+    {
+      "calculate": "datum.rate_change >= 0 ? 'Increased' : 'Decreased'",
+      "as": "direction"
+    }
   ],
-  "mark": { "type": "bar", "cornerRadiusEnd": 3 },
-  "encoding": {
-    "y": {
-      "field": "state",
-      "type": "nominal",
-      "sort": { "field": "rate_change", "order": "descending" },
-      "title": null,
-      "axis": { "labelFontSize": 11 }
-    },
-    "x": {
-      "field": "rate_change",
-      "type": "quantitative",
-      "title": "Change in birth rate (per 1,000)",
-      "axis": { "format": "+.1f" }
-    },
-    "color": {
-      "field": "direction",
-      "type": "nominal",
-      "scale": {
-        "domain": ["Increase", "Decrease"],
-        "range": ["#3fb950", "#f0883e"]
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#30363d",
+        "strokeWidth": 0.8
       },
-      "legend": { "title": null, "orient": "top" }
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        }
+      }
     },
-    "tooltip": [
-      { "field": "state", "title": "State" },
-      { "field": "rate_2000", "title": "Rate 2000", "format": ".1f" },
-      { "field": "birth_rate", "title": "Rate 2023", "format": ".1f" },
-      { "field": "rate_change", "title": "Change", "format": "+.1f" }
-    ]
-  }
+    {
+      "mark": {
+        "type": "bar",
+        "height": 10,
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "rate_change",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelFontSize": 11,
+            "labelFont": "JetBrains Mono"
+          }
+        },
+        "x": {
+          "field": "rate_change",
+          "type": "quantitative",
+          "title": "Change in birth rate (per 1,000)",
+          "axis": {
+            "format": "+.1f",
+            "gridColor": "#30363d"
+          }
+        },
+        "x2": {
+          "datum": 0
+        },
+        "color": {
+          "field": "direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Decreased",
+              "Increased"
+            ],
+            "range": [
+              "#D55E00",
+              "#009E73"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": null,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 11
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "rate_2000",
+            "title": "Birth Rate 2000",
+            "format": ".1f"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate 2023",
+            "format": ".1f"
+          },
+          {
+            "field": "rate_change",
+            "title": "Change",
+            "format": "+.2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "shape": "triangle-right",
+        "size": 80,
+        "filled": true
+      },
+      "transform": [
+        {
+          "filter": "datum.rate_change > 0"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "rate_change",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate_change",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#009E73"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "shape": "triangle-left",
+        "size": 80,
+        "filled": true
+      },
+      "transform": [
+        {
+          "filter": "datum.rate_change < 0"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "rate_change",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate_change",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#D55E00"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -10,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "#8b949e"
+      },
+      "transform": [
+        {
+          "filter": "datum.state == 'Terengganu' || datum.state == 'Perak'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "rate_change",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate_change",
+          "type": "quantitative"
+        },
+        "text": {
+          "condition": {
+            "test": "datum.state == 'Terengganu'",
+            "value": "Only state to increase ↑"
+          },
+          "value": "Steepest decline ↓"
+        }
+      }
+    }
+  ]
 }

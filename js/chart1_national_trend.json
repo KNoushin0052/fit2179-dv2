@@ -1,42 +1,201 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Total live births in Malaysia 2000-2023",
+  "description": "Total live births in Malaysia 2000-2023 with event annotations",
   "width": "container",
-  "height": 280,
-  "data": { "url": "data/birth_state.csv" },
+  "height": 300,
+  "data": {
+    "url": "data/birth_state.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" },
     {
-      "aggregate": [{ "op": "sum", "field": "abs", "as": "total_births" }],
-      "groupby": ["year"]
+      "calculate": "year(datum.date)",
+      "as": "year"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "abs",
+          "as": "total_births"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
     }
   ],
   "layer": [
     {
       "mark": {
         "type": "area",
-        "line": { "color": "#f0883e", "strokeWidth": 2.5 },
-        "color": { "gradient": "linear", "stops": [
-          { "offset": 0, "color": "rgba(240,136,62,0.35)" },
-          { "offset": 1, "color": "rgba(240,136,62,0.02)" }
-        ]},
-        "x": "width", "x2": 0
+        "line": {
+          "color": "#f0883e",
+          "strokeWidth": 2
+        },
+        "color": {
+          "gradient": "linear",
+          "stops": [
+            {
+              "offset": 0,
+              "color": "rgba(240,136,62,0.3)"
+            },
+            {
+              "offset": 1,
+              "color": "rgba(240,136,62,0.02)"
+            }
+          ]
+        },
+        "x": "width",
+        "x2": 0
       },
       "encoding": {
-        "x": { "field": "year", "type": "quantitative", "axis": { "format": "d", "title": null } },
-        "y": { "field": "total_births", "type": "quantitative", "title": "Live Births", "axis": { "format": "~s" } }
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "axis": {
+            "format": "d",
+            "title": null,
+            "gridColor": "#30363d"
+          }
+        },
+        "y": {
+          "field": "total_births",
+          "type": "quantitative",
+          "title": "Live Births",
+          "axis": {
+            "format": "~s"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "total_births",
+            "title": "Total Births",
+            "format": ","
+          }
+        ]
       }
     },
     {
-      "mark": { "type": "rule", "color": "#58a6ff", "strokeDash": [4, 3], "strokeWidth": 1.5 },
-      "encoding": { "y": { "datum": 456000 } }
+      "data": {
+        "values": [
+          {
+            "year": 2005,
+            "label": "Economic\nboom",
+            "y": 530000
+          },
+          {
+            "year": 2012,
+            "label": "Rising costs\nof living",
+            "y": 530000
+          },
+          {
+            "year": 2020,
+            "label": "COVID-19\npandemic",
+            "y": 530000
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          4,
+          3
+        ],
+        "strokeWidth": 1.2,
+        "color": "#58a6ff",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        }
+      }
     },
     {
-      "mark": { "type": "text", "align": "right", "dx": -6, "dy": -8, "color": "#58a6ff", "fontSize": 11, "font": "JetBrains Mono" },
+      "data": {
+        "values": [
+          {
+            "year": 2005,
+            "label": "Economic boom",
+            "y": 510000
+          },
+          {
+            "year": 2012,
+            "label": "Rising cost of living",
+            "y": 510000
+          },
+          {
+            "year": 2020,
+            "label": "COVID-19 pandemic",
+            "y": 510000
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 4,
+        "dy": 0,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "#58a6ff"
+      },
       "encoding": {
-        "x": { "datum": 2022 },
-        "y": { "datum": 456000 },
-        "text": { "value": "2023 total: ~456k" }
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#58a6ff",
+        "strokeDash": [
+          4,
+          3
+        ],
+        "strokeWidth": 1.2,
+        "opacity": 0.5
+      },
+      "encoding": {
+        "y": {
+          "datum": 456000
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -4,
+        "dy": -8,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "#58a6ff"
+      },
+      "encoding": {
+        "x": {
+          "datum": 2023
+        },
+        "y": {
+          "datum": 456000
+        },
+        "text": {
+          "value": "2023: ~456k"
+        }
       }
     }
   ]

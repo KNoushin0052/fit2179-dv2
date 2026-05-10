@@ -1,76 +1,284 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Unit chart: 16 Malaysian states above/below replacement birth rate (14.0)",
-  "width": "container",
-  "height": 240,
+  "description": "Radar/Spider chart: multi-metric state comparison — KL, Selangor, Kelantan, Terengganu, Sabah",
+  "width": 380,
+  "height": 380,
   "data": {
     "url": "data/state_snapshot.csv"
   },
   "transform": [
     {
-      "window": [
-        {
-          "op": "rank",
-          "as": "rank"
-        }
+      "filter": "datum.state == 'W.P. Kuala Lumpur' || datum.state == 'Selangor' || datum.state == 'Kelantan' || datum.state == 'Terengganu' || datum.state == 'Sabah'"
+    },
+    {
+      "fold": [
+        "birth_rate",
+        "income_mean",
+        "poverty",
+        "gini",
+        "rate_2000"
       ],
-      "sort": [
-        {
-          "field": "birth_rate",
-          "order": "descending"
-        }
+      "as": [
+        "metric",
+        "raw_value"
       ]
     },
     {
-      "calculate": "ceil(datum.rank / 4)",
-      "as": "row"
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "raw_value",
+          "as": "min_v"
+        },
+        {
+          "op": "max",
+          "field": "raw_value",
+          "as": "max_v"
+        }
+      ],
+      "groupby": [
+        "metric"
+      ]
     },
     {
-      "calculate": "datum.rank - (datum.row - 1) * 4",
-      "as": "col"
+      "calculate": "(datum.raw_value - datum.min_v) / (datum.max_v - datum.min_v)",
+      "as": "norm_value"
     },
     {
-      "calculate": "datum.birth_rate >= 14.0 ? 'Above replacement (≥ 14.0)' : 'Below replacement (< 14.0)'",
-      "as": "status"
+      "calculate": "datum.metric == 'birth_rate' ? 0 : datum.metric == 'rate_2000' ? 1.2566 : datum.metric == 'poverty' ? 2.5133 : datum.metric == 'income_mean' ? 3.7699 : 5.0265",
+      "as": "angle"
+    },
+    {
+      "calculate": "datum.norm_value * cos(datum.angle)",
+      "as": "x"
+    },
+    {
+      "calculate": "datum.norm_value * sin(datum.angle)",
+      "as": "y"
     }
   ],
   "layer": [
     {
+      "data": {
+        "values": [
+          {
+            "r": 0.25
+          },
+          {
+            "r": 0.5
+          },
+          {
+            "r": 0.75
+          },
+          {
+            "r": 1
+          }
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "[0,1.2566,2.5133,3.7699,5.0265,0]",
+          "as": "angles_arr"
+        }
+      ],
       "mark": {
-        "type": "square",
-        "size": 2400,
+        "type": "arc",
+        "filled": false,
+        "stroke": "#30363d",
+        "strokeWidth": 0.5,
+        "opacity": 0.5
+      },
+      "encoding": {
+        "theta": {
+          "datum": 0
+        },
+        "theta2": {
+          "datum": 6.2832
+        },
+        "radius": {
+          "field": "r",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "metric": "Birth Rate 2023",
+            "angle": 0
+          },
+          {
+            "metric": "Birth Rate 2000",
+            "angle": 1.2566
+          },
+          {
+            "metric": "Poverty Rate",
+            "angle": 2.5133
+          },
+          {
+            "metric": "Mean Income",
+            "angle": 3.7699
+          },
+          {
+            "metric": "Gini Coefficient",
+            "angle": 5.0265
+          }
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "1.15 * cos(datum.angle)",
+          "as": "lx"
+        },
+        {
+          "calculate": "1.15 * sin(datum.angle)",
+          "as": "ly"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "color": "#8b949e"
+      },
+      "encoding": {
+        "x": {
+          "field": "lx",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "y": {
+          "field": "ly",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "text": {
+          "field": "metric"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "opacity": 0.75,
+        "filled": false
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "color": {
+          "field": "state",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "W.P. Kuala Lumpur",
+              "Selangor",
+              "Kelantan",
+              "Terengganu",
+              "Sabah"
+            ],
+            "range": [
+              "#0072B2",
+              "#56B4E9",
+              "#E69F00",
+              "#D55E00",
+              "#CC79A7"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "columns": 3,
+            "title": null,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 11
+          }
+        },
+        "detail": {
+          "field": "state"
+        },
+        "order": {
+          "field": "angle",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 60,
         "opacity": 0.9
       },
       "encoding": {
         "x": {
-          "field": "col",
-          "type": "ordinal",
+          "field": "x",
+          "type": "quantitative",
           "axis": null
         },
         "y": {
-          "field": "row",
-          "type": "ordinal",
-          "axis": null,
-          "sort": "ascending"
+          "field": "y",
+          "type": "quantitative",
+          "axis": null
         },
         "color": {
-          "field": "status",
+          "field": "state",
           "type": "nominal",
+          "legend": null,
           "scale": {
             "domain": [
-              "Above replacement (≥ 14.0)",
-              "Below replacement (< 14.0)"
+              "W.P. Kuala Lumpur",
+              "Selangor",
+              "Kelantan",
+              "Terengganu",
+              "Sabah"
             ],
             "range": [
               "#0072B2",
-              "#E69F00"
+              "#56B4E9",
+              "#E69F00",
+              "#D55E00",
+              "#CC79A7"
             ]
-          },
-          "legend": {
-            "orient": "top",
-            "title": null,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 11
           }
         },
         "tooltip": [
@@ -79,44 +287,15 @@
             "title": "State"
           },
           {
-            "field": "birth_rate",
-            "title": "Birth Rate (2023)",
-            "format": ".1f"
+            "field": "metric",
+            "title": "Metric"
           },
           {
-            "field": "status",
-            "title": "Status"
-          },
-          {
-            "field": "income_mean",
-            "title": "Mean Income (RM)",
-            "format": ","
+            "field": "raw_value",
+            "title": "Value",
+            "format": ".2f"
           }
         ]
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "fontSize": 9,
-        "font": "JetBrains Mono",
-        "color": "white",
-        "align": "center",
-        "baseline": "middle"
-      },
-      "encoding": {
-        "x": {
-          "field": "col",
-          "type": "ordinal"
-        },
-        "y": {
-          "field": "row",
-          "type": "ordinal",
-          "sort": "ascending"
-        },
-        "text": {
-          "field": "state"
-        }
       }
     }
   ]
