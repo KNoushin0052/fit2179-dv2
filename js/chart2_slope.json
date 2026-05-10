@@ -1,44 +1,216 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Slope chart: birth rate per 1000 population, 2000 vs 2023 by state",
+  "description": "Dumbbell chart: birth rate 2000 vs 2023 by state",
   "width": "container",
-  "height": 380,
-  "data": { "url": "data/birth_state.csv" },
+  "height": 400,
+  "data": {
+    "url": "data/state_snapshot.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" },
-    { "filter": "datum.year == 2000 || datum.year == 2023" },
-    { "filter": "datum.state != 'W.P. Putrajaya'" }
+    {
+      "filter": "datum.state != 'W.P. Putrajaya'"
+    },
+    {
+      "calculate": "datum.birth_rate < datum.rate_2000 ? 'Declined' : 'Increased'",
+      "as": "direction"
+    }
   ],
   "layer": [
     {
-      "mark": { "type": "line", "strokeWidth": 1.5, "opacity": 0.7 },
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 2.5
+      },
       "encoding": {
-        "x": { "field": "year", "type": "ordinal", "axis": { "title": null, "labelFontSize": 12 } },
-        "y": { "field": "rate", "type": "quantitative", "title": "Birth Rate (per 1,000)", "scale": { "zero": false } },
-        "detail": { "field": "state" },
-        "color": {
-          "field": "rate",
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "birth_rate",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "rate_2000",
           "type": "quantitative",
-          "scale": { "scheme": "orangered", "domain": [10, 30] },
-          "legend": null
+          "title": "Birth Rate (per 1,000)",
+          "scale": {
+            "zero": false
+          }
+        },
+        "x2": {
+          "field": "birth_rate"
+        },
+        "color": {
+          "field": "direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Declined",
+              "Increased"
+            ],
+            "range": [
+              "#D55E00",
+              "#009E73"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": null
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 130
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "birth_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate_2000",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#56B4E9"
         },
         "tooltip": [
-          { "field": "state", "title": "State" },
-          { "field": "year", "title": "Year" },
-          { "field": "rate", "title": "Birth Rate", "format": ".1f" }
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "rate_2000",
+            "title": "Birth Rate 2000",
+            "format": ".1f"
+          }
         ]
       }
     },
     {
-      "mark": { "type": "point", "filled": true, "size": 60 },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 130
+      },
       "encoding": {
-        "x": { "field": "year", "type": "ordinal" },
-        "y": { "field": "rate", "type": "quantitative" },
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "birth_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "birth_rate",
+          "type": "quantitative"
+        },
         "color": {
-          "field": "rate",
-          "type": "quantitative",
-          "scale": { "scheme": "orangered", "domain": [10, 30] },
-          "legend": null
+          "value": "#E69F00"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "rate_2000",
+            "title": "Birth Rate 2000",
+            "format": ".1f"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate 2023",
+            "format": ".1f"
+          },
+          {
+            "field": "rate_change",
+            "title": "Change",
+            "format": "+.1f"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.state == 'Terengganu'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "color": "#56B4E9"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "birth_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate_2000",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "2000"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.state == 'Terengganu'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "color": "#E69F00"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "birth_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "birth_rate",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "2023"
         }
       }
     }
