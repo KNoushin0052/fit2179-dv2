@@ -1,52 +1,122 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Poverty rate vs birth rate 2022/2023",
+  "description": "Unit chart: 16 Malaysian states above/below replacement birth rate (14.0)",
   "width": "container",
-  "height": 320,
-  "data": { "url": "data/state_snapshot.csv" },
+  "height": 240,
+  "data": {
+    "url": "data/state_snapshot.csv"
+  },
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "birth_rate",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "calculate": "ceil(datum.rank / 4)",
+      "as": "row"
+    },
+    {
+      "calculate": "datum.rank - (datum.row - 1) * 4",
+      "as": "col"
+    },
+    {
+      "calculate": "datum.birth_rate >= 14.0 ? 'Above replacement (≥ 14.0)' : 'Below replacement (< 14.0)'",
+      "as": "status"
+    }
+  ],
   "layer": [
     {
-      "mark": { "type": "point", "filled": true, "size": 120, "opacity": 0.85 },
+      "mark": {
+        "type": "square",
+        "size": 2400,
+        "opacity": 0.9
+      },
       "encoding": {
         "x": {
-          "field": "poverty",
-          "type": "quantitative",
-          "title": "Poverty Rate (%)",
-          "scale": { "zero": false }
+          "field": "col",
+          "type": "ordinal",
+          "axis": null
         },
         "y": {
-          "field": "birth_rate",
-          "type": "quantitative",
-          "title": "Birth Rate (per 1,000)",
-          "scale": { "zero": false }
+          "field": "row",
+          "type": "ordinal",
+          "axis": null,
+          "sort": "ascending"
         },
         "color": {
-          "field": "income_mean",
-          "type": "quantitative",
-          "title": "Mean Income (RM)",
-          "scale": { "scheme": "blueorange", "reverse": true },
-          "legend": { "orient": "right", "gradientLength": 200 }
+          "field": "status",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Above replacement (≥ 14.0)",
+              "Below replacement (< 14.0)"
+            ],
+            "range": [
+              "#0072B2",
+              "#E69F00"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": null,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 11
+          }
         },
         "tooltip": [
-          { "field": "state", "title": "State" },
-          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" },
-          { "field": "birth_rate", "title": "Birth Rate", "format": ".1f" },
-          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," }
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate (2023)",
+            "format": ".1f"
+          },
+          {
+            "field": "status",
+            "title": "Status"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          }
         ]
       }
     },
     {
       "mark": {
         "type": "text",
-        "dy": -12,
-        "fontSize": 10,
+        "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "#8b949e"
+        "color": "white",
+        "align": "center",
+        "baseline": "middle"
       },
       "encoding": {
-        "x": { "field": "poverty", "type": "quantitative" },
-        "y": { "field": "birth_rate", "type": "quantitative" },
-        "text": { "field": "state" }
+        "x": {
+          "field": "col",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "row",
+          "type": "ordinal",
+          "sort": "ascending"
+        },
+        "text": {
+          "field": "state"
+        }
       }
     }
   ]
