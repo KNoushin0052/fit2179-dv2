@@ -1,48 +1,117 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Choropleth map of Malaysia: birth rate by state 2023",
+  "description": "Choropleth map of Malaysia with interactive year slider",
   "width": "container",
-  "height": 420,
-  "projection": { "type": "mercator" },
-  "data": {
-    "url": "https://cdn.jsdelivr.net/npm/datamaps@0.5.10/src/js/data/mys.topo.json",
-    "format": { "type": "topojson", "feature": "mys" }
-  },
-  "transform": [
+  "height": 440,
+  "params": [
     {
-      "calculate": "datum.properties.name == 'Kuala Lumpur' ? 'W.P. Kuala Lumpur' : datum.properties.name == 'Labuan' ? 'W.P. Labuan' : datum.properties.name == 'Putrajaya' ? 'W.P. Putrajaya' : datum.properties.name",
-      "as": "state_name"
-    },
-    {
-      "lookup": "state_name",
-      "from": {
-        "data": { "url": "data/birth_state.csv" },
-        "transform": [
-          { "calculate": "year(datum.date)", "as": "year" },
-          { "filter": "datum.year == 2023" }
-        ],
-        "key": "state",
-        "fields": ["rate", "abs"]
+      "name": "year_select",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2000,
+        "max": 2023,
+        "step": 1,
+        "name": "Drag to change year: "
       }
     }
   ],
-  "mark": {
-    "type": "geoshape",
-    "stroke": "#30363d",
-    "strokeWidth": 0.8
+  "projection": {
+    "type": "mercator"
   },
-  "encoding": {
-    "color": {
-      "field": "rate",
-      "type": "quantitative",
-      "title": "Birth Rate (per 1,000)",
-      "scale": { "domain": [10, 22], "scheme": "orangered" },
-      "legend": { "orient": "right", "gradientLength": 200 }
+  "layer": [
+    {
+      "data": {
+        "url": "https://cdn.jsdelivr.net/npm/datamaps@0.5.10/src/js/data/mys.topo.json",
+        "format": {
+          "type": "topojson",
+          "feature": "mys"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e0e0e0",
+        "stroke": "#30363d",
+        "strokeWidth": 0.8
+      }
     },
-    "tooltip": [
-      { "field": "state_name", "title": "State" },
-      { "field": "rate", "title": "Birth Rate (per 1,000)", "format": ".1f" },
-      { "field": "abs", "title": "Total Births", "format": "," }
-    ]
-  }
+    {
+      "data": {
+        "url": "data/birth_state.csv"
+      },
+      "transform": [
+        {
+          "calculate": "year(datum.date)",
+          "as": "year"
+        },
+        {
+          "filter": "datum.year == year_select"
+        },
+        {
+          "calculate": "datum.state == 'W.P. Kuala Lumpur' ? 'Kuala Lumpur' : datum.state == 'W.P. Labuan' ? 'Labuan' : datum.state == 'W.P. Putrajaya' ? 'Putrajaya' : datum.state",
+          "as": "topo_state_name"
+        },
+        {
+          "lookup": "topo_state_name",
+          "from": {
+            "data": {
+              "url": "https://cdn.jsdelivr.net/npm/datamaps@0.5.10/src/js/data/mys.topo.json",
+              "format": {
+                "type": "topojson",
+                "feature": "mys"
+              }
+            },
+            "key": "properties.name"
+          },
+          "as": "geo"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#30363d",
+        "strokeWidth": 0.8
+      },
+      "encoding": {
+        "shape": {
+          "field": "geo",
+          "type": "geojson"
+        },
+        "color": {
+          "field": "rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000)",
+          "scale": {
+            "domain": [
+              10,
+              30
+            ],
+            "range": [
+              "#E6F1FB",
+              "#0072B2"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "gradientLength": 200
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "rate",
+            "title": "Birth Rate (per 1,000)",
+            "format": ".1f"
+          },
+          {
+            "field": "abs",
+            "title": "Total Births",
+            "format": ","
+          }
+        ]
+      }
+    }
+  ]
 }

@@ -1,11 +1,27 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Small multiples: birth rate trend per state 2000-2023",
-  "width": 140,
-  "height": 80,
-  "data": { "url": "data/birth_state.csv" },
+  "description": "Faceted donut charts: ethnic composition of births by state, 2023",
+  "data": {
+    "url": "data/birth_sex_ethnic_state.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" }
+    {
+      "calculate": "year(datum.date)",
+      "as": "year"
+    },
+    {
+      "filter": "datum.year == 2023 && datum.sex == 'both'"
+    },
+    {
+      "filter": "datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese' || datum.ethnicity == 'indian' || datum.ethnicity == 'bumi_other'"
+    },
+    {
+      "calculate": "datum.ethnicity == 'bumi_malay' ? 'Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other'",
+      "as": "group"
+    },
+    {
+      "filter": "datum.state != 'W.P. Labuan' && datum.state != 'W.P. Putrajaya'"
+    }
   ],
   "facet": {
     "field": "state",
@@ -19,31 +35,61 @@
   },
   "columns": 4,
   "spec": {
-    "layer": [
-      {
-        "mark": {
-          "type": "area",
-          "line": { "color": "#f0883e", "strokeWidth": 1.5 },
-          "color": { "gradient": "linear", "stops": [
-            { "offset": 0, "color": "rgba(240,136,62,0.3)" },
-            { "offset": 1, "color": "rgba(240,136,62,0)" }
-          ]},
-          "x": "width", "x2": 0
+    "width": 100,
+    "height": 100,
+    "mark": {
+      "type": "arc",
+      "innerRadius": 22,
+      "outerRadius": 45,
+      "stroke": "#161b22",
+      "strokeWidth": 1
+    },
+    "encoding": {
+      "theta": {
+        "field": "abs",
+        "type": "quantitative",
+        "stack": true
+      },
+      "color": {
+        "field": "group",
+        "type": "nominal",
+        "scale": {
+          "domain": [
+            "Malay",
+            "Chinese",
+            "Indian",
+            "Other"
+          ],
+          "range": [
+            "#0072B2",
+            "#E69F00",
+            "#009E73",
+            "#CC79A7"
+          ]
         },
-        "encoding": {
-          "x": {
-            "field": "year",
-            "type": "quantitative",
-            "axis": { "format": "d", "labelFontSize": 9, "tickCount": 3, "title": null }
-          },
-          "y": {
-            "field": "rate",
-            "type": "quantitative",
-            "axis": { "labelFontSize": 9, "tickCount": 3, "title": null },
-            "scale": { "zero": false }
-          }
+        "legend": {
+          "orient": "top",
+          "columns": 4,
+          "title": null,
+          "labelFont": "JetBrains Mono",
+          "labelFontSize": 11
         }
-      }
-    ]
+      },
+      "tooltip": [
+        {
+          "field": "state",
+          "title": "State"
+        },
+        {
+          "field": "group",
+          "title": "Ethnicity"
+        },
+        {
+          "field": "abs",
+          "title": "Births",
+          "format": ","
+        }
+      ]
+    }
   }
 }
