@@ -25,7 +25,7 @@ A variety of twelve visualization idioms were selected using Munzer's framework 
 * **Chart 5 (Choropleth Map):** Uses spatial location (Mercator projection) to illustrate the geography of birth rates. The interactive time slider allows users to drag through years (2000–2023) and watch the national birth rate systematically fade.
 * **Chart 6 (Small Multiples Faceted Donut) & Chart 7 (Streamgraph):** Show composition. Stream graph layers present the relative change in ethnic births nationally (Malay vs. Chinese), while small multiple donuts show regional ethnic makeup in 2023.
 * **Chart 8 (Dumbbell Share) & Chart 9 (Heatmap):** Illustrate the collapse of Chinese births (from 21.5% to 9.8% of national births). The heatmap cells represent birth shares by year and state, using color saturation to show the decline.
-* **Chart 10 (Scatter Plot with Regression Line):** Displays correlation, using spatial coordinates to confirm the negative relationship between state income and birth rate.
+* **Chart 10 (Scatter Plot with Regression Line):** Displays correlation, using spatial coordinates to map Mean Household Income against Mean Expenditure. Bubble size represents Birth Rate, showing that higher income and expenditure correlate with smaller bubbles (lower birth rates).
 * **Chart 12 (Bump Chart) & Chart 13 (Line Chart):** Show ranking and comparison. The bump chart tracks ordinal ranks over time (KL falling to last), while the line chart illustrates the widening gap between Bumiputera Malay and Chinese births.
 
 *All charts include interactive tooltips to maximize data-ink ratio and support detail-on-demand query tasks.*

@@ -1,30 +1,35 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Scatter plot: household income vs birth rate by state 2022/2023",
+  "description": "Scatter plot: household income vs household expenditure by state 2022",
   "width": "container",
   "height": 380,
   "data": { "url": "data/state_snapshot.csv" },
+  "transform": [
+    { "filter": "datum.state != 'W.P. Putrajaya'" }
+  ],
   "layer": [
     {
-      "mark": { "type": "point", "filled": true, "opacity": 0.9 },
+      "mark": { "type": "point", "filled": true, "opacity": 0.85, "stroke": "var(--border)", "strokeWidth": 0.5 },
       "encoding": {
         "x": {
           "field": "income_mean",
           "type": "quantitative",
           "title": "Mean Household Income (RM/month)",
+          "scale": { "domain": [4000, 14000] },
           "axis": { "format": "," }
         },
         "y": {
-          "field": "birth_rate",
+          "field": "expenditure_mean",
           "type": "quantitative",
-          "title": "Birth Rate (per 1,000 population)",
-          "scale": { "zero": false }
+          "title": "Mean Household Expenditure (RM/month)",
+          "scale": { "domain": [3000, 9500] },
+          "axis": { "format": "," }
         },
         "size": {
-          "field": "poverty",
+          "field": "birth_rate",
           "type": "quantitative",
-          "title": "Poverty Rate (%)",
-          "scale": { "range": [80, 800] },
+          "title": "Birth Rate (per 1,000)",
+          "scale": { "range": [100, 900] },
           "legend": { "orient": "top-right" }
         },
         "color": {
@@ -40,32 +45,32 @@
         "tooltip": [
           { "field": "state", "title": "State" },
           { "field": "income_mean", "title": "Mean Income (RM)", "format": "," },
+          { "field": "expenditure_mean", "title": "Mean Expenditure (RM)", "format": "," },
           { "field": "birth_rate", "title": "Birth Rate", "format": ".1f" },
-          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" },
-          { "field": "gini", "title": "Gini Coefficient", "format": ".3f" }
+          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" }
         ]
       }
     },
     {
       "mark": {
         "type": "text",
-        "dy": -12,
-        "fontSize": 10,
+        "dy": -14,
+        "fontSize": 9,
         "font": "JetBrains Mono",
         "color": "var(--muted)"
       },
       "encoding": {
         "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "birth_rate", "type": "quantitative" },
+        "y": { "field": "expenditure_mean", "type": "quantitative" },
         "text": { "field": "state" }
       }
     },
     {
       "mark": { "type": "line", "color": "var(--border)", "strokeDash": [4, 3] },
-      "transform": [{ "regression": "birth_rate", "on": "income_mean" }],
+      "transform": [{ "regression": "expenditure_mean", "on": "income_mean" }],
       "encoding": {
         "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "birth_rate", "type": "quantitative" }
+        "y": { "field": "expenditure_mean", "type": "quantitative" }
       }
     }
   ]
