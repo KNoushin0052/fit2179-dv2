@@ -1,212 +1,115 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Parallel coordinates plot: state socioeconomic and demographic profiles",
+  "description": "Gapminder-style animated bubble chart: household income vs birth rate over time",
   "width": "container",
   "height": 380,
-  "data": {
-    "url": "data/state_snapshot.csv"
-  },
+  "data": { "url": "data/birth_state.csv" },
+  "params": [
+    {
+      "name": "year_select",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2000,
+        "max": 2023,
+        "step": 1,
+        "name": "Travel through time (Year): "
+      }
+    }
+  ],
   "transform": [
+    { "filter": "datum.state != 'W.P. Putrajaya'" },
+    { "calculate": "year(datum.date)", "as": "year" },
+    { "filter": "datum.year == year_select" },
     {
-      "filter": "datum.state != 'W.P. Putrajaya'"
-    },
-    {
-      "joinaggregate": [
-        {"op": "min", "field": "birth_rate", "as": "min_birth_rate"},
-        {"op": "max", "field": "birth_rate", "as": "max_birth_rate"},
-        {"op": "min", "field": "rate_change", "as": "min_rate_change"},
-        {"op": "max", "field": "rate_change", "as": "max_rate_change"},
-        {"op": "min", "field": "income_mean", "as": "min_income_mean"},
-        {"op": "max", "field": "income_mean", "as": "max_income_mean"},
-        {"op": "min", "field": "poverty", "as": "min_poverty"},
-        {"op": "max", "field": "poverty", "as": "max_poverty"}
-      ]
-    },
-    {
-      "calculate": "(datum.birth_rate - datum.min_birth_rate) / (datum.max_birth_rate - datum.min_birth_rate)",
-      "as": "norm_birth_rate"
-    },
-    {
-      "calculate": "(datum.rate_change - datum.min_rate_change) / (datum.max_rate_change - datum.min_rate_change)",
-      "as": "norm_rate_change"
-    },
-    {
-      "calculate": "(datum.income_mean - datum.min_income_mean) / (datum.max_income_mean - datum.min_income_mean)",
-      "as": "norm_income_mean"
-    },
-    {
-      "calculate": "(datum.poverty - datum.min_poverty) / (datum.max_poverty - datum.min_poverty)",
-      "as": "norm_poverty"
-    },
-    {
-      "fold": [
-        "norm_birth_rate",
-        "norm_rate_change",
-        "norm_income_mean",
-        "norm_poverty"
-      ],
-      "as": [
-        "metric",
-        "norm_value"
-      ]
-    },
-    {
-      "calculate": "datum.metric == 'norm_birth_rate' ? 'Birth Rate (2023)' : datum.metric == 'norm_rate_change' ? 'Change (2000-2023)' : datum.metric == 'norm_income_mean' ? 'Mean Income' : 'Poverty Rate'",
-      "as": "Metric"
+      "lookup": "state",
+      "from": {
+        "data": { "url": "data/state_snapshot.csv" },
+        "key": "state",
+        "fields": ["income_mean", "poverty", "income_group"]
+      }
     }
   ],
   "layer": [
     {
+      "data": { "values": [{}] },
       "mark": {
-        "type": "line",
-        "strokeWidth": 2.5,
-        "opacity": 0.8
+        "type": "text",
+        "align": "right",
+        "fontSize": 90,
+        "font": "Source Serif 4",
+        "fontWeight": "bold",
+        "color": "var(--border)",
+        "opacity": 0.35
       },
       "encoding": {
+        "x": { "datum": 13000, "type": "quantitative" },
+        "y": { "datum": 28, "type": "quantitative" },
+        "text": { "expr": "year_select" }
+      }
+    },
+    {
+      "mark": { "type": "line", "color": "var(--border)", "strokeDash": [4, 3] },
+      "transform": [{ "regression": "rate", "on": "income_mean" }],
+      "encoding": {
+        "x": { "field": "income_mean", "type": "quantitative" },
+        "y": { "field": "rate", "type": "quantitative" }
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "opacity": 0.85, "stroke": "var(--border)", "strokeWidth": 0.5 },
+      "encoding": {
         "x": {
-          "field": "Metric",
-          "type": "ordinal",
-          "sort": [
-            "Birth Rate (2023)",
-            "Change (2000-2023)",
-            "Mean Income",
-            "Poverty Rate"
-          ],
-          "title": null,
-          "axis": {
-            "labelAngle": 0
-          }
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Household Income (RM/month)",
+          "scale": { "domain": [4000, 14000] },
+          "axis": { "format": "," }
         },
         "y": {
-          "field": "norm_value",
+          "field": "rate",
           "type": "quantitative",
-          "title": "Normalized Value (0-1)",
-          "scale": {
-            "domain": [0, 1]
-          }
+          "title": "Birth Rate (per 1,000 population)",
+          "scale": { "domain": [8, 32] }
+        },
+        "size": {
+          "field": "poverty",
+          "type": "quantitative",
+          "title": "Poverty Rate (%)",
+          "scale": { "range": [100, 1000] },
+          "legend": { "orient": "top-right" }
         },
         "color": {
           "field": "income_group",
           "type": "nominal",
           "title": "Income Group",
           "scale": {
-            "domain": [
-              "Low (<5.5k)",
-              "Middle (5.5–8k)",
-              "High (>8k)"
-            ],
-            "range": [
-              "var(--red)",
-              "var(--accent)",
-              "var(--blue)"
-            ]
+            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
+            "range": ["var(--red)", "var(--accent)", "var(--blue)"]
           },
-          "legend": {
-            "orient": "top",
-            "title": "Income Group"
-          }
-        },
-        "detail": {
-          "field": "state"
+          "legend": { "orient": "top" }
         },
         "tooltip": [
-          {
-            "field": "state",
-            "title": "State"
-          },
-          {
-            "field": "birth_rate",
-            "title": "Birth Rate 2023",
-            "format": ".1f"
-          },
-          {
-            "field": "rate_change",
-            "title": "Rate Change",
-            "format": "+.1f"
-          },
-          {
-            "field": "income_mean",
-            "title": "Mean Income (RM)",
-            "format": ","
-          },
-          {
-            "field": "poverty",
-            "title": "Poverty Rate (%)",
-            "format": ".1f"
-          }
+          { "field": "state", "title": "State" },
+          { "field": "year", "title": "Year" },
+          { "field": "rate", "title": "Birth Rate", "format": ".1f" },
+          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," },
+          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" }
         ]
       }
     },
     {
       "mark": {
-        "type": "point",
-        "filled": true,
-        "size": 60,
-        "opacity": 0.9
+        "type": "text",
+        "dy": -14,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--muted)"
       },
       "encoding": {
-        "x": {
-          "field": "Metric",
-          "type": "ordinal",
-          "sort": [
-            "Birth Rate (2023)",
-            "Change (2000-2023)",
-            "Mean Income",
-            "Poverty Rate"
-          ]
-        },
-        "y": {
-          "field": "norm_value",
-          "type": "quantitative",
-          "scale": {
-            "domain": [0, 1]
-          }
-        },
-        "color": {
-          "field": "income_group",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Low (<5.5k)",
-              "Middle (5.5–8k)",
-              "High (>8k)"
-            ],
-            "range": [
-              "var(--red)",
-              "var(--accent)",
-              "var(--blue)"
-            ]
-          }
-        },
-        "detail": {
-          "field": "state"
-        },
-        "tooltip": [
-          {
-            "field": "state",
-            "title": "State"
-          },
-          {
-            "field": "birth_rate",
-            "title": "Birth Rate 2023",
-            "format": ".1f"
-          },
-          {
-            "field": "rate_change",
-            "title": "Rate Change",
-            "format": "+.1f"
-          },
-          {
-            "field": "income_mean",
-            "title": "Mean Income (RM)",
-            "format": ","
-          },
-          {
-            "field": "poverty",
-            "title": "Poverty Rate (%)",
-            "format": ".1f"
-          }
-        ]
+        "x": { "field": "income_mean", "type": "quantitative" },
+        "y": { "field": "rate", "type": "quantitative" },
+        "text": { "field": "state" }
       }
     }
   ]
