@@ -336,19 +336,66 @@
     ];
 
     let views = {};
+    let specCache = {};
 
-    function renderAllCharts(isLight) {
+    async function renderAllCharts(isLight) {
       const opts = getOpts(isLight);
-      CHART_SPECS.forEach(({ id, spec }) => {
+      
+      const themeColors = {
+        'var(--blue)': isLight ? '#1a5f9e' : '#58a6ff',
+        'var(--accent)': isLight ? '#c0392b' : '#f0883e',
+        'var(--green)': isLight ? '#1a6e3c' : '#3fb950',
+        'var(--red)': isLight ? '#a81c1c' : '#ff6b6b',
+        'var(--muted)': isLight ? '#6b6456' : '#8b949e',
+        'var(--border)': isLight ? '#d9d3c7' : '#30363d',
+        'var(--surface-2)': isLight ? '#f0ece4' : '#1c2333'
+      };
+
+      for (const { id, spec: specPath } of CHART_SPECS) {
         const el = document.getElementById(id);
-        if (!el) return;
-        vegaEmbed('#' + id, spec, opts)
-          .then(result => { views[id] = result.view; })
-          .catch(err => {
-            el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
-          ⚠ ${spec} — ${err.message}</p>`;
-          });
-      });
+        if (!el) continue;
+
+        try {
+          // Fetch and cache the spec to avoid repeated network requests on toggle
+          if (!specCache[specPath]) {
+            const res = await fetch(specPath);
+            specCache[specPath] = await res.json();
+          }
+
+          // Deep copy the spec
+          const specObj = JSON.parse(JSON.stringify(specCache[specPath]));
+
+          // Recursively resolve any themed colors
+          function resolveColors(obj) {
+            for (const key in obj) {
+              if (typeof obj[key] === 'string' && themeColors[obj[key]]) {
+                obj[key] = themeColors[obj[key]];
+              } else if (Array.isArray(obj[key])) {
+                obj[key].forEach((item, idx) => {
+                  if (typeof item === 'string' && themeColors[item]) {
+                    obj[key][idx] = themeColors[item];
+                  } else if (typeof item === 'object' && item !== null) {
+                    resolveColors(item);
+                  }
+                });
+              } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                resolveColors(obj[key]);
+              }
+            }
+          }
+          resolveColors(specObj);
+
+          vegaEmbed('#' + id, specObj, opts)
+            .then(result => { views[id] = result.view; })
+            .catch(err => {
+              el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
+                ⚠ ${specPath} — ${err.message}</p>`;
+            });
+        } catch (err) {
+          el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
+            ⚠ Fetch Error — ${err.message}</p>`;
+        }
+      }
     }
 
     // Initial render
