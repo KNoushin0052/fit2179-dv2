@@ -54,8 +54,8 @@
               "Increased"
             ],
             "range": [
-              "#D55E00",
-              "#009E73"
+              "var(--red)",
+              "var(--green)"
             ]
           },
           "legend": {
@@ -85,7 +85,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "#56B4E9"
+          "value": "var(--blue)"
         },
         "tooltip": [
           {
@@ -120,7 +120,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "#E69F00"
+          "value": "var(--accent)"
         },
         "tooltip": [
           {
@@ -162,7 +162,7 @@
         "dx": -10,
         "fontSize": 10,
         "font": "JetBrains Mono",
-        "color": "#56B4E9"
+        "color": "var(--blue)"
       },
       "encoding": {
         "y": {
@@ -194,7 +194,7 @@
         "dx": 10,
         "fontSize": 10,
         "font": "JetBrains Mono",
-        "color": "#E69F00"
+        "color": "var(--accent)"
       },
       "encoding": {
         "y": {

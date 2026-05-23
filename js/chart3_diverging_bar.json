@@ -23,7 +23,7 @@
     {
       "mark": {
         "type": "rule",
-        "color": "#30363d",
+        "color": "var(--border)",
         "strokeWidth": 0.8
       },
       "encoding": {
@@ -58,8 +58,7 @@
           "type": "quantitative",
           "title": "Change in birth rate (per 1,000)",
           "axis": {
-            "format": "+.1f",
-            "gridColor": "#30363d"
+            "format": "+.1f"
           }
         },
         "x2": {
@@ -74,8 +73,8 @@
               "Increased"
             ],
             "range": [
-              "#D55E00",
-              "#009E73"
+              "var(--red)",
+              "var(--green)"
             ]
           },
           "legend": {
@@ -134,7 +133,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "#009E73"
+          "value": "var(--green)"
         }
       }
     },
@@ -164,7 +163,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "#D55E00"
+          "value": "var(--red)"
         }
       }
     },
@@ -176,7 +175,7 @@
         "dy": -10,
         "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "#8b949e"
+        "color": "var(--muted)"
       },
       "transform": [
         {

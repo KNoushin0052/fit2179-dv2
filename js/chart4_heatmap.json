@@ -1,122 +1,213 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Dot strip plot: birth rate by state across selected years",
+  "description": "Parallel coordinates plot: state socioeconomic and demographic profiles",
   "width": "container",
-  "height": 340,
+  "height": 380,
   "data": {
-    "url": "data/birth_state.csv"
+    "url": "data/state_snapshot.csv"
   },
   "transform": [
     {
-      "calculate": "year(datum.date)",
-      "as": "year"
+      "filter": "datum.state != 'W.P. Putrajaya'"
     },
     {
-      "filter": "datum.year % 3 == 0"
+      "joinaggregate": [
+        {"op": "min", "field": "birth_rate", "as": "min_birth_rate"},
+        {"op": "max", "field": "birth_rate", "as": "max_birth_rate"},
+        {"op": "min", "field": "rate_change", "as": "min_rate_change"},
+        {"op": "max", "field": "rate_change", "as": "max_rate_change"},
+        {"op": "min", "field": "income_mean", "as": "min_income_mean"},
+        {"op": "max", "field": "income_mean", "as": "max_income_mean"},
+        {"op": "min", "field": "poverty", "as": "min_poverty"},
+        {"op": "max", "field": "poverty", "as": "max_poverty"}
+      ]
     },
     {
-      "lookup": "state",
-      "from": {
-        "data": {
-          "url": "data/state_snapshot.csv"
-        },
-        "key": "state",
-        "fields": [
-          "income_group"
-        ]
-      }
+      "calculate": "(datum.birth_rate - datum.min_birth_rate) / (datum.max_birth_rate - datum.min_birth_rate)",
+      "as": "norm_birth_rate"
     },
     {
-      "filter": "datum.income_group != null"
+      "calculate": "(datum.rate_change - datum.min_rate_change) / (datum.max_rate_change - datum.min_rate_change)",
+      "as": "norm_rate_change"
+    },
+    {
+      "calculate": "(datum.income_mean - datum.min_income_mean) / (datum.max_income_mean - datum.min_income_mean)",
+      "as": "norm_income_mean"
+    },
+    {
+      "calculate": "(datum.poverty - datum.min_poverty) / (datum.max_poverty - datum.min_poverty)",
+      "as": "norm_poverty"
+    },
+    {
+      "fold": [
+        "norm_birth_rate",
+        "norm_rate_change",
+        "norm_income_mean",
+        "norm_poverty"
+      ],
+      "as": [
+        "metric",
+        "norm_value"
+      ]
+    },
+    {
+      "calculate": "datum.metric == 'norm_birth_rate' ? 'Birth Rate (2023)' : datum.metric == 'norm_rate_change' ? 'Change (2000-2023)' : datum.metric == 'norm_income_mean' ? 'Mean Income' : 'Poverty Rate'",
+      "as": "Metric"
     }
   ],
-  "mark": {
-    "type": "point",
-    "filled": true,
-    "size": 90,
-    "opacity": 0.85
-  },
-  "encoding": {
-    "x": {
-      "field": "year",
-      "type": "ordinal",
-      "title": null,
-      "axis": {
-        "labelFont": "JetBrains Mono",
-        "labelFontSize": 11,
-        "labelColor": "#8b949e",
-        "grid": false
-      }
-    },
-    "y": {
-      "field": "rate",
-      "type": "quantitative",
-      "title": "Birth Rate (per 1,000)",
-      "scale": {
-        "zero": false
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5,
+        "opacity": 0.8
       },
-      "axis": {
-        "gridColor": "#30363d"
-      }
-    },
-    "color": {
-      "field": "income_group",
-      "type": "nominal",
-      "title": "Income Group",
-      "scale": {
-        "domain": [
-          "Low (<5.5k)",
-          "Middle (5.5-8k)",
-          "High (>8k)"
-        ],
-        "range": [
-          "#E69F00",
-          "#56B4E9",
-          "#0072B2"
+      "encoding": {
+        "x": {
+          "field": "Metric",
+          "type": "ordinal",
+          "sort": [
+            "Birth Rate (2023)",
+            "Change (2000-2023)",
+            "Mean Income",
+            "Poverty Rate"
+          ],
+          "title": null,
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "norm_value",
+          "type": "quantitative",
+          "title": "Normalized Value (0-1)",
+          "scale": {
+            "domain": [0, 1]
+          }
+        },
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "title": "Income Group",
+          "scale": {
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5–8k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "var(--red)",
+              "var(--accent)",
+              "var(--blue)"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": "Income Group"
+          }
+        },
+        "detail": {
+          "field": "state"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate 2023",
+            "format": ".1f"
+          },
+          {
+            "field": "rate_change",
+            "title": "Rate Change",
+            "format": "+.1f"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          }
         ]
-      },
-      "legend": {
-        "orient": "top",
-        "title": "Income Group",
-        "labelFont": "JetBrains Mono",
-        "labelFontSize": 11
       }
     },
-    "shape": {
-      "field": "income_group",
-      "type": "nominal",
-      "scale": {
-        "domain": [
-          "Low (<5.5k)",
-          "Middle (5.5-8k)",
-          "High (>8k)"
-        ],
-        "range": [
-          "triangle-up",
-          "circle",
-          "square"
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 60,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "Metric",
+          "type": "ordinal",
+          "sort": [
+            "Birth Rate (2023)",
+            "Change (2000-2023)",
+            "Mean Income",
+            "Poverty Rate"
+          ]
+        },
+        "y": {
+          "field": "norm_value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 1]
+          }
+        },
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5–8k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "var(--red)",
+              "var(--accent)",
+              "var(--blue)"
+            ]
+          }
+        },
+        "detail": {
+          "field": "state"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate 2023",
+            "format": ".1f"
+          },
+          {
+            "field": "rate_change",
+            "title": "Rate Change",
+            "format": "+.1f"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          }
         ]
-      },
-      "legend": null
-    },
-    "tooltip": [
-      {
-        "field": "state",
-        "title": "State"
-      },
-      {
-        "field": "year",
-        "title": "Year"
-      },
-      {
-        "field": "rate",
-        "title": "Birth Rate (per 1,000)",
-        "format": ".1f"
-      },
-      {
-        "field": "income_group",
-        "title": "Income Group"
       }
-    ]
-  }
+    }
+  ]
 }

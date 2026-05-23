@@ -55,8 +55,7 @@
       "type": "quantitative",
       "axis": {
         "format": "d",
-        "title": null,
-        "gridColor": "#30363d"
+        "title": null
       }
     },
     "y": {
@@ -76,10 +75,10 @@
           "Indian"
         ],
         "range": [
-          "#0072B2",
-          "#56B4E9",
-          "#E69F00",
-          "#009E73"
+          "var(--blue)",
+          "var(--muted)",
+          "var(--accent)",
+          "var(--green)"
         ]
       },
       "legend": {

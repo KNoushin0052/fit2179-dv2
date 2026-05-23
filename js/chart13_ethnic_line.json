@@ -35,7 +35,7 @@
           "type": "nominal",
           "scale": {
             "domain": ["Bumiputera Malay", "Chinese"],
-            "range": ["#58a6ff", "#f0883e"]
+            "range": ["var(--blue)", "var(--accent)"]
           },
           "legend": { "orient": "top-left", "title": null }
         }
@@ -60,7 +60,7 @@
           "type": "nominal",
           "scale": {
             "domain": ["Bumiputera Malay", "Chinese"],
-            "range": ["#58a6ff", "#f0883e"]
+            "range": ["var(--blue)", "var(--accent)"]
           }
         }
       }

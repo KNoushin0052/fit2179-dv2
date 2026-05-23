@@ -378,6 +378,9 @@ footer {
 
 /* ── Vega embed ── */
 .vega-embed {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
     width: 100% !important;
 }
 

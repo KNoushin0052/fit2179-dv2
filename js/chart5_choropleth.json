@@ -48,7 +48,7 @@
           "filter": "datum.year == year_select"
         },
         {
-          "calculate": "datum.state == 'W.P. Kuala Lumpur' ? 'Kuala Lumpur' : datum.state == 'W.P. Labuan' ? 'Labuan' : datum.state == 'W.P. Putrajaya' ? 'Putrajaya' : datum.state",
+          "calculate": "datum.state == 'W.P. Kuala Lumpur' ? 'Kuala Lumpur' : datum.state == 'W.P. Labuan' ? 'Labuan' : datum.state == 'W.P. Putrajaya' ? 'Putrajaya' : datum.state == 'Terengganu' ? 'Trengganu' : datum.state",
           "as": "topo_state_name"
         },
         {
@@ -86,8 +86,8 @@
               30
             ],
             "range": [
-              "#E6F1FB",
-              "#0072B2"
+              "var(--surface-2)",
+              "var(--blue)"
             ]
           },
           "legend": {

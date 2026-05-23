@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Radar/Spider chart: multi-metric state comparison — KL, Selangor, Kelantan, Terengganu, Sabah",
-  "width": 380,
-  "height": 380,
+  "width": 340,
+  "height": 340,
   "data": {
     "url": "data/state_snapshot.csv"
   },
@@ -11,12 +11,17 @@
       "filter": "datum.state == 'W.P. Kuala Lumpur' || datum.state == 'Selangor' || datum.state == 'Kelantan' || datum.state == 'Terengganu' || datum.state == 'Sabah'"
     },
     {
+      "calculate": "datum.birth_rate",
+      "as": "birth_rate_dup"
+    },
+    {
       "fold": [
         "birth_rate",
-        "income_mean",
+        "rate_2000",
         "poverty",
+        "income_mean",
         "gini",
-        "rate_2000"
+        "birth_rate_dup"
       ],
       "as": [
         "metric",
@@ -45,7 +50,7 @@
       "as": "norm_value"
     },
     {
-      "calculate": "datum.metric == 'birth_rate' ? 0 : datum.metric == 'rate_2000' ? 1.2566 : datum.metric == 'poverty' ? 2.5133 : datum.metric == 'income_mean' ? 3.7699 : 5.0265",
+      "calculate": "datum.metric == 'birth_rate' ? 0 : datum.metric == 'rate_2000' ? 1.2566 : datum.metric == 'poverty' ? 2.5133 : datum.metric == 'income_mean' ? 3.7699 : datum.metric == 'gini' ? 5.0265 : 6.2832",
       "as": "angle"
     },
     {
@@ -55,54 +60,37 @@
     {
       "calculate": "datum.norm_value * sin(datum.angle)",
       "as": "y"
+    },
+    {
+      "calculate": "datum.metric == 'birth_rate' ? 'Birth Rate 2023' : datum.metric == 'rate_2000' ? 'Birth Rate 2000' : datum.metric == 'poverty' ? 'Poverty Rate (%)' : datum.metric == 'income_mean' ? 'Mean Income (RM)' : datum.metric == 'gini' ? 'Gini Coefficient' : 'Birth Rate 2023 (dup)'",
+      "as": "MetricName"
     }
   ],
   "layer": [
     {
       "data": {
         "values": [
-          {
-            "r": 0.25
-          },
-          {
-            "r": 0.5
-          },
-          {
-            "r": 0.75
-          },
-          {
-            "r": 1
-          }
+          {"r": 0.25},
+          {"r": 0.5},
+          {"r": 0.75},
+          {"r": 1.0}
         ]
       },
-      "transform": [
-        {
-          "calculate": "[0,1.2566,2.5133,3.7699,5.0265,0]",
-          "as": "angles_arr"
-        }
-      ],
       "mark": {
         "type": "arc",
         "filled": false,
-        "stroke": "#30363d",
+        "stroke": "var(--border)",
         "strokeWidth": 0.5,
         "opacity": 0.5
       },
       "encoding": {
-        "theta": {
-          "datum": 0
-        },
-        "theta2": {
-          "datum": 6.2832
-        },
+        "theta": {"datum": 0},
+        "theta2": {"datum": 6.2832},
         "radius": {
           "field": "r",
           "type": "quantitative",
           "scale": {
-            "domain": [
-              0,
-              1
-            ]
+            "domain": [0, 1]
           }
         }
       }
@@ -110,66 +98,74 @@
     {
       "data": {
         "values": [
-          {
-            "metric": "Birth Rate 2023",
-            "angle": 0
-          },
-          {
-            "metric": "Birth Rate 2000",
-            "angle": 1.2566
-          },
-          {
-            "metric": "Poverty Rate",
-            "angle": 2.5133
-          },
-          {
-            "metric": "Mean Income",
-            "angle": 3.7699
-          },
-          {
-            "metric": "Gini Coefficient",
-            "angle": 5.0265
-          }
+          {"angle": 0},
+          {"angle": 1.2566},
+          {"angle": 2.5133},
+          {"angle": 3.7699},
+          {"angle": 5.0265}
         ]
       },
       "transform": [
-        {
-          "calculate": "1.15 * cos(datum.angle)",
-          "as": "lx"
+        {"calculate": "cos(datum.angle)", "as": "x2"},
+        {"calculate": "sin(datum.angle)", "as": "y2"}
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "var(--border)",
+        "strokeWidth": 0.5,
+        "opacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {"domain": [-1.4, 1.4]}
         },
-        {
-          "calculate": "1.15 * sin(datum.angle)",
-          "as": "ly"
+        "y": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {"domain": [-1.4, 1.4]}
+        },
+        "x2": {
+          "field": "x2",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "y2",
+          "type": "quantitative"
         }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"metric": "Birth Rate 2023", "angle": 0},
+          {"metric": "Birth Rate 2000", "angle": 1.2566},
+          {"metric": "Poverty Rate", "angle": 2.5133},
+          {"metric": "Mean Income", "angle": 3.7699},
+          {"metric": "Gini Coefficient", "angle": 5.0265}
+        ]
+      },
+      "transform": [
+        {"calculate": "1.15 * cos(datum.angle)", "as": "lx"},
+        {"calculate": "1.15 * sin(datum.angle)", "as": "ly"}
       ],
       "mark": {
         "type": "text",
         "fontSize": 10,
         "font": "JetBrains Mono",
-        "color": "#8b949e"
+        "color": "var(--muted)"
       },
       "encoding": {
         "x": {
           "field": "lx",
           "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              -1.4,
-              1.4
-            ]
-          }
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "y": {
           "field": "ly",
           "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              -1.4,
-              1.4
-            ]
-          }
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "text": {
           "field": "metric"
@@ -187,24 +183,12 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              -1.4,
-              1.4
-            ]
-          }
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "axis": null,
-          "scale": {
-            "domain": [
-              -1.4,
-              1.4
-            ]
-          }
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "color": {
           "field": "state",
@@ -218,19 +202,17 @@
               "Sabah"
             ],
             "range": [
-              "#0072B2",
-              "#56B4E9",
-              "#E69F00",
-              "#D55E00",
-              "#CC79A7"
+              "var(--blue)",
+              "var(--accent)",
+              "var(--green)",
+              "var(--red)",
+              "var(--muted)"
             ]
           },
           "legend": {
             "orient": "bottom",
             "columns": 3,
-            "title": null,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 11
+            "title": null
           }
         },
         "detail": {
@@ -243,6 +225,9 @@
       }
     },
     {
+      "transform": [
+        {"filter": "datum.metric != 'birth_rate_dup'"}
+      ],
       "mark": {
         "type": "point",
         "filled": true,
@@ -253,17 +238,16 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "axis": null
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "axis": null
+          "scale": {"domain": [-1.4, 1.4]}
         },
         "color": {
           "field": "state",
           "type": "nominal",
-          "legend": null,
           "scale": {
             "domain": [
               "W.P. Kuala Lumpur",
@@ -273,28 +257,19 @@
               "Sabah"
             ],
             "range": [
-              "#0072B2",
-              "#56B4E9",
-              "#E69F00",
-              "#D55E00",
-              "#CC79A7"
+              "var(--blue)",
+              "var(--accent)",
+              "var(--green)",
+              "var(--red)",
+              "var(--muted)"
             ]
-          }
+          },
+          "legend": null
         },
         "tooltip": [
-          {
-            "field": "state",
-            "title": "State"
-          },
-          {
-            "field": "metric",
-            "title": "Metric"
-          },
-          {
-            "field": "raw_value",
-            "title": "Value",
-            "format": ".2f"
-          }
+          {"field": "state", "title": "State"},
+          {"field": "MetricName", "title": "Metric"},
+          {"field": "raw_value", "title": "Value", "format": ","}
         ]
       }
     }

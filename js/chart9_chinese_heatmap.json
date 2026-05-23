@@ -40,7 +40,16 @@
       "field": "share_pct",
       "type": "quantitative",
       "title": "Chinese Share (%)",
-      "scale": { "scheme": "orangered", "domain": [0, 55] },
+      "scale": {
+        "range": [
+          "var(--surface-2)",
+          "var(--accent)"
+        ],
+        "domain": [
+          0,
+          55
+        ]
+      },
       "legend": { "orient": "right", "gradientLength": 200 }
     },
     "tooltip": [

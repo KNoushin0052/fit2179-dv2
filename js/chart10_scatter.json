@@ -33,7 +33,7 @@
           "title": "Income Group",
           "scale": {
             "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
-            "range": ["#ff6b6b", "#f0883e", "#58a6ff"]
+            "range": ["var(--red)", "var(--accent)", "var(--blue)"]
           },
           "legend": { "orient": "top" }
         },
@@ -52,7 +52,7 @@
         "dy": -12,
         "fontSize": 10,
         "font": "JetBrains Mono",
-        "color": "#8b949e"
+        "color": "var(--muted)"
       },
       "encoding": {
         "x": { "field": "income_mean", "type": "quantitative" },
@@ -61,7 +61,7 @@
       }
     },
     {
-      "mark": { "type": "line", "color": "#30363d", "strokeDash": [4, 3] },
+      "mark": { "type": "line", "color": "var(--border)", "strokeDash": [4, 3] },
       "transform": [{ "regression": "birth_rate", "on": "income_mean" }],
       "encoding": {
         "x": { "field": "income_mean", "type": "quantitative" },
