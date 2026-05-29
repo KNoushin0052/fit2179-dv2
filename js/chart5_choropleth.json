@@ -79,7 +79,7 @@
         "color": {
           "field": "rate",
           "type": "quantitative",
-          "title": "Birth Rate\n(per 1,000)",
+          "title": "Birth Rate (‰)",
           "scale": {
             "domain": [
               10,

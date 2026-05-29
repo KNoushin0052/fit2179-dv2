@@ -145,14 +145,7 @@
               650
             ]
           },
-          "legend": {
-            "orient": "bottom-left",
-            "direction": "horizontal",
-            "titleFont": "JetBrains Mono",
-            "titleFontSize": 10,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 10
-          }
+          "legend": null
         },
         "color": {
           "field": "income_group",
@@ -171,7 +164,7 @@
             ]
           },
           "legend": {
-            "orient": "top-left",
+            "orient": "top-right",
             "titleFont": "JetBrains Mono",
             "titleFontSize": 10,
             "labelFont": "JetBrains Mono",
