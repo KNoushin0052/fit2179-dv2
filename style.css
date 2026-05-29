@@ -267,6 +267,11 @@ body.light nav {
     transition: background var(--transition), border-color var(--transition);
 }
 
+.chart-wrap > div {
+    margin: 0 auto;
+    width: fit-content;
+}
+
 .chart-label {
     font-family: var(--font-mono);
     font-size: 0.68rem;

@@ -33,17 +33,17 @@
       "labelPadding": 6
     }
   },
-  "columns": 4,
-  "spacing": 10,
+  "columns": 7,
+  "spacing": 15,
   "spec": {
-    "width": 90,
-    "height": 90,
+    "width": 110,
+    "height": 110,
     "layer": [
       {
         "mark": {
           "type": "arc",
-          "innerRadius": 24,
-          "outerRadius": 42,
+          "innerRadius": 30,
+          "outerRadius": 50,
           "stroke": null
         },
         "encoding": {

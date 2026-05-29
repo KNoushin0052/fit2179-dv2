@@ -91,14 +91,13 @@
             ]
           },
           "legend": {
-            "orient": "bottom",
-            "direction": "horizontal",
-            "gradientLength": 320,
+            "orient": "left",
+            "direction": "vertical",
+            "gradientLength": 160,
             "titleFont": "JetBrains Mono",
             "titleFontSize": 10,
             "labelFont": "JetBrains Mono",
-            "labelFontSize": 10,
-            "offset": 15
+            "labelFontSize": 10
           }
         },
         "tooltip": [

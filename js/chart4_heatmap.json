@@ -43,6 +43,18 @@
           "income_group"
         ]
       }
+    },
+    {
+      "calculate": "datum.state == 'Selangor' || datum.state == 'W.P. Kuala Lumpur' ? 'right' : datum.state == 'Kelantan' || datum.state == 'Terengganu' ? 'left' : 'center'",
+      "as": "label_align"
+    },
+    {
+      "calculate": "datum.state == 'Selangor' || datum.state == 'W.P. Kuala Lumpur' ? -15 : datum.state == 'Kelantan' || datum.state == 'Terengganu' ? 15 : 0",
+      "as": "label_dx"
+    },
+    {
+      "calculate": "datum.state == 'Selangor' || datum.state == 'W.P. Kuala Lumpur' ? 0 : datum.state == 'Kelantan' || datum.state == 'Terengganu' ? 0 : - (sqrt(datum.poverty) * 2.2 + 8)",
+      "as": "label_dy"
     }
   ],
   "layer": [
@@ -207,10 +219,10 @@
     {
       "mark": {
         "type": "text",
-        "dy": -13,
         "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "var(--muted)"
+        "color": "var(--muted)",
+        "fontWeight": "bold"
       },
       "encoding": {
         "x": {
@@ -223,6 +235,18 @@
         },
         "text": {
           "field": "state"
+        },
+        "dx": {
+          "field": "label_dx",
+          "type": "quantitative"
+        },
+        "dy": {
+          "field": "label_dy",
+          "type": "quantitative"
+        },
+        "align": {
+          "field": "label_align",
+          "type": "nominal"
         }
       },
       "transform": [
