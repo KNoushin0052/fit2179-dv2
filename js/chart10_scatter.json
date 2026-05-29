@@ -5,78 +5,259 @@
   "height": 400,
   "data": {
     "url": "data/state_snapshot.csv",
-    "format": {"type": "csv", "parse": {"income_mean": "number", "birth_rate": "number", "poverty": "number"}}
+    "format": {
+      "type": "csv",
+      "parse": {
+        "income_mean": "number",
+        "birth_rate": "number",
+        "poverty": "number"
+      }
+    }
   },
   "transform": [
-    {"filter": "datum.state != 'W.P. Putrajaya'"}
+    {
+      "filter": "datum.state != 'W.P. Putrajaya'"
+    }
   ],
   "encoding": {
     "x": {
       "field": "income_mean",
       "type": "quantitative",
       "title": "Mean Household Income (RM/month)",
-      "scale": {"domain": [4000, 14000]},
-      "axis": {"format": ","}
+      "scale": {
+        "domain": [
+          4000,
+          14000
+        ]
+      },
+      "axis": {
+        "format": ","
+      }
     },
     "y": {
       "field": "birth_rate",
       "type": "quantitative",
       "title": "Birth Rate (per 1,000 population)",
-      "scale": {"domain": [8, 24]}
+      "scale": {
+        "domain": [
+          8,
+          24
+        ]
+      }
     }
   },
   "layer": [
     {
-      "mark": {"type": "line", "color": "var(--muted)", "strokeDash": [5, 4], "strokeWidth": 1.5, "opacity": 0.8},
-      "transform": [{"regression": "birth_rate", "on": "income_mean"}]
+      "mark": {
+        "type": "line",
+        "color": "var(--muted)",
+        "strokeDash": [
+          5,
+          4
+        ],
+        "strokeWidth": 1.5,
+        "opacity": 0.8
+      },
+      "transform": [
+        {
+          "regression": "birth_rate",
+          "on": "income_mean"
+        }
+      ]
     },
     {
-      "mark": {"type": "point", "filled": true, "size": 170, "opacity": 0.9, "stroke": "var(--surface)", "strokeWidth": 1},
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 170,
+        "opacity": 0.9,
+        "stroke": "var(--surface)",
+        "strokeWidth": 1
+      },
       "encoding": {
         "color": {
           "field": "income_group",
           "type": "nominal",
           "title": "Income group",
           "scale": {
-            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
-            "range": ["var(--purple)", "var(--accent)", "var(--blue)"]
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5–8k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "var(--purple)",
+              "var(--accent)",
+              "var(--blue)"
+            ]
           },
-          "legend": {"orient": "top", "titleFont": "JetBrains Mono", "labelFont": "JetBrains Mono", "labelFontSize": 10}
+          "legend": {
+            "orient": "top",
+            "titleFont": "JetBrains Mono",
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
+          }
         },
         "tooltip": [
-          {"field": "state", "title": "State"},
-          {"field": "income_mean", "title": "Mean Income (RM)", "format": ","},
-          {"field": "birth_rate", "title": "Birth Rate", "format": ".1f"},
-          {"field": "poverty", "title": "Poverty Rate (%)", "format": ".1f"}
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate",
+            "format": ".1f"
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          }
         ]
       }
     },
     {
-      "mark": {"type": "text", "fontSize": 9, "font": "JetBrains Mono", "color": "var(--muted)", "dy": -13},
-      "transform": [{"filter": "datum.state != 'Terengganu'"}],
-      "encoding": {"text": {"field": "state"}}
-    },
-    {
-      "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 10, "font": "JetBrains Mono", "fontWeight": "bold", "color": "var(--purple)"},
-      "transform": [{"filter": "datum.state == 'Terengganu'"}],
-      "encoding": {"text": {"value": "Terengganu — the exception"}}
-    },
-    {
-      "data": {"values": [{}]},
-      "mark": {"type": "text", "align": "left", "fontSize": 10, "font": "JetBrains Mono", "fontStyle": "italic", "color": "var(--muted)"},
+      "transform": [
+        {
+          "filter": "datum.state != 'Terengganu'"
+        },
+        {
+          "calculate": "indexof(['Pahang','Negeri Sembilan','Johor'], datum.state) >= 0 ? 'left' : indexof(['Perlis','Melaka','Selangor','W.P. Kuala Lumpur'], datum.state) >= 0 ? 'right' : 'center'",
+          "as": "lab_align"
+        },
+        {
+          "calculate": "indexof(['Pahang','Negeri Sembilan','Johor'], datum.state) >= 0 ? 9 : indexof(['Perlis','Melaka','Selangor'], datum.state) >= 0 ? -9 : datum.state == 'W.P. Kuala Lumpur' ? -2 : 0",
+          "as": "lab_dx"
+        },
+        {
+          "calculate": "indexof(['Perak','Sabah','Pulau Pinang','W.P. Kuala Lumpur'], datum.state) >= 0 ? 15 : indexof(['Pahang','Negeri Sembilan','Johor','Perlis','Melaka','Selangor'], datum.state) >= 0 ? 3 : -12",
+          "as": "lab_dy"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--muted)",
+        "align": {
+          "expr": "datum.lab_align"
+        },
+        "dx": {
+          "expr": "datum.lab_dx"
+        },
+        "dy": {
+          "expr": "datum.lab_dy"
+        }
+      },
       "encoding": {
-        "x": {"datum": 9200, "type": "quantitative", "scale": {"domain": [4000, 14000]}},
-        "y": {"datum": 16.6, "type": "quantitative", "scale": {"domain": [8, 24]}},
-        "text": {"value": "Higher income → fewer babies"}
+        "text": {
+          "field": "state"
+        }
       }
     },
     {
-      "data": {"values": [{}]},
-      "mark": {"type": "text", "align": "left", "fontSize": 9, "font": "JetBrains Mono", "color": "var(--muted)"},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold",
+        "color": "var(--purple)"
+      },
+      "transform": [
+        {
+          "filter": "datum.state == 'Terengganu'"
+        }
+      ],
       "encoding": {
-        "x": {"datum": 9200, "type": "quantitative", "scale": {"domain": [4000, 14000]}},
-        "y": {"datum": 15.4, "type": "quantitative", "scale": {"domain": [8, 24]}},
-        "text": {"value": "trend ≈ −0.5 per +RM1,000 (a real but loose link)"}
+        "text": {
+          "value": "Terengganu — the exception"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 9200,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          }
+        },
+        "y": {
+          "datum": 16.6,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              8,
+              24
+            ]
+          }
+        },
+        "text": {
+          "value": "Higher income → fewer babies"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 9200,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          }
+        },
+        "y": {
+          "datum": 15.4,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              8,
+              24
+            ]
+          }
+        },
+        "text": {
+          "value": "trend ≈ −0.5 per +RM1,000 (a real but loose link)"
+        }
       }
     }
   ]
