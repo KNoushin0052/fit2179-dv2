@@ -101,17 +101,7 @@
           "regression": "rate",
           "on": "income_mean"
         }
-      ],
-      "encoding": {
-        "x": {
-          "field": "income_mean",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "rate",
-          "type": "quantitative"
-        }
-      }
+      ]
     },
     {
       "mark": {
@@ -122,31 +112,6 @@
         "strokeWidth": 0.5
       },
       "encoding": {
-        "x": {
-          "field": "income_mean",
-          "type": "quantitative",
-          "title": "Mean Household Income (RM/month)",
-          "scale": {
-            "domain": [
-              4000,
-              14000
-            ]
-          },
-          "axis": {
-            "format": ","
-          }
-        },
-        "y": {
-          "field": "rate",
-          "type": "quantitative",
-          "title": "Birth Rate (per 1,000 population)",
-          "scale": {
-            "domain": [
-              8,
-              32
-            ]
-          }
-        },
         "size": {
           "field": "poverty",
           "type": "quantitative",
@@ -225,14 +190,6 @@
         "fontWeight": "bold"
       },
       "encoding": {
-        "x": {
-          "field": "income_mean",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "rate",
-          "type": "quantitative"
-        },
         "text": {
           "field": "state"
         },
@@ -271,15 +228,15 @@
       },
       "encoding": {
         "x": {
-          "datum": 13500,
+          "datum": 13800,
           "type": "quantitative"
         },
         "y": {
-          "datum": 10.5,
+          "datum": 9.0,
           "type": "quantitative"
         },
         "text": {
-          "value": "Richer states \u2192 fewer babies"
+          "value": "Richer states → fewer babies"
         }
       }
     },
@@ -307,7 +264,7 @@
           "type": "quantitative"
         },
         "text": {
-          "value": "\u2190 Poorer states: higher birth rates"
+          "value": "← Poorer states: higher birth rates"
         }
       }
     },
@@ -316,7 +273,10 @@
         "type": "rule",
         "color": "var(--muted)",
         "strokeWidth": 1.2,
-        "strokeDash": [4, 4],
+        "strokeDash": [
+          4,
+          4
+        ],
         "opacity": 0.6
       },
       "encoding": {
@@ -349,5 +309,32 @@
         }
       }
     }
-  ]
+  ],
+  "encoding": {
+    "x": {
+      "field": "income_mean",
+      "type": "quantitative",
+      "title": "Mean Household Income (RM/month)",
+      "scale": {
+        "domain": [
+          4000,
+          14000
+        ]
+      },
+      "axis": {
+        "format": ","
+      }
+    },
+    "y": {
+      "field": "rate",
+      "type": "quantitative",
+      "title": "Birth Rate (per 1,000 population)",
+      "scale": {
+        "domain": [
+          8,
+          32
+        ]
+      }
+    }
+  }
 }

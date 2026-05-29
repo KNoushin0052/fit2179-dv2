@@ -58,7 +58,8 @@
           },
           "title": null,
           "axis": {
-            "labelFontSize": 11
+            "labelFontSize": 11,
+            "minExtent": 115
           }
         },
         "color": {

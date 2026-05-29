@@ -50,7 +50,8 @@
           "title": null,
           "axis": {
             "labelFontSize": 11,
-            "labelFont": "JetBrains Mono"
+            "labelFont": "JetBrains Mono",
+            "minExtent": 115
           }
         },
         "x": {

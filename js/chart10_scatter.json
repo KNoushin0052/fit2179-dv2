@@ -21,34 +21,6 @@
         "strokeWidth": 0.5
       },
       "encoding": {
-        "x": {
-          "field": "income_mean",
-          "type": "quantitative",
-          "title": "Mean Household Income (RM/month)",
-          "scale": {
-            "domain": [
-              4000,
-              14000
-            ]
-          },
-          "axis": {
-            "format": ","
-          }
-        },
-        "y": {
-          "field": "expenditure_mean",
-          "type": "quantitative",
-          "title": "Mean Household Expenditure (RM/month)",
-          "scale": {
-            "domain": [
-              3000,
-              9500
-            ]
-          },
-          "axis": {
-            "format": ","
-          }
-        },
         "size": {
           "field": "birth_rate",
           "type": "quantitative",
@@ -122,21 +94,126 @@
     {
       "data": {
         "values": [
-          {"state": "Kelantan", "x": 4885, "y": 3505, "dx": 0, "dy": -18, "align": "center"},
-          {"state": "Kedah", "x": 5550, "y": 3765, "dx": -14, "dy": 2, "align": "right"},
-          {"state": "Perlis", "x": 5664, "y": 3834, "dx": 12, "dy": -10, "align": "left"},
-          {"state": "Perak", "x": 5779, "y": 3903, "dx": -14, "dy": 12, "align": "right"},
-          {"state": "Pahang", "x": 5777, "y": 4107, "dx": 0, "dy": -18, "align": "center"},
-          {"state": "Sabah", "x": 6171, "y": 3342, "dx": 0, "dy": 22, "align": "center"},
-          {"state": "Sarawak", "x": 6457, "y": 3915, "dx": 14, "dy": 6, "align": "left"},
-          {"state": "Negeri Sembilan", "x": 6788, "y": 4678, "dx": -14, "dy": -8, "align": "right"},
-          {"state": "Terengganu", "x": 7248, "y": 4796, "dx": 20, "dy": -10, "align": "left"},
-          {"state": "Melaka", "x": 8057, "y": 5707, "dx": -14, "dy": 0, "align": "right"},
-          {"state": "Pulau Pinang", "x": 8267, "y": 5322, "dx": -14, "dy": 10, "align": "right"},
-          {"state": "W.P. Labuan", "x": 8250, "y": 4176, "dx": 0, "dy": -18, "align": "center"},
-          {"state": "Johor", "x": 8517, "y": 5342, "dx": 14, "dy": 10, "align": "left"},
-          {"state": "Selangor", "x": 12233, "y": 6770, "dx": -18, "dy": 0, "align": "right"},
-          {"state": "W.P. Kuala Lumpur", "x": 13325, "y": 7823, "dx": 18, "dy": 0, "align": "left"}
+          {
+            "state": "Kelantan",
+            "x": 4885,
+            "y": 3505,
+            "dx": 0,
+            "dy": -18,
+            "align": "center"
+          },
+          {
+            "state": "Kedah",
+            "x": 5550,
+            "y": 3765,
+            "dx": -14,
+            "dy": 2,
+            "align": "right"
+          },
+          {
+            "state": "Perlis",
+            "x": 5664,
+            "y": 3834,
+            "dx": 12,
+            "dy": -10,
+            "align": "left"
+          },
+          {
+            "state": "Perak",
+            "x": 5779,
+            "y": 3903,
+            "dx": -14,
+            "dy": 12,
+            "align": "right"
+          },
+          {
+            "state": "Pahang",
+            "x": 5777,
+            "y": 4107,
+            "dx": 0,
+            "dy": -18,
+            "align": "center"
+          },
+          {
+            "state": "Sabah",
+            "x": 6171,
+            "y": 3342,
+            "dx": 0,
+            "dy": 22,
+            "align": "center"
+          },
+          {
+            "state": "Sarawak",
+            "x": 6457,
+            "y": 3915,
+            "dx": 14,
+            "dy": 6,
+            "align": "left"
+          },
+          {
+            "state": "Negeri Sembilan",
+            "x": 6788,
+            "y": 4678,
+            "dx": -14,
+            "dy": -8,
+            "align": "right"
+          },
+          {
+            "state": "Terengganu",
+            "x": 7248,
+            "y": 4796,
+            "dx": 20,
+            "dy": -10,
+            "align": "left"
+          },
+          {
+            "state": "Melaka",
+            "x": 8057,
+            "y": 5707,
+            "dx": -14,
+            "dy": 0,
+            "align": "right"
+          },
+          {
+            "state": "Pulau Pinang",
+            "x": 8267,
+            "y": 5322,
+            "dx": -14,
+            "dy": 10,
+            "align": "right"
+          },
+          {
+            "state": "W.P. Labuan",
+            "x": 8250,
+            "y": 4176,
+            "dx": 0,
+            "dy": -18,
+            "align": "center"
+          },
+          {
+            "state": "Johor",
+            "x": 8517,
+            "y": 5342,
+            "dx": 14,
+            "dy": 10,
+            "align": "left"
+          },
+          {
+            "state": "Selangor",
+            "x": 12233,
+            "y": 6770,
+            "dx": -18,
+            "dy": 0,
+            "align": "right"
+          },
+          {
+            "state": "W.P. Kuala Lumpur",
+            "x": 13325,
+            "y": 7823,
+            "dx": 18,
+            "dy": 0,
+            "align": "left"
+          }
         ]
       },
       "mark": {
@@ -147,14 +224,6 @@
         "fontWeight": "bold"
       },
       "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "y",
-          "type": "quantitative"
-        },
         "text": {
           "field": "state",
           "type": "nominal"
@@ -187,17 +256,7 @@
           "regression": "expenditure_mean",
           "on": "income_mean"
         }
-      ],
-      "encoding": {
-        "x": {
-          "field": "income_mean",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "expenditure_mean",
-          "type": "quantitative"
-        }
-      }
+      ]
     },
     {
       "data": {
@@ -267,7 +326,7 @@
           "type": "quantitative"
         },
         "text": {
-          "value": "High Income & Expenditure \u2192"
+          "value": "High Income & Expenditure →"
         }
       }
     },
@@ -296,7 +355,7 @@
           "type": "quantitative"
         },
         "text": {
-          "value": "\u2190 Low Income & Expenditure"
+          "value": "← Low Income & Expenditure"
         }
       }
     },
@@ -337,13 +396,61 @@
         "fontWeight": "bold"
       },
       "encoding": {
-        "x": {"field": "x", "type": "quantitative"},
-        "y": {"field": "y", "type": "quantitative"},
-        "text": {"field": "text", "type": "nominal"},
-        "align": {"field": "align", "type": "nominal"},
-        "dx": {"field": "dx", "type": "quantitative"},
-        "dy": {"field": "dy", "type": "quantitative"}
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        },
+        "align": {
+          "field": "align",
+          "type": "nominal"
+        },
+        "dx": {
+          "field": "dx",
+          "type": "quantitative"
+        },
+        "dy": {
+          "field": "dy",
+          "type": "quantitative"
+        }
       }
     }
-  ]
+  ],
+  "encoding": {
+    "x": {
+      "field": "income_mean",
+      "type": "quantitative",
+      "title": "Mean Household Income (RM/month)",
+      "scale": {
+        "domain": [
+          4000,
+          14000
+        ]
+      },
+      "axis": {
+        "format": ","
+      }
+    },
+    "y": {
+      "field": "expenditure_mean",
+      "type": "quantitative",
+      "title": "Mean Household Expenditure (RM/month)",
+      "scale": {
+        "domain": [
+          3000,
+          9500
+        ]
+      },
+      "axis": {
+        "format": ","
+      }
+    }
+  }
 }

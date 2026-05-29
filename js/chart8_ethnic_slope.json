@@ -76,7 +76,8 @@
             "-2023"
           ],
           "axis": {
-            "labelFontSize": 12
+            "labelFontSize": 12,
+            "minExtent": 115
           }
         },
         "x": {
