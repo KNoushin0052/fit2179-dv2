@@ -252,6 +252,50 @@
           }
         }
       ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 108.5,
+            "lat": 3.2,
+            "text": [
+              "MALAYSIA'S DEMOGRAPHIC DIVIDE",
+              "• Urban Wealth = Birth Drought: Developed states",
+              "  on the West Coast (KL, Selangor, Penang) have",
+              "  collapsed far below the 2.1 replacement rate.",
+              "• Rural Poverty = Higher Births: Less developed",
+              "  states (Terengganu, Kelantan) maintain higher",
+              "  birth rates, but face a steady decline.",
+              "• Drag the slider below to travel through time."
+            ]
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--text)",
+        "opacity": 0.85,
+        "lineHeight": 14
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text",
+          "type": "nominal"
+        }
+      }
     }
   ]
 }

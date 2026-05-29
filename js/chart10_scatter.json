@@ -202,17 +202,30 @@
     {
       "data": {
         "values": [
-          {}
+          {
+            "text": [
+              "SOCIOECONOMIC INSIGHT: COST OF LIVING PRESSURE",
+              "• Income vs. Spend: A near-linear correlation exists",
+              "  between household income and expenditure across Malaysia.",
+              "• The Childcare Trap: Developed states (KL, Selangor, Penang)",
+              "  have high income, but high expenditure forces dual-income",
+              "  households, leaving less time/resources for children.",
+              "• Demographic Split: High-income states sit at the top-right",
+              "  with smaller bubbles (low birth rates), while rural states",
+              "  sit at the bottom-left with larger bubbles (high birth rates)."
+            ]
+          }
         ]
       },
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "top",
-        "fontSize": 10,
+        "fontSize": 9,
         "font": "JetBrains Mono",
-        "fontStyle": "italic",
-        "color": "var(--muted)"
+        "color": "var(--text)",
+        "opacity": 0.85,
+        "lineHeight": 14
       },
       "encoding": {
         "x": {
@@ -220,11 +233,12 @@
           "type": "quantitative"
         },
         "y": {
-          "datum": 9200,
+          "datum": 9300,
           "type": "quantitative"
         },
         "text": {
-          "value": "Spend rises with income \u00b7 bubble = birth rate"
+          "field": "text",
+          "type": "nominal"
         }
       }
     },

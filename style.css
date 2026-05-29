@@ -387,11 +387,16 @@ footer {
 /* ── Vega embed ── */
 .vega-embed {
     width: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    text-align: center;
 }
 
 .vega-embed canvas,
 .vega-embed svg {
     max-width: 100%;
+    display: block !important;
+    margin: 0 auto !important;
 }
 
 .vega-embed summary {
