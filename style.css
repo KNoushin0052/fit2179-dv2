@@ -270,9 +270,11 @@ body.light nav {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--muted);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 1.1rem;
+    white-space: nowrap;
+    overflow: visible;
 }
 
 .chart-note {
@@ -408,5 +410,9 @@ footer {
     .container,
     .container--prose {
         padding: 0 1.25rem;
+    }
+
+    .chart-label {
+        white-space: normal;
     }
 }

@@ -63,7 +63,9 @@
     {
       "mark": {
         "type": "rule",
-        "strokeWidth": 3
+        "strokeWidth": 3,
+        "color": "var(--border)",
+        "opacity": 0.9
       },
       "encoding": {
         "y": {
@@ -87,13 +89,6 @@
         },
         "x2": {
           "field": "2023"
-        },
-        "color": {
-          "condition": {
-            "test": "datum['2023'] < datum['2000']",
-            "value": "var(--red)"
-          },
-          "value": "var(--green)"
         }
       }
     },
@@ -117,7 +112,24 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--blue)"
+          "datum": "2000",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "2000",
+              "2023"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": "Year",
+            "labelFont": "JetBrains Mono",
+            "titleFont": "JetBrains Mono"
+          }
         },
         "tooltip": [
           {
@@ -152,7 +164,18 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--accent)"
+          "datum": "2023",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "2000",
+              "2023"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
+          }
         },
         "tooltip": [
           {
@@ -170,6 +193,42 @@
             "format": ".1f"
           }
         ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "(datum['2000'] + datum['2023'])/2",
+          "as": "mid"
+        },
+        {
+          "filter": "datum.group == 'Chinese'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -12,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--accent)"
+      },
+      "encoding": {
+        "y": {
+          "field": "group",
+          "type": "nominal",
+          "sort": [
+            "-2023"
+          ]
+        },
+        "x": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Chinese share: 21.5% \u2192 9.8%  \u2193"
+        }
       }
     }
   ]

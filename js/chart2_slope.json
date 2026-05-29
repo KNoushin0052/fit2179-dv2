@@ -9,17 +9,15 @@
   "transform": [
     {
       "filter": "datum.state != 'W.P. Putrajaya'"
-    },
-    {
-      "calculate": "datum.birth_rate < datum.rate_2000 ? 'Declined' : 'Increased'",
-      "as": "direction"
     }
   ],
   "layer": [
     {
       "mark": {
         "type": "rule",
-        "strokeWidth": 2.5
+        "strokeWidth": 2.5,
+        "color": "var(--border)",
+        "opacity": 0.9
       },
       "encoding": {
         "y": {
@@ -44,24 +42,6 @@
         },
         "x2": {
           "field": "birth_rate"
-        },
-        "color": {
-          "field": "direction",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Declined",
-              "Increased"
-            ],
-            "range": [
-              "var(--red)",
-              "var(--green)"
-            ]
-          },
-          "legend": {
-            "orient": "top",
-            "title": null
-          }
         }
       }
     },
@@ -85,7 +65,24 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--blue)"
+          "datum": "2000",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "2000",
+              "2023"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": "Year",
+            "labelFont": "JetBrains Mono",
+            "titleFont": "JetBrains Mono"
+          }
         },
         "tooltip": [
           {
@@ -120,7 +117,18 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--accent)"
+          "datum": "2023",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "2000",
+              "2023"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
+          }
         },
         "tooltip": [
           {
@@ -153,16 +161,21 @@
     {
       "transform": [
         {
-          "filter": "datum.state == 'Terengganu'"
+          "filter": "datum.state == 'Perak'"
+        },
+        {
+          "calculate": "(datum.rate_2000 + datum.birth_rate)/2",
+          "as": "mid"
         }
       ],
       "mark": {
         "type": "text",
-        "align": "right",
-        "dx": -10,
-        "fontSize": 10,
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -9,
+        "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "var(--blue)"
+        "color": "var(--muted)"
       },
       "encoding": {
         "y": {
@@ -174,11 +187,11 @@
           }
         },
         "x": {
-          "field": "rate_2000",
+          "field": "mid",
           "type": "quantitative"
         },
         "text": {
-          "value": "2000"
+          "value": "Steepest fall  \u221211.1 \u2193"
         }
       }
     },
@@ -186,15 +199,20 @@
       "transform": [
         {
           "filter": "datum.state == 'Terengganu'"
+        },
+        {
+          "calculate": "(datum.rate_2000 + datum.birth_rate)/2",
+          "as": "mid"
         }
       ],
       "mark": {
         "type": "text",
-        "align": "left",
-        "dx": 10,
-        "fontSize": 10,
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -9,
+        "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "var(--accent)"
+        "color": "var(--muted)"
       },
       "encoding": {
         "y": {
@@ -206,11 +224,11 @@
           }
         },
         "x": {
-          "field": "birth_rate",
+          "field": "mid",
           "type": "quantitative"
         },
         "text": {
-          "value": "2023"
+          "value": "Smallest fall  \u22125.9"
         }
       }
     }

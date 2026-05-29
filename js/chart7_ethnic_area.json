@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Stream graph: national births by ethnicity 2000-2023",
+  "description": "Stream graph: national births by ethnicity 2000-2023 with direct labels",
   "width": "container",
   "height": 320,
   "data": {
@@ -32,23 +32,6 @@
       "as": "group"
     }
   ],
-  "params": [
-    {
-      "name": "ethnicity_select",
-      "select": {
-        "type": "point",
-        "fields": [
-          "group"
-        ]
-      },
-      "bind": "legend"
-    }
-  ],
-  "mark": {
-    "type": "area",
-    "interpolate": "monotone",
-    "opacity": 0.85
-  },
   "encoding": {
     "x": {
       "field": "year",
@@ -88,28 +71,74 @@
         "labelFont": "JetBrains Mono",
         "labelFontSize": 11
       }
-    },
-    "opacity": {
-      "condition": {
-        "param": "ethnicity_select",
-        "value": 0.9
+    }
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "ethnicity_select",
+          "select": {
+            "type": "point",
+            "fields": [
+              "group"
+            ]
+          },
+          "bind": "legend"
+        }
+      ],
+      "mark": {
+        "type": "area",
+        "interpolate": "monotone",
+        "opacity": 0.85
       },
-      "value": 0.15
-    },
-    "tooltip": [
-      {
-        "field": "year",
-        "title": "Year"
-      },
-      {
-        "field": "group",
-        "title": "Ethnicity"
-      },
-      {
-        "field": "births",
-        "title": "Births",
-        "format": ","
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "ethnicity_select",
+            "value": 0.9
+          },
+          "value": 0.15
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "group",
+            "title": "Ethnicity"
+          },
+          {
+            "field": "births",
+            "title": "Births",
+            "format": ","
+          }
+        ]
       }
-    ]
-  }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2023"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "fontSize": 9.5,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "detail": {
+          "field": "group"
+        },
+        "text": {
+          "field": "group"
+        }
+      }
+    }
+  ]
 }

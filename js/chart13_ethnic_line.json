@@ -3,15 +3,29 @@
   "description": "Chinese vs Malay births nationally 2000-2023",
   "width": "container",
   "height": 300,
-  "data": { "url": "data/birth_sex_ethnic_state.csv" },
+  "data": {
+    "url": "data/birth_sex_ethnic_state.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" },
+    {
+      "calculate": "year(datum.date)",
+      "as": "year"
+    },
     {
       "filter": "datum.sex == 'both' && (datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese')"
     },
     {
-      "aggregate": [{ "op": "sum", "field": "abs", "as": "births" }],
-      "groupby": ["year", "ethnicity"]
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "abs",
+          "as": "births"
+        }
+      ],
+      "groupby": [
+        "year",
+        "ethnicity"
+      ]
     },
     {
       "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : 'Chinese'",
@@ -20,24 +34,47 @@
   ],
   "layer": [
     {
-      "mark": { "type": "line", "strokeWidth": 2.5 },
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5
+      },
       "encoding": {
-        "x": { "field": "year", "type": "quantitative", "axis": { "format": "d", "title": null } },
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "axis": {
+            "format": "d",
+            "title": null
+          }
+        },
         "y": {
           "field": "births",
           "type": "quantitative",
           "title": "National Births",
-          "axis": { "format": "~s" },
-          "scale": { "zero": false }
+          "axis": {
+            "format": "~s"
+          },
+          "scale": {
+            "zero": false
+          }
         },
         "color": {
           "field": "group",
           "type": "nominal",
           "scale": {
-            "domain": ["Bumiputera Malay", "Chinese"],
-            "range": ["var(--blue)", "var(--accent)"]
+            "domain": [
+              "Bumiputera Malay",
+              "Chinese"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
           },
-          "legend": { "orient": "top-left", "title": null }
+          "legend": {
+            "orient": "top-left",
+            "title": null
+          }
         }
       }
     },
@@ -50,18 +87,65 @@
         "font": "JetBrains Mono",
         "fontWeight": "bold"
       },
-      "transform": [{ "filter": "datum.year == 2000" }],
+      "transform": [
+        {
+          "filter": "datum.year == 2000"
+        }
+      ],
       "encoding": {
-        "x": { "field": "year", "type": "quantitative" },
-        "y": { "field": "births", "type": "quantitative" },
-        "text": { "field": "group" },
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "births",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "group"
+        },
         "color": {
           "field": "group",
           "type": "nominal",
           "scale": {
-            "domain": ["Bumiputera Malay", "Chinese"],
-            "range": ["var(--blue)", "var(--accent)"]
+            "domain": [
+              "Bumiputera Malay",
+              "Chinese"
+            ],
+            "range": [
+              "var(--blue)",
+              "var(--accent)"
+            ]
           }
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2023 && datum.group == 'Chinese'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -6,
+        "dy": 16,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--accent)"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "births",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Chinese births: 115k \u2192 45k"
         }
       }
     }

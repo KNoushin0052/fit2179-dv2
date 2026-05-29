@@ -3,7 +3,9 @@
   "description": "Gapminder-style animated bubble chart: household income vs birth rate over time",
   "width": "container",
   "height": 380,
-  "data": { "url": "data/birth_state.csv" },
+  "data": {
+    "url": "data/birth_state.csv"
+  },
   "params": [
     {
       "name": "year_select",
@@ -18,21 +20,38 @@
     }
   ],
   "transform": [
-    { "filter": "datum.state != 'W.P. Putrajaya'" },
-    { "calculate": "year(datum.date)", "as": "year" },
-    { "filter": "datum.year == year_select" },
+    {
+      "filter": "datum.state != 'W.P. Putrajaya'"
+    },
+    {
+      "calculate": "year(datum.date)",
+      "as": "year"
+    },
+    {
+      "filter": "datum.year == year_select"
+    },
     {
       "lookup": "state",
       "from": {
-        "data": { "url": "data/state_snapshot.csv" },
+        "data": {
+          "url": "data/state_snapshot.csv"
+        },
         "key": "state",
-        "fields": ["income_mean", "poverty", "income_group"]
+        "fields": [
+          "income_mean",
+          "poverty",
+          "income_group"
+        ]
       }
     }
   ],
   "layer": [
     {
-      "data": { "values": [{}] },
+      "data": {
+        "values": [
+          {}
+        ]
+      },
       "mark": {
         "type": "text",
         "align": "right",
@@ -43,73 +62,198 @@
         "opacity": 0.35
       },
       "encoding": {
-        "x": { "datum": 13000, "type": "quantitative" },
-        "y": { "datum": 28, "type": "quantitative" },
-        "text": { "expr": "year_select" }
+        "x": {
+          "datum": 13000,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 28,
+          "type": "quantitative"
+        },
+        "text": {
+          "expr": "year_select"
+        }
       }
     },
     {
-      "mark": { "type": "line", "color": "var(--border)", "strokeDash": [4, 3] },
-      "transform": [{ "regression": "rate", "on": "income_mean" }],
+      "mark": {
+        "type": "line",
+        "color": "var(--border)",
+        "strokeDash": [
+          4,
+          3
+        ]
+      },
+      "transform": [
+        {
+          "regression": "rate",
+          "on": "income_mean"
+        }
+      ],
       "encoding": {
-        "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "rate", "type": "quantitative" }
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative"
+        }
       }
     },
     {
-      "mark": { "type": "point", "filled": true, "opacity": 0.85, "stroke": "var(--border)", "strokeWidth": 0.5 },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0.85,
+        "stroke": "var(--border)",
+        "strokeWidth": 0.5
+      },
       "encoding": {
         "x": {
           "field": "income_mean",
           "type": "quantitative",
           "title": "Mean Household Income (RM/month)",
-          "scale": { "domain": [4000, 14000] },
-          "axis": { "format": "," }
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
         },
         "y": {
           "field": "rate",
           "type": "quantitative",
           "title": "Birth Rate (per 1,000 population)",
-          "scale": { "domain": [8, 32] }
+          "scale": {
+            "domain": [
+              8,
+              32
+            ]
+          }
         },
         "size": {
           "field": "poverty",
           "type": "quantitative",
           "title": "Poverty Rate (%)",
-          "scale": { "range": [100, 1000] },
-          "legend": { "orient": "top-right" }
+          "scale": {
+            "range": [
+              60,
+              650
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "titleFont": "JetBrains Mono",
+            "labelFont": "JetBrains Mono"
+          }
         },
         "color": {
           "field": "income_group",
           "type": "nominal",
           "title": "Income Group",
           "scale": {
-            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
-            "range": ["var(--red)", "var(--accent)", "var(--blue)"]
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5\u20138k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "var(--red)",
+              "var(--accent)",
+              "var(--blue)"
+            ]
           },
-          "legend": { "orient": "top" }
+          "legend": {
+            "orient": "top",
+            "titleFont": "JetBrains Mono",
+            "labelFont": "JetBrains Mono"
+          }
         },
         "tooltip": [
-          { "field": "state", "title": "State" },
-          { "field": "year", "title": "Year" },
-          { "field": "rate", "title": "Birth Rate", "format": ".1f" },
-          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," },
-          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" }
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "rate",
+            "title": "Birth Rate",
+            "format": ".1f"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          }
         ]
       }
     },
     {
       "mark": {
         "type": "text",
-        "dy": -14,
+        "dy": -13,
         "fontSize": 9,
         "font": "JetBrains Mono",
         "color": "var(--muted)"
       },
       "encoding": {
-        "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "rate", "type": "quantitative" },
-        "text": { "field": "state" }
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "state"
+        }
+      },
+      "transform": [
+        {
+          "filter": "indexof(['Kelantan','Terengganu','W.P. Kuala Lumpur','Selangor','Pulau Pinang','Sabah','Kedah'], datum.state) >= 0"
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 13500,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 10.5,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Richer states \u2192 fewer babies"
+        }
       }
     }
   ]

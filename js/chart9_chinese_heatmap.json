@@ -3,15 +3,27 @@
   "description": "Chinese share of births by state and year",
   "width": "container",
   "height": 320,
-  "data": { "url": "data/birth_sex_ethnic_state.csv" },
+  "data": {
+    "url": "data/birth_sex_ethnic_state.csv"
+  },
   "transform": [
-    { "calculate": "year(datum.date)", "as": "year" },
-    { "filter": "datum.sex == 'both'" },
-    { "filter": "datum.ethnicity == 'chinese' || datum.ethnicity == 'overall'" },
+    {
+      "calculate": "year(datum.date)",
+      "as": "year"
+    },
+    {
+      "filter": "datum.sex == 'both'"
+    },
+    {
+      "filter": "datum.ethnicity == 'chinese' || datum.ethnicity == 'overall'"
+    },
     {
       "pivot": "ethnicity",
       "value": "abs",
-      "groupby": ["state", "year"]
+      "groupby": [
+        "state",
+        "year"
+      ]
     },
     {
       "calculate": "datum.chinese / datum.overall * 100",
@@ -21,41 +33,108 @@
       "filter": "datum.state != 'W.P. Putrajaya' && datum.state != 'W.P. Labuan' && datum.state != 'Perlis'"
     }
   ],
-  "mark": { "type": "rect" },
-  "encoding": {
-    "x": {
-      "field": "year",
-      "type": "ordinal",
-      "title": null,
-      "axis": { "labelAngle": -45, "labelFontSize": 10 }
-    },
-    "y": {
-      "field": "state",
-      "type": "nominal",
-      "sort": { "field": "share_pct", "op": "mean", "order": "descending" },
-      "title": null,
-      "axis": { "labelFontSize": 11 }
-    },
-    "color": {
-      "field": "share_pct",
-      "type": "quantitative",
-      "title": "Chinese Share (%)",
-      "scale": {
-        "range": [
-          "var(--surface-2)",
-          "var(--accent)"
-        ],
-        "domain": [
-          0,
-          55
-        ]
+  "layer": [
+    {
+      "mark": {
+        "type": "rect"
       },
-      "legend": { "orient": "right", "gradientLength": 200 }
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "axis": {
+            "labelAngle": -45,
+            "labelFontSize": 10
+          }
+        },
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "share_pct",
+            "op": "mean",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelFontSize": 11
+          }
+        },
+        "color": {
+          "field": "share_pct",
+          "type": "quantitative",
+          "title": "Chinese Share (%)",
+          "scale": {
+            "range": [
+              "var(--surface-2)",
+              "var(--accent)"
+            ],
+            "domain": [
+              0,
+              55
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "gradientLength": 200
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "share_pct",
+            "title": "Chinese Share (%)",
+            "format": ".1f"
+          }
+        ]
+      }
     },
-    "tooltip": [
-      { "field": "state", "title": "State" },
-      { "field": "year", "title": "Year" },
-      { "field": "share_pct", "title": "Chinese Share (%)", "format": ".1f" }
-    ]
-  }
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2000 || datum.year == 2023"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 8,
+        "font": "JetBrains Mono"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "share_pct",
+            "op": "mean",
+            "order": "descending"
+          }
+        },
+        "text": {
+          "field": "share_pct",
+          "type": "quantitative",
+          "format": ".0f"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.share_pct > 28",
+            "value": "white"
+          },
+          "value": "var(--muted)"
+        }
+      }
+    }
+  ]
 }

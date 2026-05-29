@@ -198,7 +198,7 @@
         "text": {
           "condition": {
             "test": "datum.state == 'Terengganu'",
-            "value": "Only state to increase ↑"
+            "value": "Smallest decline ↑"
           },
           "value": "Steepest decline ↓"
         }

@@ -30,8 +30,8 @@
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#e0e0e0",
-        "stroke": "#30363d",
+        "fill": "var(--surface-2)",
+        "stroke": "var(--border)",
         "strokeWidth": 0.8
       }
     },
@@ -68,7 +68,7 @@
       ],
       "mark": {
         "type": "geoshape",
-        "stroke": "#30363d",
+        "stroke": "var(--border)",
         "strokeWidth": 0.8
       },
       "encoding": {
@@ -111,6 +111,66 @@
             "format": ","
           }
         ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 99.6,
+            "lat": 2.7,
+            "label": "KL & Selangor: lowest \u2192"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold",
+        "color": "var(--muted)",
+        "align": "right"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon"
+        },
+        "latitude": {
+          "field": "lat"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 104.9,
+            "lat": 5.4,
+            "label": "\u2190 East coast: highest"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold",
+        "color": "var(--muted)",
+        "align": "left"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon"
+        },
+        "latitude": {
+          "field": "lat"
+        },
+        "text": {
+          "field": "label"
+        }
       }
     }
   ]

@@ -38,58 +38,79 @@
   "spec": {
     "width": 90,
     "height": 90,
-    "mark": {
-      "type": "arc",
-      "innerRadius": 24,
-      "outerRadius": 42,
-      "stroke": null
-    },
-    "encoding": {
-      "theta": {
-        "field": "abs",
-        "type": "quantitative",
-        "stack": true
-      },
-      "color": {
-        "field": "group",
-        "type": "nominal",
-        "scale": {
-          "domain": [
-            "Malay",
-            "Chinese",
-            "Indian",
-            "Other"
-          ],
-          "range": [
-            "var(--blue)",
-            "var(--accent)",
-            "var(--green)",
-            "var(--muted)"
+    "layer": [
+      {
+        "mark": {
+          "type": "arc",
+          "innerRadius": 24,
+          "outerRadius": 42,
+          "stroke": null
+        },
+        "encoding": {
+          "theta": {
+            "field": "abs",
+            "type": "quantitative",
+            "stack": true
+          },
+          "color": {
+            "field": "group",
+            "type": "nominal",
+            "scale": {
+              "domain": [
+                "Malay",
+                "Chinese",
+                "Indian",
+                "Other"
+              ],
+              "range": [
+                "var(--blue)",
+                "var(--accent)",
+                "var(--green)",
+                "var(--muted)"
+              ]
+            },
+            "legend": {
+              "orient": "top",
+              "columns": 4,
+              "title": null,
+              "labelFont": "JetBrains Mono",
+              "labelFontSize": 11
+            }
+          },
+          "tooltip": [
+            {
+              "field": "state",
+              "title": "State"
+            },
+            {
+              "field": "group",
+              "title": "Ethnicity"
+            },
+            {
+              "field": "abs",
+              "title": "Births",
+              "format": ","
+            }
           ]
-        },
-        "legend": {
-          "orient": "top",
-          "columns": 4,
-          "title": null,
-          "labelFont": "JetBrains Mono",
-          "labelFontSize": 11
         }
       },
-      "tooltip": [
-        {
-          "field": "state",
-          "title": "State"
+      {
+        "mark": {
+          "type": "text",
+          "radius": 0,
+          "fontSize": 10,
+          "font": "JetBrains Mono",
+          "fontWeight": "bold",
+          "fill": "var(--muted)"
         },
-        {
-          "field": "group",
-          "title": "Ethnicity"
-        },
-        {
-          "field": "abs",
-          "title": "Births",
-          "format": ","
+        "encoding": {
+          "text": {
+            "aggregate": "sum",
+            "field": "abs",
+            "format": ".2s"
+          }
         }
-      ]
-    }
+      }
+    ]
   }
 }
