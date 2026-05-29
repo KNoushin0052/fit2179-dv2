@@ -15,7 +15,7 @@
         "min": 2000,
         "max": 2023,
         "step": 1,
-        "name": "Travel through time (Year): "
+        "name": "Year: "
       }
     }
   ],
@@ -146,10 +146,12 @@
             ]
           },
           "legend": {
-            "orient": "bottom",
+            "orient": "bottom-left",
             "direction": "horizontal",
             "titleFont": "JetBrains Mono",
-            "labelFont": "JetBrains Mono"
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
           }
         },
         "color": {
@@ -169,9 +171,11 @@
             ]
           },
           "legend": {
-            "orient": "top",
+            "orient": "top-left",
             "titleFont": "JetBrains Mono",
-            "labelFont": "JetBrains Mono"
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
           }
         },
         "tooltip": [

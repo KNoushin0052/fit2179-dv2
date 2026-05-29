@@ -12,7 +12,7 @@
         "min": 2000,
         "max": 2023,
         "step": 1,
-        "name": "Drag to change year: "
+        "name": "Year: "
       }
     }
   ],
@@ -79,7 +79,7 @@
         "color": {
           "field": "rate",
           "type": "quantitative",
-          "title": "Birth Rate (per 1,000)",
+          "title": "Birth Rate\n(per 1,000)",
           "scale": {
             "domain": [
               10,
@@ -91,8 +91,13 @@
             ]
           },
           "legend": {
-            "orient": "right",
-            "gradientLength": 200
+            "orient": "top-right",
+            "direction": "vertical",
+            "gradientLength": 140,
+            "titleFont": "JetBrains Mono",
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
           }
         },
         "tooltip": [
