@@ -3,51 +3,111 @@
   "description": "Scatter plot: household income vs household expenditure by state 2022",
   "width": "container",
   "height": 380,
-  "data": { "url": "data/state_snapshot.csv" },
+  "data": {
+    "url": "data/state_snapshot.csv"
+  },
   "transform": [
-    { "filter": "datum.state != 'W.P. Putrajaya'" }
+    {
+      "filter": "datum.state != 'W.P. Putrajaya'"
+    }
   ],
   "layer": [
     {
-      "mark": { "type": "point", "filled": true, "opacity": 0.85, "stroke": "var(--border)", "strokeWidth": 0.5 },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0.85,
+        "stroke": "var(--border)",
+        "strokeWidth": 0.5
+      },
       "encoding": {
         "x": {
           "field": "income_mean",
           "type": "quantitative",
           "title": "Mean Household Income (RM/month)",
-          "scale": { "domain": [4000, 14000] },
-          "axis": { "format": "," }
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
         },
         "y": {
           "field": "expenditure_mean",
           "type": "quantitative",
           "title": "Mean Household Expenditure (RM/month)",
-          "scale": { "domain": [3000, 9500] },
-          "axis": { "format": "," }
+          "scale": {
+            "domain": [
+              3000,
+              9500
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
         },
         "size": {
           "field": "birth_rate",
           "type": "quantitative",
           "title": "Birth Rate (per 1,000)",
-          "scale": { "range": [100, 900] },
-          "legend": { "orient": "top-right" }
+          "scale": {
+            "range": [
+              100,
+              900
+            ]
+          },
+          "legend": {
+            "orient": "top-right"
+          }
         },
         "color": {
           "field": "income_group",
           "type": "nominal",
           "title": "Income Group",
           "scale": {
-            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
-            "range": ["var(--red)", "var(--accent)", "var(--blue)"]
+            "domain": [
+              "Low (<5.5k)",
+              "Middle (5.5\u20138k)",
+              "High (>8k)"
+            ],
+            "range": [
+              "var(--red)",
+              "var(--accent)",
+              "var(--blue)"
+            ]
           },
-          "legend": { "orient": "top" }
+          "legend": {
+            "orient": "top"
+          }
         },
         "tooltip": [
-          { "field": "state", "title": "State" },
-          { "field": "income_mean", "title": "Mean Income (RM)", "format": "," },
-          { "field": "expenditure_mean", "title": "Mean Expenditure (RM)", "format": "," },
-          { "field": "birth_rate", "title": "Birth Rate", "format": ".1f" },
-          { "field": "poverty", "title": "Poverty Rate (%)", "format": ".1f" }
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "income_mean",
+            "title": "Mean Income (RM)",
+            "format": ","
+          },
+          {
+            "field": "expenditure_mean",
+            "title": "Mean Expenditure (RM)",
+            "format": ","
+          },
+          {
+            "field": "birth_rate",
+            "title": "Birth Rate",
+            "format": ".1f"
+          },
+          {
+            "field": "poverty",
+            "title": "Poverty Rate (%)",
+            "format": ".1f"
+          }
         ]
       }
     },
@@ -60,17 +120,72 @@
         "color": "var(--muted)"
       },
       "encoding": {
-        "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "expenditure_mean", "type": "quantitative" },
-        "text": { "field": "state" }
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "expenditure_mean",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "state"
+        }
       }
     },
     {
-      "mark": { "type": "line", "color": "var(--border)", "strokeDash": [4, 3] },
-      "transform": [{ "regression": "expenditure_mean", "on": "income_mean" }],
+      "mark": {
+        "type": "line",
+        "color": "var(--border)",
+        "strokeDash": [
+          4,
+          3
+        ]
+      },
+      "transform": [
+        {
+          "regression": "expenditure_mean",
+          "on": "income_mean"
+        }
+      ],
       "encoding": {
-        "x": { "field": "income_mean", "type": "quantitative" },
-        "y": { "field": "expenditure_mean", "type": "quantitative" }
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "expenditure_mean",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 4200,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 9200,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Spend rises with income \u00b7 bubble = birth rate"
+        }
       }
     }
   ]

@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Radar/Spider chart: multi-metric state comparison — KL, Selangor, Kelantan, Terengganu, Sabah",
+  "description": "Radar/Spider chart: multi-metric state comparison \u2014 KL, Selangor, Kelantan, Terengganu, Sabah",
   "width": 340,
   "height": 340,
   "data": {
@@ -70,10 +70,18 @@
     {
       "data": {
         "values": [
-          {"r": 0.25},
-          {"r": 0.5},
-          {"r": 0.75},
-          {"r": 1.0}
+          {
+            "r": 0.25
+          },
+          {
+            "r": 0.5
+          },
+          {
+            "r": 0.75
+          },
+          {
+            "r": 1.0
+          }
         ]
       },
       "mark": {
@@ -84,13 +92,20 @@
         "opacity": 0.5
       },
       "encoding": {
-        "theta": {"datum": 0},
-        "theta2": {"datum": 6.2832},
+        "theta": {
+          "datum": 0
+        },
+        "theta2": {
+          "datum": 6.2832
+        },
         "radius": {
           "field": "r",
           "type": "quantitative",
           "scale": {
-            "domain": [0, 1]
+            "domain": [
+              0,
+              1
+            ]
           }
         }
       }
@@ -98,16 +113,32 @@
     {
       "data": {
         "values": [
-          {"angle": 0},
-          {"angle": 1.2566},
-          {"angle": 2.5133},
-          {"angle": 3.7699},
-          {"angle": 5.0265}
+          {
+            "angle": 0
+          },
+          {
+            "angle": 1.2566
+          },
+          {
+            "angle": 2.5133
+          },
+          {
+            "angle": 3.7699
+          },
+          {
+            "angle": 5.0265
+          }
         ]
       },
       "transform": [
-        {"calculate": "cos(datum.angle)", "as": "x2"},
-        {"calculate": "sin(datum.angle)", "as": "y2"}
+        {
+          "calculate": "cos(datum.angle)",
+          "as": "x2"
+        },
+        {
+          "calculate": "sin(datum.angle)",
+          "as": "y2"
+        }
       ],
       "mark": {
         "type": "rule",
@@ -119,12 +150,22 @@
         "x": {
           "datum": 0,
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "y": {
           "datum": 0,
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "x2": {
           "field": "x2",
@@ -139,16 +180,37 @@
     {
       "data": {
         "values": [
-          {"metric": "Birth Rate 2023", "angle": 0},
-          {"metric": "Birth Rate 2000", "angle": 1.2566},
-          {"metric": "Poverty Rate", "angle": 2.5133},
-          {"metric": "Mean Income", "angle": 3.7699},
-          {"metric": "Gini Coefficient", "angle": 5.0265}
+          {
+            "metric": "Birth Rate 2023",
+            "angle": 0
+          },
+          {
+            "metric": "Birth Rate 2000",
+            "angle": 1.2566
+          },
+          {
+            "metric": "Poverty Rate",
+            "angle": 2.5133
+          },
+          {
+            "metric": "Mean Income",
+            "angle": 3.7699
+          },
+          {
+            "metric": "Gini Coefficient",
+            "angle": 5.0265
+          }
         ]
       },
       "transform": [
-        {"calculate": "1.15 * cos(datum.angle)", "as": "lx"},
-        {"calculate": "1.15 * sin(datum.angle)", "as": "ly"}
+        {
+          "calculate": "1.15 * cos(datum.angle)",
+          "as": "lx"
+        },
+        {
+          "calculate": "1.15 * sin(datum.angle)",
+          "as": "ly"
+        }
       ],
       "mark": {
         "type": "text",
@@ -160,12 +222,22 @@
         "x": {
           "field": "lx",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "y": {
           "field": "ly",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "text": {
           "field": "metric"
@@ -183,12 +255,22 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "color": {
           "field": "state",
@@ -226,7 +308,9 @@
     },
     {
       "transform": [
-        {"filter": "datum.metric != 'birth_rate_dup'"}
+        {
+          "filter": "datum.metric != 'birth_rate_dup'"
+        }
       ],
       "mark": {
         "type": "point",
@@ -238,12 +322,22 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-1.4, 1.4]}
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
         },
         "color": {
           "field": "state",
@@ -267,10 +361,61 @@
           "legend": null
         },
         "tooltip": [
-          {"field": "state", "title": "State"},
-          {"field": "MetricName", "title": "Metric"},
-          {"field": "raw_value", "title": "Value", "format": ","}
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "MetricName",
+            "title": "Metric"
+          },
+          {
+            "field": "raw_value",
+            "title": "Value",
+            "format": ","
+          }
         ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": -1.4,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "y": {
+          "datum": 1.4,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -1.4,
+              1.4
+            ]
+          }
+        },
+        "text": {
+          "value": "Outer ring = higher (normalized 0\u20131)"
+        }
       }
     }
   ]
