@@ -145,7 +145,13 @@
               650
             ]
           },
-          "legend": null
+          "legend": {
+            "orient": "right",
+            "titleFont": "JetBrains Mono",
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
+          }
         },
         "color": {
           "field": "income_group",
@@ -154,7 +160,7 @@
           "scale": {
             "domain": [
               "Low (<5.5k)",
-              "Middle (5.5\u20138k)",
+              "Middle (5.5–8k)",
               "High (>8k)"
             ],
             "range": [
@@ -164,7 +170,7 @@
             ]
           },
           "legend": {
-            "orient": "top-right",
+            "orient": "right",
             "titleFont": "JetBrains Mono",
             "titleFontSize": 10,
             "labelFont": "JetBrains Mono",
@@ -250,6 +256,72 @@
         },
         "text": {
           "value": "Richer states \u2192 fewer babies"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 10,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 4200,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 25.5,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "\u2190 Poorer states: higher birth rates"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "var(--muted)",
+        "strokeWidth": 1.2,
+        "strokeDash": [4, 4],
+        "opacity": 0.6
+      },
+      "encoding": {
+        "y": {
+          "datum": 14.0,
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "dy": -6,
+        "fontSize": 9.5,
+        "font": "JetBrains Mono",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "value": 10
+        },
+        "y": {
+          "datum": 14.0,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Replacement Level Birth Rate (~14.0)"
         }
       }
     }

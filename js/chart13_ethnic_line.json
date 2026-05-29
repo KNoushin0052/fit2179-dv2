@@ -71,10 +71,7 @@
               "var(--accent)"
             ]
           },
-          "legend": {
-            "orient": "top-left",
-            "title": null
-          }
+          "legend": null
         }
       }
     },

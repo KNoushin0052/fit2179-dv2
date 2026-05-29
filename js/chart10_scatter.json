@@ -60,7 +60,11 @@
             ]
           },
           "legend": {
-            "orient": "top-right"
+            "orient": "right",
+            "titleFont": "JetBrains Mono",
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
           }
         },
         "color": {
@@ -70,7 +74,7 @@
           "scale": {
             "domain": [
               "Low (<5.5k)",
-              "Middle (5.5\u20138k)",
+              "Middle (5.5–8k)",
               "High (>8k)"
             ],
             "range": [
@@ -80,7 +84,11 @@
             ]
           },
           "legend": {
-            "orient": "top"
+            "orient": "right",
+            "titleFont": "JetBrains Mono",
+            "titleFontSize": 10,
+            "labelFont": "JetBrains Mono",
+            "labelFontSize": 10
           }
         },
         "tooltip": [
@@ -112,6 +120,11 @@
       }
     },
     {
+      "transform": [
+        {
+          "filter": "indexof(['Kelantan','Terengganu','W.P. Kuala Lumpur','Selangor','Sabah','Perak','Pulau Pinang'], datum.state) >= 0"
+        }
+      ],
       "mark": {
         "type": "text",
         "dy": -14,
@@ -185,6 +198,64 @@
         },
         "text": {
           "value": "Spend rises with income \u00b7 bubble = birth rate"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "bottom",
+        "fontSize": 9.5,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 13800,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 8200,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "High Income & Expenditure \u2192"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 9.5,
+        "font": "JetBrains Mono",
+        "fontStyle": "italic",
+        "color": "var(--muted)"
+      },
+      "encoding": {
+        "x": {
+          "datum": 4200,
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 3200,
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "\u2190 Low Income & Expenditure"
         }
       }
     }

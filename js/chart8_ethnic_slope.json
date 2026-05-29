@@ -125,7 +125,7 @@
             ]
           },
           "legend": {
-            "orient": "top",
+            "orient": "right",
             "title": "Year",
             "labelFont": "JetBrains Mono",
             "titleFont": "JetBrains Mono"

@@ -77,12 +77,7 @@
               "var(--green)"
             ]
           },
-          "legend": {
-            "orient": "top",
-            "title": null,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 11
-          }
+          "legend": null
         },
         "tooltip": [
           {
@@ -179,7 +174,7 @@
       },
       "transform": [
         {
-          "filter": "datum.state == 'Terengganu' || datum.state == 'Perak'"
+          "filter": "datum.state == 'W.P. Labuan' || datum.state == 'Perak'"
         }
       ],
       "encoding": {
@@ -197,10 +192,47 @@
         },
         "text": {
           "condition": {
-            "test": "datum.state == 'Terengganu'",
+            "test": "datum.state == 'W.P. Labuan'",
             "value": "Smallest decline ↑"
           },
           "value": "Steepest decline ↓"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "var(--accent)",
+        "strokeWidth": 1.2,
+        "strokeDash": [3, 3]
+      },
+      "encoding": {
+        "x": {
+          "datum": -9.2,
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "color": "var(--accent)",
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "datum": -9.2,
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 15
+        },
+        "text": {
+          "value": "National Avg Decline (-9.2)"
         }
       }
     }
