@@ -1,314 +1,97 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Scatter plot: household income vs household expenditure by state 2022",
+  "description": "Grouped bar chart: household income vs expenditure by state 2022",
   "width": "container",
-  "height": 380,
+  "height": 400,
   "data": {
     "url": "data/state_snapshot.csv"
   },
   "transform": [
     {
       "filter": "datum.state != 'W.P. Putrajaya'"
-    }
-  ],
-  "layer": [
-    {
-      "mark": {
-        "type": "point",
-        "filled": true,
-        "opacity": 0.85,
-        "stroke": "var(--border)",
-        "strokeWidth": 0.5
-      },
-      "encoding": {
-        "size": {
-          "field": "birth_rate",
-          "type": "quantitative",
-          "title": "Birth Rate (per 1,000)",
-          "scale": {
-            "range": [
-              100,
-              900
-            ]
-          },
-          "legend": {
-            "orient": "right",
-            "titleFont": "JetBrains Mono",
-            "titleFontSize": 10,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 10
-          }
-        },
-        "color": {
-          "field": "income_group",
-          "type": "nominal",
-          "title": "Income Group",
-          "scale": {
-            "domain": [
-              "Low (<5.5k)",
-              "Middle (5.5–8k)",
-              "High (>8k)"
-            ],
-            "range": [
-              "var(--purple)",
-              "var(--accent)",
-              "var(--blue)"
-            ]
-          },
-          "legend": {
-            "orient": "right",
-            "titleFont": "JetBrains Mono",
-            "titleFontSize": 10,
-            "labelFont": "JetBrains Mono",
-            "labelFontSize": 10
-          }
-        },
-        "tooltip": [
-          {
-            "field": "state",
-            "title": "State"
-          },
-          {
-            "field": "income_mean",
-            "title": "Mean Income (RM)",
-            "format": ","
-          },
-          {
-            "field": "expenditure_mean",
-            "title": "Mean Expenditure (RM)",
-            "format": ","
-          },
-          {
-            "field": "birth_rate",
-            "title": "Birth Rate",
-            "format": ".1f"
-          },
-          {
-            "field": "poverty",
-            "title": "Poverty Rate (%)",
-            "format": ".1f"
-          }
-        ]
-      }
     },
     {
-      "data": {
-        "values": [
-          {
-            "state": "Kelantan",
-            "x": 4885,
-            "y": 3505,
-            "dx": 0,
-            "dy": -20,
-            "align": "center"
-          },
-          {
-            "state": "Perak",
-            "x": 5779,
-            "y": 3903,
-            "dx": -14,
-            "dy": 10,
-            "align": "right"
-          },
-          {
-            "state": "Sabah",
-            "x": 6171,
-            "y": 3342,
-            "dx": -14,
-            "dy": -14,
-            "align": "right"
-          },
-          {
-            "state": "Terengganu",
-            "x": 7248,
-            "y": 4796,
-            "dx": 16,
-            "dy": 0,
-            "align": "left"
-          },
-          {
-            "state": "Selangor",
-            "x": 12233,
-            "y": 6770,
-            "dx": -16,
-            "dy": 0,
-            "align": "right"
-          },
-          {
-            "state": "W.P. Kuala Lumpur",
-            "x": 13325,
-            "y": 7823,
-            "dx": 16,
-            "dy": 0,
-            "align": "left"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "fontSize": 9,
-        "font": "JetBrains Mono",
-        "color": "var(--muted)",
-        "fontWeight": "bold",
-        "align": {"expr": "datum.align"},
-        "dx": {"expr": "datum.dx"},
-        "dy": {"expr": "datum.dy"}
-      },
-      "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "y",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "state",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "line",
-        "color": "var(--border)",
-        "strokeDash": [
-          4,
-          3
-        ]
-      },
-      "transform": [
-        {
-          "regression": "expenditure_mean",
-          "on": "income_mean"
-        }
+      "fold": [
+        "income_mean",
+        "expenditure_mean"
+      ],
+      "as": [
+        "metric",
+        "value"
       ]
     },
     {
-      "data": {
-        "values": [
-          {
-            "text": [
-              "SOCIOECONOMIC INSIGHT: COST OF LIVING PRESSURE",
-              "• Income vs. Spend: A near-linear correlation exists",
-              "  between household income and expenditure across Malaysia.",
-              "• The Childcare Trap: Developed states (KL, Selangor, Penang)",
-              "  have high income, but high expenditure forces dual-income",
-              "  households, leaving less time/resources for children.",
-              "• Demographic Split: High-income states sit at the top-right",
-              "  with smaller bubbles (low birth rates), while rural states",
-              "  sit at the bottom-left with larger bubbles (high birth rates)."
-            ]
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "fontSize": 9,
-        "font": "JetBrains Mono",
-        "color": "var(--text)",
-        "opacity": 0.85,
-        "lineHeight": 14
-      },
-      "encoding": {
-        "x": {
-          "datum": 4200
-        },
-        "y": {
-          "datum": 9300
-        },
-        "text": {
-          "field": "text",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {}
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "right",
-        "baseline": "bottom",
-        "fontSize": 9.5,
-        "font": "JetBrains Mono",
-        "fontStyle": "italic",
-        "color": "var(--muted)"
-      },
-      "encoding": {
-        "x": {
-          "datum": 13800
-        },
-        "y": {
-          "datum": 8200
-        },
-        "text": {
-          "value": "High Income & Expenditure →"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {}
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "fontSize": 9.5,
-        "font": "JetBrains Mono",
-        "fontStyle": "italic",
-        "color": "var(--muted)"
-      },
-      "encoding": {
-        "x": {
-          "datum": 4200
-        },
-        "y": {
-          "datum": 3200
-        },
-        "text": {
-          "value": "← Low Income & Expenditure"
-        }
-      }
+      "calculate": "datum.metric == 'income_mean' ? 'Mean Household Income' : 'Mean Household Expenditure'",
+      "as": "MetricLabel"
     }
   ],
+  "mark": {
+    "type": "bar",
+    "height": 11,
+    "cornerRadiusEnd": 3
+  },
   "encoding": {
-    "x": {
-      "field": "income_mean",
-      "type": "quantitative",
-      "title": "Mean Household Income (RM/month)",
-      "scale": {
-        "domain": [
-          4000,
-          14000
-        ]
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": {
+        "field": "value",
+        "op": "max",
+        "order": "descending"
       },
+      "title": null,
+      "axis": {
+        "labelFontSize": 11,
+        "labelFont": "JetBrains Mono",
+        "minExtent": 115
+      }
+    },
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "title": "Amount (RM/month)",
       "axis": {
         "format": ","
       }
     },
-    "y": {
-      "field": "expenditure_mean",
-      "type": "quantitative",
-      "title": "Mean Household Expenditure (RM/month)",
+    "yOffset": {
+      "field": "MetricLabel",
+      "type": "nominal"
+    },
+    "color": {
+      "field": "MetricLabel",
+      "type": "nominal",
       "scale": {
         "domain": [
-          3000,
-          9500
+          "Mean Household Income",
+          "Mean Household Expenditure"
+        ],
+        "range": [
+          "var(--blue)",
+          "var(--accent)"
         ]
       },
-      "axis": {
+      "legend": {
+        "orient": "bottom",
+        "title": null,
+        "labelFont": "JetBrains Mono",
+        "labelFontSize": 10
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "title": "State"
+      },
+      {
+        "field": "MetricLabel",
+        "title": "Metric"
+      },
+      {
+        "field": "value",
+        "title": "Value (RM)",
         "format": ","
       }
-    }
+    ]
   }
 }

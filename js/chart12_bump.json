@@ -39,8 +39,8 @@
     {
       "mark": {
         "type": "line",
-        "strokeWidth": 2,
-        "opacity": 0.6
+        "strokeWidth": 2.5,
+        "opacity": 0.8
       },
       "encoding": {
         "x": {
@@ -59,7 +59,38 @@
           "type": "nominal",
           "legend": null,
           "scale": {
-            "scheme": "tableau20"
+            "domain": [
+              "Terengganu",
+              "Kelantan",
+              "Pahang",
+              "Kedah",
+              "Negeri Sembilan",
+              "Melaka",
+              "Perlis",
+              "Sabah",
+              "Sarawak",
+              "Johor",
+              "Selangor",
+              "Perak",
+              "Pulau Pinang",
+              "W.P. Kuala Lumpur"
+            ],
+            "range": [
+              "var(--purple)",
+              "var(--green)",
+              "var(--border)",
+              "var(--border)",
+              "var(--border)",
+              "var(--border)",
+              "var(--border)",
+              "var(--muted)",
+              "var(--border)",
+              "var(--border)",
+              "var(--accent)",
+              "var(--border)",
+              "var(--border)",
+              "var(--blue)"
+            ]
           }
         },
         "detail": {
@@ -86,10 +117,7 @@
         "color": {
           "field": "state",
           "type": "nominal",
-          "legend": null,
-          "scale": {
-            "scheme": "tableau20"
-          }
+          "legend": null
         },
         "tooltip": [
           {
@@ -123,7 +151,8 @@
         "align": "left",
         "dx": 8,
         "fontSize": 10,
-        "font": "JetBrains Mono"
+        "font": "JetBrains Mono",
+        "fontWeight": "bold"
       },
       "encoding": {
         "x": {
@@ -141,10 +170,7 @@
         "color": {
           "field": "state",
           "type": "nominal",
-          "legend": null,
-          "scale": {
-            "scheme": "tableau20"
-          }
+          "legend": null
         }
       }
     }
@@ -153,7 +179,7 @@
     "left": 5,
     "top": 5,
     "bottom": 5,
-    "right": 100
+    "right": 135
   },
   "autosize": {
     "type": "fit",
