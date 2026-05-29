@@ -79,7 +79,7 @@
         "color": {
           "field": "rate",
           "type": "quantitative",
-          "title": "Birth Rate (‰)",
+          "title": "Birth Rate (\u2030)",
           "scale": {
             "domain": [
               10,
@@ -121,12 +121,36 @@
     {
       "data": {
         "values": [
-          {"state": "Kedah", "lon": 100.5, "lat": 6.0, "align": "center"},
-          {"state": "Perak", "lon": 101.0, "lat": 4.8, "align": "center"},
-          {"state": "Pahang", "lon": 102.5, "lat": 3.7, "align": "center"},
-          {"state": "Johor", "lon": 103.0, "lat": 1.9, "align": "center"},
-          {"state": "Sarawak", "lon": 113.3, "lat": 2.6, "align": "center"},
-          {"state": "Sabah", "lon": 116.8, "lat": 5.8, "align": "center"}
+          {
+            "state": "Kedah",
+            "lon": 100.5,
+            "lat": 6.0
+          },
+          {
+            "state": "Perak",
+            "lon": 101.0,
+            "lat": 4.8
+          },
+          {
+            "state": "Pahang",
+            "lon": 102.5,
+            "lat": 3.7
+          },
+          {
+            "state": "Johor",
+            "lon": 103.0,
+            "lat": 1.9
+          },
+          {
+            "state": "Sarawak",
+            "lon": 113.3,
+            "lat": 2.6
+          },
+          {
+            "state": "Sabah",
+            "lon": 116.8,
+            "lat": 5.8
+          }
         ]
       },
       "mark": {
@@ -135,7 +159,8 @@
         "font": "JetBrains Mono",
         "fontWeight": "bold",
         "color": "var(--muted)",
-        "opacity": 0.7
+        "opacity": 0.7,
+        "align": "center"
       },
       "encoding": {
         "longitude": {
@@ -149,10 +174,6 @@
         "text": {
           "field": "state",
           "type": "nominal"
-        },
-        "align": {
-          "field": "align",
-          "type": "nominal"
         }
       }
     },
@@ -164,7 +185,7 @@
             "lat1": 5.8,
             "lon2": 103.1,
             "lat2": 5.0,
-            "text": "Highest: Terengganu (21.6‰)",
+            "text": "Highest: Terengganu (21.6\u2030)",
             "align": "left"
           },
           {
@@ -172,7 +193,7 @@
             "lat1": 2.8,
             "lon2": 101.69,
             "lat2": 3.14,
-            "text": "Lowest: Kuala Lumpur (10.7‰)",
+            "text": "Lowest: Kuala Lumpur (10.7\u2030)",
             "align": "right"
           },
           {
@@ -180,7 +201,7 @@
             "lat1": 4.6,
             "lon2": 101.0,
             "lat2": 4.6,
-            "text": "Steepest drop: Perak (-11.1‰)",
+            "text": "Steepest drop: Perak (-11.1\u2030)",
             "align": "right"
           }
         ]
@@ -223,7 +244,9 @@
             "font": "JetBrains Mono",
             "color": "var(--text)",
             "fontWeight": "bold",
-            "align": {"expr": "datum.align"},
+            "align": {
+              "expr": "datum.align"
+            },
             "dy": -5
           },
           "encoding": {
@@ -242,50 +265,6 @@
           }
         }
       ]
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "lon": 108.0,
-            "lat": 6.3,
-            "text": [
-              "MALAYSIA'S DEMOGRAPHIC DIVIDE",
-              "• Urban Wealth = Birth Drought: Developed states",
-              "  on the West Coast (KL, Selangor, Penang) have",
-              "  collapsed far below the 2.1 replacement rate.",
-              "• Rural Poverty = Higher Births: Less developed",
-              "  states (Terengganu, Kelantan) maintain higher",
-              "  birth rates, but face a steady decline.",
-              "• Drag the slider below to travel through time."
-            ]
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "center",
-        "baseline": "middle",
-        "fontSize": 9,
-        "font": "JetBrains Mono",
-        "color": "var(--text)",
-        "opacity": 0.85,
-        "lineHeight": 14
-      },
-      "encoding": {
-        "longitude": {
-          "field": "lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "lat",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "text",
-          "type": "nominal"
-        }
-      }
     }
   ]
 }

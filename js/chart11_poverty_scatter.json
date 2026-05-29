@@ -2,9 +2,19 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Parallel coordinates plot: socioeconomic profiles of 5 key states",
   "width": "container",
-  "height": 400,
+  "height": 360,
   "data": {
-    "url": "data/state_snapshot.csv"
+    "url": "data/state_snapshot.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "rate_2000": "number",
+        "birth_rate": "number",
+        "poverty": "number",
+        "gini": "number",
+        "income_mean": "number"
+      }
+    }
   },
   "transform": [
     {
@@ -81,7 +91,9 @@
             "domain": [
               0,
               1
-            ]
+            ],
+            "clamp": true,
+            "nice": false
           }
         },
         "color": {
@@ -133,7 +145,15 @@
         },
         "y": {
           "field": "norm_value",
-          "type": "quantitative"
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "clamp": true,
+            "nice": false
+          }
         },
         "color": {
           "field": "state",

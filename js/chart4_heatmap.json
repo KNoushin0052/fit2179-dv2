@@ -34,7 +34,14 @@
       "lookup": "state",
       "from": {
         "data": {
-          "url": "data/state_snapshot.csv"
+          "url": "data/state_snapshot.csv",
+          "format": {
+            "type": "csv",
+            "parse": {
+              "income_mean": "number",
+              "poverty": "number"
+            }
+          }
         },
         "key": "state",
         "fields": [
@@ -75,7 +82,13 @@
       },
       "encoding": {
         "x": {
-          "datum": 13000
+          "datum": 13000,
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          }
         },
         "y": {
           "datum": 28
@@ -99,7 +112,34 @@
           "regression": "rate",
           "on": "income_mean"
         }
-      ]
+      ],
+      "encoding": {
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Household Income (RM/month)",
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000 population)",
+          "scale": {
+            "domain": [
+              8,
+              32
+            ]
+          }
+        }
+      }
     },
     {
       "mark": {
@@ -135,7 +175,7 @@
           "scale": {
             "domain": [
               "Low (<5.5k)",
-              "Middle (5.5–8k)",
+              "Middle (5.5\u20138k)",
               "High (>8k)"
             ],
             "range": [
@@ -176,7 +216,32 @@
             "title": "Poverty Rate (%)",
             "format": ".1f"
           }
-        ]
+        ],
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Household Income (RM/month)",
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000 population)",
+          "scale": {
+            "domain": [
+              8,
+              32
+            ]
+          }
+        }
       }
     },
     {
@@ -186,13 +251,44 @@
         "font": "JetBrains Mono",
         "color": "var(--muted)",
         "fontWeight": "bold",
-        "align": {"expr": "datum.label_align"},
-        "dx": {"expr": "datum.label_dx"},
-        "dy": {"expr": "datum.label_dy"}
+        "align": {
+          "expr": "datum.label_align"
+        },
+        "dx": {
+          "expr": "datum.label_dx"
+        },
+        "dy": {
+          "expr": "datum.label_dy"
+        }
       },
       "encoding": {
         "text": {
           "field": "state"
+        },
+        "x": {
+          "field": "income_mean",
+          "type": "quantitative",
+          "title": "Mean Household Income (RM/month)",
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          },
+          "axis": {
+            "format": ","
+          }
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative",
+          "title": "Birth Rate (per 1,000 population)",
+          "scale": {
+            "domain": [
+              8,
+              32
+            ]
+          }
         }
       },
       "transform": [
@@ -217,13 +313,19 @@
       },
       "encoding": {
         "x": {
-          "datum": 13800
+          "datum": 13800,
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          }
         },
         "y": {
           "datum": 9.0
         },
         "text": {
-          "value": "Richer states → fewer babies"
+          "value": "Richer states \u2192 fewer babies"
         }
       }
     },
@@ -243,13 +345,19 @@
       },
       "encoding": {
         "x": {
-          "datum": 4200
+          "datum": 4200,
+          "scale": {
+            "domain": [
+              4000,
+              14000
+            ]
+          }
         },
         "y": {
           "datum": 25.5
         },
         "text": {
-          "value": "← Poorer states: higher birth rates"
+          "value": "\u2190 Poorer states: higher birth rates"
         }
       }
     },
@@ -294,32 +402,5 @@
         }
       }
     }
-  ],
-  "encoding": {
-    "x": {
-      "field": "income_mean",
-      "type": "quantitative",
-      "title": "Mean Household Income (RM/month)",
-      "scale": {
-        "domain": [
-          4000,
-          14000
-        ]
-      },
-      "axis": {
-        "format": ","
-      }
-    },
-    "y": {
-      "field": "rate",
-      "type": "quantitative",
-      "title": "Birth Rate (per 1,000 population)",
-      "scale": {
-        "domain": [
-          8,
-          32
-        ]
-      }
-    }
-  }
+  ]
 }

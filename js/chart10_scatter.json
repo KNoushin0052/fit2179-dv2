@@ -1,97 +1,83 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Grouped bar chart: household income vs expenditure by state 2022",
+  "description": "Scatter: household income vs birth rate by state, 2022/2023, with regression",
   "width": "container",
   "height": 400,
   "data": {
-    "url": "data/state_snapshot.csv"
+    "url": "data/state_snapshot.csv",
+    "format": {"type": "csv", "parse": {"income_mean": "number", "birth_rate": "number", "poverty": "number"}}
   },
   "transform": [
-    {
-      "filter": "datum.state != 'W.P. Putrajaya'"
-    },
-    {
-      "fold": [
-        "income_mean",
-        "expenditure_mean"
-      ],
-      "as": [
-        "metric",
-        "value"
-      ]
-    },
-    {
-      "calculate": "datum.metric == 'income_mean' ? 'Mean Household Income' : 'Mean Household Expenditure'",
-      "as": "MetricLabel"
-    }
+    {"filter": "datum.state != 'W.P. Putrajaya'"}
   ],
-  "mark": {
-    "type": "bar",
-    "height": 11,
-    "cornerRadiusEnd": 3
-  },
   "encoding": {
-    "y": {
-      "field": "state",
-      "type": "nominal",
-      "sort": {
-        "field": "value",
-        "op": "max",
-        "order": "descending"
-      },
-      "title": null,
-      "axis": {
-        "labelFontSize": 11,
-        "labelFont": "JetBrains Mono",
-        "minExtent": 115
-      }
-    },
     "x": {
-      "field": "value",
+      "field": "income_mean",
       "type": "quantitative",
-      "title": "Amount (RM/month)",
-      "axis": {
-        "format": ","
-      }
+      "title": "Mean Household Income (RM/month)",
+      "scale": {"domain": [4000, 14000]},
+      "axis": {"format": ","}
     },
-    "yOffset": {
-      "field": "MetricLabel",
-      "type": "nominal"
+    "y": {
+      "field": "birth_rate",
+      "type": "quantitative",
+      "title": "Birth Rate (per 1,000 population)",
+      "scale": {"domain": [8, 24]}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "line", "color": "var(--muted)", "strokeDash": [5, 4], "strokeWidth": 1.5, "opacity": 0.8},
+      "transform": [{"regression": "birth_rate", "on": "income_mean"}]
     },
-    "color": {
-      "field": "MetricLabel",
-      "type": "nominal",
-      "scale": {
-        "domain": [
-          "Mean Household Income",
-          "Mean Household Expenditure"
-        ],
-        "range": [
-          "var(--blue)",
-          "var(--accent)"
+    {
+      "mark": {"type": "point", "filled": true, "size": 170, "opacity": 0.9, "stroke": "var(--surface)", "strokeWidth": 1},
+      "encoding": {
+        "color": {
+          "field": "income_group",
+          "type": "nominal",
+          "title": "Income group",
+          "scale": {
+            "domain": ["Low (<5.5k)", "Middle (5.5–8k)", "High (>8k)"],
+            "range": ["var(--purple)", "var(--accent)", "var(--blue)"]
+          },
+          "legend": {"orient": "top", "titleFont": "JetBrains Mono", "labelFont": "JetBrains Mono", "labelFontSize": 10}
+        },
+        "tooltip": [
+          {"field": "state", "title": "State"},
+          {"field": "income_mean", "title": "Mean Income (RM)", "format": ","},
+          {"field": "birth_rate", "title": "Birth Rate", "format": ".1f"},
+          {"field": "poverty", "title": "Poverty Rate (%)", "format": ".1f"}
         ]
-      },
-      "legend": {
-        "orient": "bottom",
-        "title": null,
-        "labelFont": "JetBrains Mono",
-        "labelFontSize": 10
       }
     },
-    "tooltip": [
-      {
-        "field": "state",
-        "title": "State"
-      },
-      {
-        "field": "MetricLabel",
-        "title": "Metric"
-      },
-      {
-        "field": "value",
-        "title": "Value (RM)",
-        "format": ","
+    {
+      "mark": {"type": "text", "fontSize": 9, "font": "JetBrains Mono", "color": "var(--muted)", "dy": -13},
+      "transform": [{"filter": "datum.state != 'Terengganu'"}],
+      "encoding": {"text": {"field": "state"}}
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 10, "font": "JetBrains Mono", "fontWeight": "bold", "color": "var(--purple)"},
+      "transform": [{"filter": "datum.state == 'Terengganu'"}],
+      "encoding": {"text": {"value": "Terengganu — the exception"}}
+    },
+    {
+      "data": {"values": [{}]},
+      "mark": {"type": "text", "align": "left", "fontSize": 10, "font": "JetBrains Mono", "fontStyle": "italic", "color": "var(--muted)"},
+      "encoding": {
+        "x": {"datum": 9200, "type": "quantitative", "scale": {"domain": [4000, 14000]}},
+        "y": {"datum": 16.6, "type": "quantitative", "scale": {"domain": [8, 24]}},
+        "text": {"value": "Higher income → fewer babies"}
       }
-    ]
-  }
+    },
+    {
+      "data": {"values": [{}]},
+      "mark": {"type": "text", "align": "left", "fontSize": 9, "font": "JetBrains Mono", "color": "var(--muted)"},
+      "encoding": {
+        "x": {"datum": 9200, "type": "quantitative", "scale": {"domain": [4000, 14000]}},
+        "y": {"datum": 15.4, "type": "quantitative", "scale": {"domain": [8, 24]}},
+        "text": {"value": "trend ≈ −0.5 per +RM1,000 (a real but loose link)"}
+      }
+    }
+  ]
 }

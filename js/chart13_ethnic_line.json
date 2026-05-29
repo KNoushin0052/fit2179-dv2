@@ -78,8 +78,8 @@
     {
       "mark": {
         "type": "text",
-        "align": "right",
-        "dx": -6,
+        "align": "left",
+        "dx": 6,
         "fontSize": 11,
         "font": "JetBrains Mono",
         "fontWeight": "bold"
@@ -127,7 +127,7 @@
         "type": "text",
         "align": "right",
         "dx": -6,
-        "dy": 16,
+        "dy": -12,
         "fontSize": 9,
         "font": "JetBrains Mono",
         "color": "var(--accent)"
