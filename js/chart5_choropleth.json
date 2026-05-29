@@ -91,9 +91,9 @@
             ]
           },
           "legend": {
-            "orient": "left",
-            "direction": "vertical",
-            "gradientLength": 160,
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 200,
             "titleFont": "JetBrains Mono",
             "titleFontSize": 10,
             "labelFont": "JetBrains Mono",
@@ -121,16 +121,9 @@
     {
       "data": {
         "values": [
-          {"state": "Perlis", "lon": 100.1, "lat": 6.5, "align": "right"},
-          {"state": "Kedah", "lon": 100.5, "lat": 6.0, "align": "right"},
-          {"state": "Pulau Pinang", "lon": 100.1, "lat": 5.4, "align": "right"},
-          {"state": "Perak", "lon": 101.0, "lat": 4.8, "align": "right"},
-          {"state": "Kelantan", "lon": 102.1, "lat": 5.6, "align": "center"},
-          {"state": "Terengganu", "lon": 103.1, "lat": 5.0, "align": "left"},
+          {"state": "Kedah", "lon": 100.5, "lat": 6.0, "align": "center"},
+          {"state": "Perak", "lon": 101.0, "lat": 4.8, "align": "center"},
           {"state": "Pahang", "lon": 102.5, "lat": 3.7, "align": "center"},
-          {"state": "Selangor", "lon": 101.2, "lat": 3.2, "align": "right"},
-          {"state": "Negeri Sembilan", "lon": 102.1, "lat": 2.7, "align": "left"},
-          {"state": "Melaka", "lon": 102.2, "lat": 2.2, "align": "left"},
           {"state": "Johor", "lon": 103.0, "lat": 1.9, "align": "center"},
           {"state": "Sarawak", "lon": 113.3, "lat": 2.6, "align": "center"},
           {"state": "Sabah", "lon": 116.8, "lat": 5.8, "align": "center"}
@@ -167,7 +160,7 @@
       "data": {
         "values": [
           {
-            "lon1": 104.8,
+            "lon1": 105.2,
             "lat1": 5.2,
             "lon2": 103.1,
             "lat2": 5.0,
@@ -175,7 +168,7 @@
             "align": "left"
           },
           {
-            "lon1": 99.4,
+            "lon1": 98.0,
             "lat1": 2.8,
             "lon2": 101.69,
             "lat2": 3.14,
@@ -183,11 +176,11 @@
             "align": "right"
           },
           {
-            "lon1": 99.2,
+            "lon1": 98.0,
             "lat1": 4.6,
             "lon2": 101.0,
             "lat2": 4.6,
-            "text": "Steepest drop: Perak (-11.1)",
+            "text": "Steepest drop: Perak (-11.1‰)",
             "align": "right"
           }
         ]
@@ -230,6 +223,7 @@
             "font": "JetBrains Mono",
             "color": "var(--text)",
             "fontWeight": "bold",
+            "align": {"expr": "datum.align"},
             "dy": -5
           },
           "encoding": {
@@ -244,10 +238,6 @@
             "text": {
               "field": "text",
               "type": "nominal"
-            },
-            "align": {
-              "field": "align",
-              "type": "nominal"
             }
           }
         }
@@ -257,8 +247,8 @@
       "data": {
         "values": [
           {
-            "lon": 106.8,
-            "lat": 3.6,
+            "lon": 106.0,
+            "lat": 4.2,
             "text": [
               "MALAYSIA'S DEMOGRAPHIC DIVIDE",
               "• Urban Wealth = Birth Drought: Developed states",

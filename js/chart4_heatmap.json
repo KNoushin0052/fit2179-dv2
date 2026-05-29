@@ -53,7 +53,7 @@
       "as": "label_dx"
     },
     {
-      "calculate": "datum.state == 'Selangor' || datum.state == 'W.P. Kuala Lumpur' ? 0 : datum.state == 'Kelantan' || datum.state == 'Terengganu' ? 0 : - (sqrt(datum.poverty) * 2.2 + 8)",
+      "calculate": "datum.state == 'Selangor' || datum.state == 'W.P. Kuala Lumpur' ? 0 : datum.state == 'Kelantan' || datum.state == 'Terengganu' ? 0 : - (sqrt(datum.poverty) * 3.0 + 12)",
       "as": "label_dy"
     }
   ],
@@ -75,12 +75,10 @@
       },
       "encoding": {
         "x": {
-          "datum": 13000,
-          "type": "quantitative"
+          "datum": 13000
         },
         "y": {
-          "datum": 28,
-          "type": "quantitative"
+          "datum": 28
         },
         "text": {
           "expr": "year_select"
@@ -141,7 +139,7 @@
               "High (>8k)"
             ],
             "range": [
-              "var(--red)",
+              "var(--purple)",
               "var(--accent)",
               "var(--blue)"
             ]
@@ -187,23 +185,14 @@
         "fontSize": 9,
         "font": "JetBrains Mono",
         "color": "var(--muted)",
-        "fontWeight": "bold"
+        "fontWeight": "bold",
+        "align": {"expr": "datum.label_align"},
+        "dx": {"expr": "datum.label_dx"},
+        "dy": {"expr": "datum.label_dy"}
       },
       "encoding": {
         "text": {
           "field": "state"
-        },
-        "dx": {
-          "field": "label_dx",
-          "type": "quantitative"
-        },
-        "dy": {
-          "field": "label_dy",
-          "type": "quantitative"
-        },
-        "align": {
-          "field": "label_align",
-          "type": "nominal"
         }
       },
       "transform": [
@@ -228,12 +217,10 @@
       },
       "encoding": {
         "x": {
-          "datum": 13800,
-          "type": "quantitative"
+          "datum": 13800
         },
         "y": {
-          "datum": 9.0,
-          "type": "quantitative"
+          "datum": 9.0
         },
         "text": {
           "value": "Richer states → fewer babies"
@@ -256,12 +243,10 @@
       },
       "encoding": {
         "x": {
-          "datum": 4200,
-          "type": "quantitative"
+          "datum": 4200
         },
         "y": {
-          "datum": 25.5,
-          "type": "quantitative"
+          "datum": 25.5
         },
         "text": {
           "value": "← Poorer states: higher birth rates"

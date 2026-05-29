@@ -23,8 +23,9 @@ html {
     --accent: #f0883e;
     --accent-dim: rgba(240, 136, 62, 0.12);
     --blue: #58a6ff;
-    --green: #3fb950;
-    --red: #ff6b6b;
+    --green: #009e73;
+    --red: #cc79a7;
+    --purple: #cc79a7;
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'Source Serif 4', Georgia, serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -41,11 +42,12 @@ body.light {
     --border: #d9d3c7;
     --text: #1a1611;
     --muted: #6b6456;
-    --accent: #c0392b;
-    --accent-dim: rgba(192, 57, 43, 0.08);
-    --blue: #1a5f9e;
-    --green: #1a6e3c;
-    --red: #a81c1c;
+    --accent: #d55e00;
+    --accent-dim: rgba(213, 94, 0, 0.08);
+    --blue: #0072b2;
+    --green: #009e73;
+    --red: #a8437a;
+    --purple: #a8437a;
 }
 
 /* ── Base ── */

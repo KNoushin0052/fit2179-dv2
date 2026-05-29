@@ -50,7 +50,7 @@
               "High (>8k)"
             ],
             "range": [
-              "var(--red)",
+              "var(--purple)",
               "var(--accent)",
               "var(--blue)"
             ]
@@ -99,110 +99,38 @@
             "x": 4885,
             "y": 3505,
             "dx": 0,
-            "dy": -18,
+            "dy": -20,
             "align": "center"
-          },
-          {
-            "state": "Kedah",
-            "x": 5550,
-            "y": 3765,
-            "dx": -14,
-            "dy": 2,
-            "align": "right"
-          },
-          {
-            "state": "Perlis",
-            "x": 5664,
-            "y": 3834,
-            "dx": 12,
-            "dy": -10,
-            "align": "left"
           },
           {
             "state": "Perak",
             "x": 5779,
             "y": 3903,
             "dx": -14,
-            "dy": 12,
+            "dy": 10,
             "align": "right"
-          },
-          {
-            "state": "Pahang",
-            "x": 5777,
-            "y": 4107,
-            "dx": 0,
-            "dy": -18,
-            "align": "center"
           },
           {
             "state": "Sabah",
             "x": 6171,
             "y": 3342,
-            "dx": 0,
-            "dy": 22,
-            "align": "center"
-          },
-          {
-            "state": "Sarawak",
-            "x": 6457,
-            "y": 3915,
-            "dx": 14,
-            "dy": 6,
-            "align": "left"
-          },
-          {
-            "state": "Negeri Sembilan",
-            "x": 6788,
-            "y": 4678,
             "dx": -14,
-            "dy": -8,
+            "dy": -14,
             "align": "right"
           },
           {
             "state": "Terengganu",
             "x": 7248,
             "y": 4796,
-            "dx": 20,
-            "dy": -10,
-            "align": "left"
-          },
-          {
-            "state": "Melaka",
-            "x": 8057,
-            "y": 5707,
-            "dx": -14,
+            "dx": 16,
             "dy": 0,
-            "align": "right"
-          },
-          {
-            "state": "Pulau Pinang",
-            "x": 8267,
-            "y": 5322,
-            "dx": -14,
-            "dy": 10,
-            "align": "right"
-          },
-          {
-            "state": "W.P. Labuan",
-            "x": 8250,
-            "y": 4176,
-            "dx": 0,
-            "dy": -18,
-            "align": "center"
-          },
-          {
-            "state": "Johor",
-            "x": 8517,
-            "y": 5342,
-            "dx": 14,
-            "dy": 10,
             "align": "left"
           },
           {
             "state": "Selangor",
             "x": 12233,
             "y": 6770,
-            "dx": -18,
+            "dx": -16,
             "dy": 0,
             "align": "right"
           },
@@ -210,7 +138,7 @@
             "state": "W.P. Kuala Lumpur",
             "x": 13325,
             "y": 7823,
-            "dx": 18,
+            "dx": 16,
             "dy": 0,
             "align": "left"
           }
@@ -221,23 +149,22 @@
         "fontSize": 9,
         "font": "JetBrains Mono",
         "color": "var(--muted)",
-        "fontWeight": "bold"
+        "fontWeight": "bold",
+        "align": {"expr": "datum.align"},
+        "dx": {"expr": "datum.dx"},
+        "dy": {"expr": "datum.dy"}
       },
       "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
         "text": {
           "field": "state",
-          "type": "nominal"
-        },
-        "dx": {
-          "field": "dx",
-          "type": "quantitative"
-        },
-        "dy": {
-          "field": "dy",
-          "type": "quantitative"
-        },
-        "align": {
-          "field": "align",
           "type": "nominal"
         }
       }
@@ -288,12 +215,10 @@
       },
       "encoding": {
         "x": {
-          "datum": 4200,
-          "type": "quantitative"
+          "datum": 4200
         },
         "y": {
-          "datum": 9300,
-          "type": "quantitative"
+          "datum": 9300
         },
         "text": {
           "field": "text",
@@ -318,12 +243,10 @@
       },
       "encoding": {
         "x": {
-          "datum": 13800,
-          "type": "quantitative"
+          "datum": 13800
         },
         "y": {
-          "datum": 8200,
-          "type": "quantitative"
+          "datum": 8200
         },
         "text": {
           "value": "High Income & Expenditure →"
@@ -347,78 +270,13 @@
       },
       "encoding": {
         "x": {
-          "datum": 4200,
-          "type": "quantitative"
+          "datum": 4200
         },
         "y": {
-          "datum": 3200,
-          "type": "quantitative"
+          "datum": 3200
         },
         "text": {
           "value": "← Low Income & Expenditure"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "x": 13325,
-            "y": 7823,
-            "text": "W.P. Kuala Lumpur: Highest income & spending, lowest birth rate",
-            "align": "right",
-            "dx": -30,
-            "dy": -12
-          },
-          {
-            "x": 4885,
-            "y": 3505,
-            "text": "Kelantan: Lowest income, high birth rate",
-            "align": "left",
-            "dx": 20,
-            "dy": -30
-          },
-          {
-            "x": 6171,
-            "y": 3342,
-            "text": "Sabah: High poverty (19.7%) suppresses spending",
-            "align": "left",
-            "dx": 20,
-            "dy": 35
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "fontSize": 9.5,
-        "font": "JetBrains Mono",
-        "color": "var(--accent)",
-        "fontWeight": "bold"
-      },
-      "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "y",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "text",
-          "type": "nominal"
-        },
-        "align": {
-          "field": "align",
-          "type": "nominal"
-        },
-        "dx": {
-          "field": "dx",
-          "type": "quantitative"
-        },
-        "dy": {
-          "field": "dy",
-          "type": "quantitative"
         }
       }
     }

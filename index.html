@@ -260,12 +260,14 @@
         actions: false,
         config: {
           background: bgColor,
+          numberFormat: ',',
           view: { stroke: 'transparent' },
           axis: {
             gridColor: gridColor, domainColor: gridColor, tickColor: gridColor,
             labelColor: mutedColor, titleColor: mutedColor,
             labelFont: 'JetBrains Mono', titleFont: 'JetBrains Mono',
-            labelFontSize: 11, titleFontSize: 11
+            labelFontSize: 11, titleFontSize: 11,
+            numberFormat: ','
           },
           legend: {
             labelColor: mutedColor, titleColor: mutedColor,
@@ -302,10 +304,12 @@
       const opts = getOpts(isLight);
       
       const themeColors = {
-        'var(--blue)': isLight ? '#1a5f9e' : '#58a6ff',
-        'var(--accent)': isLight ? '#c0392b' : '#f0883e',
-        'var(--green)': isLight ? '#1a6e3c' : '#3fb950',
-        'var(--red)': isLight ? '#a81c1c' : '#ff6b6b',
+        'var(--blue)': isLight ? '#0072b2' : '#56b4e9',
+        'var(--accent)': isLight ? '#d55e00' : '#e69f00',
+        'var(--green)': isLight ? '#009e73' : '#009e73',
+        'var(--red)': isLight ? '#a8437a' : '#cc79a7',
+        'var(--purple)': isLight ? '#a8437a' : '#cc79a7',
+        'var(--text)': isLight ? '#1a1611' : '#e6edf3',
         'var(--muted)': isLight ? '#6b6456' : '#8b949e',
         'var(--border)': isLight ? '#d9d3c7' : '#30363d',
         'var(--surface-2)': isLight ? '#f0ece4' : '#1c2333'

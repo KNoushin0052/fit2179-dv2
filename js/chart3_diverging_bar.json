@@ -74,8 +74,8 @@
               "Increased"
             ],
             "range": [
-              "var(--red)",
-              "var(--green)"
+              "var(--accent)",
+              "var(--blue)"
             ]
           },
           "legend": null
@@ -129,7 +129,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--green)"
+          "value": "var(--blue)"
         }
       }
     },
@@ -159,7 +159,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "var(--red)"
+          "value": "var(--accent)"
         }
       }
     },
@@ -217,11 +217,11 @@
     {
       "mark": {
         "type": "text",
-        "align": "left",
-        "dx": 6,
+        "align": "right",
+        "dx": -8,
         "fontSize": 9,
         "font": "JetBrains Mono",
-        "color": "var(--accent)",
+        "color": "var(--text)",
         "fontWeight": "bold"
       },
       "encoding": {
