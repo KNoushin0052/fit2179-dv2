@@ -54,7 +54,9 @@
           "type": "quantitative",
           "axis": {
             "format": "d",
-            "title": null
+            "title": null,
+            "tickCount": 7,
+            "labelOverlap": true
           }
         },
         "y": {

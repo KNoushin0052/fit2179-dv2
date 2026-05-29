@@ -93,7 +93,7 @@
       <div class="chart-wrap">
         <p class="chart-label">Chart 4 — Birth Rate vs Household Income over time</p>
         <div id="chart4"></div>
-        <p class="chart-note">Drag the slider to move through time · Bubble size = poverty rate · Colour = income group · Dashed line = trend line · Horizontal dashes mark the ~14 replacement level</p>
+        <p class="chart-note">Drag the slider to move through time (synced with the map in Act 2) · Bubble size = poverty rate · Colour = income group · Dashed line = trend line · Horizontal dashes mark the ~14 replacement level</p>
       </div>
     </div>
   </section>
@@ -109,13 +109,13 @@
       <div class="chart-wrap">
         <p class="chart-label">Chart 5 — Birth rate per 1,000 by state · drag slider to travel through time</p>
         <div id="chart5"></div>
-        <p class="chart-note">Map projection: Mercator · Drag the year slider to watch the birth rate fall 2000→2023 · Darker blue = more births per 1,000 people · Source: DOSM Vital Statistics</p>
+        <p class="chart-note">Map projection: Mercator · Drag the year slider (synced with the bubble chart in Act 1) to watch the birth rate fall 2000→2023 · Darker blue = more births per 1,000 people · Source: DOSM Vital Statistics</p>
       </div>
 
       <div class="chart-wrap">
         <p class="chart-label">Chart 6 — Ethnic composition of births by state, 2023</p>
         <div id="chart6"></div>
-        <p class="chart-note">Each donut = one state · Centre number = total births · Segments show the ethnic share of births · Click a legend swatch to isolate one group · Colours chosen to be colour-blind friendly</p>
+        <p class="chart-note">Each donut = one state · Centre number = total births · Segments show the ethnic share of births · Blue dominates almost everywhere; grey (Other Bumiputera) leads only in Sabah and Sarawak · Colours chosen to be colour-blind friendly</p>
       </div>
     </div>
   </section>
@@ -315,6 +315,8 @@
         'var(--surface-2)': isLight ? '#f0ece4' : '#1c2333'
       };
 
+      const embedPromises = [];
+
       for (const { id, spec: specPath } of CHART_SPECS) {
         const el = document.getElementById(id);
         if (!el) continue;
@@ -349,17 +351,41 @@
           }
           resolveColors(specObj);
 
-          vegaEmbed('#' + id, specObj, opts)
+          const embedPromise = vegaEmbed('#' + id, specObj, opts)
             .then(result => { views[id] = result.view; })
             .catch(err => {
               el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
                 ⚠ ${specPath} — ${err.message}</p>`;
             });
+          embedPromises.push(embedPromise);
         } catch (err) {
           el.innerHTML = `<p style="color:#ff6b6b;font-family:monospace;font-size:11px;padding:1rem;">
             ⚠ Fetch Error — ${err.message}</p>`;
         }
       }
+
+      // Once every chart has rendered, lock the two time sliders together
+      Promise.all(embedPromises).then(linkTimeSliders);
+    }
+
+    // Keep the year on the bubble chart (chart4) and the choropleth (chart5)
+    // in lock-step: scrub either slider and both views move to the same year.
+    function linkTimeSliders() {
+      const bubble = views['chart4'], map = views['chart5'];
+      if (!bubble || !map) return;
+      let syncing = false;
+      function wire(src, dst) {
+        try {
+          src.addSignalListener('year_select', (_name, value) => {
+            if (syncing) return;
+            syncing = true;
+            try { dst.signal('year_select', value).run(); } catch (e) { /* noop */ }
+            syncing = false;
+          });
+        } catch (e) { /* signal not present yet */ }
+      }
+      wire(bubble, map);
+      wire(map, bubble);
     }
 
     // Initial render
