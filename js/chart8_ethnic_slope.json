@@ -141,7 +141,9 @@
         "fontSize": 11,
         "font": "JetBrains Mono",
         "fontWeight": "bold",
-        "baseline": "middle"
+        "baseline": "middle",
+        "stroke": "#1a1611",
+        "strokeWidth": 0.3
       },
       "encoding": {
         "text": {
@@ -164,3 +166,4 @@
       }
     }
   ]
+}
