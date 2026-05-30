@@ -55,16 +55,6 @@
     {
       "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
       "as": "group"
-    },
-    {
-      "stack": "share",
-      "groupby": ["year"],
-      "sort": [{"field": "group", "order": "ascending"}],
-      "as": ["lower", "upper"]
-    },
-    {
-      "calculate": "(datum.lower + datum.upper) / 2",
-      "as": "midpoint"
     }
   ],
   "encoding": {
@@ -106,7 +96,7 @@
       },
       "legend": {
         "orient": "top",
-        "columns": 2,
+        "columns": 4,
         "titleFont": "JetBrains Mono",
         "labelFont": "JetBrains Mono",
         "labelFontSize": 11
@@ -142,36 +132,6 @@
         "type": "bar",
         "width": {
           "band": 0.6
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "fontSize": 11,
-        "font": "JetBrains Mono",
-        "fontWeight": "bold",
-        "color": "white",
-        "stroke": "#1a1611",
-        "strokeWidth": 0.4,
-        "baseline": "middle"
-      },
-      "encoding": {
-        "text": {
-          "field": "share",
-          "type": "quantitative",
-          "format": ".0%"
-        },
-        "detail": {
-          "field": "group"
-        },
-        "y": {
-          "field": "midpoint",
-          "type": "quantitative",
-          "stack": null
-        },
-        "color": {
-          "value": "white"
         }
       }
     }
