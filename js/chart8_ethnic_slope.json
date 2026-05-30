@@ -138,10 +138,13 @@
     {
       "mark": {
         "type": "text",
-        "fontSize": 10,
+        "fontSize": 11,
         "font": "JetBrains Mono",
         "fontWeight": "bold",
-        "color": "white"
+        "color": "white",
+        "stroke": "#1a1611",
+        "strokeWidth": 0.4,
+        "baseline": "middle"
       },
       "encoding": {
         "text": {
@@ -151,6 +154,12 @@
         },
         "detail": {
           "field": "group"
+        },
+        "y": {
+          "field": "share",
+          "type": "quantitative",
+          "stack": "normalize",
+          "bandPosition": 0.5
         }
       }
     }
