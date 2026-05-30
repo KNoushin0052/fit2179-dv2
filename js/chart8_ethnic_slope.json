@@ -169,6 +169,9 @@
           "field": "midpoint",
           "type": "quantitative",
           "stack": null
+        },
+        "color": {
+          "value": "white"
         }
       }
     }
