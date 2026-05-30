@@ -1,10 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Dumbbell: ethnic share of national births 2000 vs 2023",
+  "description": "100% stacked bar: ethnic share of national births, 2000 vs 2023",
   "width": "container",
-  "height": 220,
+  "height": 320,
   "data": {
-    "url": "data/birth_sex_ethnic_state.csv"
+    "url": "data/birth_sex_ethnic_state.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "abs": "number"
+      }
+    }
   },
   "transform": [
     {
@@ -12,10 +18,10 @@
       "as": "year"
     },
     {
-      "filter": "datum.year == 2000 || datum.year == 2023"
+      "filter": "datum.sex == 'both' && (datum.year == 2000 || datum.year == 2023)"
     },
     {
-      "filter": "datum.sex == 'both' && (datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese' || datum.ethnicity == 'indian' || datum.ethnicity == 'bumi_other')"
+      "filter": "datum.ethnicity == 'bumi_malay' || datum.ethnicity == 'chinese' || datum.ethnicity == 'indian' || datum.ethnicity == 'bumi_other'"
     },
     {
       "aggregate": [
@@ -31,204 +37,102 @@
       ]
     },
     {
-      "joinaggregate": [
-        {
-          "op": "sum",
-          "field": "births",
-          "as": "year_total"
-        }
-      ],
-      "groupby": [
-        "year"
-      ]
-    },
-    {
-      "calculate": "datum.births / datum.year_total * 100",
-      "as": "share_pct"
-    },
-    {
       "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
       "as": "group"
-    },
-    {
-      "pivot": "year",
-      "value": "share_pct",
-      "groupby": [
-        "group",
-        "ethnicity"
-      ]
     }
   ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0,
+        "labelFontSize": 12
+      }
+    },
+    "y": {
+      "field": "births",
+      "type": "quantitative",
+      "stack": "normalize",
+      "title": "Share of national births",
+      "axis": {
+        "format": "%"
+      }
+    },
+    "color": {
+      "field": "group",
+      "type": "nominal",
+      "title": "Ethnicity",
+      "scale": {
+        "domain": [
+          "Bumiputera Malay",
+          "Other Bumiputera",
+          "Chinese",
+          "Indian"
+        ],
+        "range": [
+          "var(--blue)",
+          "var(--muted)",
+          "var(--accent)",
+          "var(--green)"
+        ]
+      },
+      "legend": {
+        "orient": "top",
+        "columns": 4,
+        "titleFont": "JetBrains Mono",
+        "labelFont": "JetBrains Mono",
+        "labelFontSize": 11
+      }
+    },
+    "order": {
+      "field": "group"
+    },
+    "tooltip": [
+      {
+        "field": "year",
+        "title": "Year"
+      },
+      {
+        "field": "group",
+        "title": "Ethnicity"
+      },
+      {
+        "field": "births",
+        "title": "Births",
+        "format": ","
+      }
+    ]
+  },
   "layer": [
     {
       "mark": {
-        "type": "rule",
-        "strokeWidth": 3,
-        "color": "var(--border)",
-        "opacity": 0.9
-      },
-      "encoding": {
-        "y": {
-          "field": "group",
-          "type": "nominal",
-          "title": null,
-          "sort": [
-            "-2023"
-          ],
-          "axis": {
-            "labelFontSize": 12,
-            "minExtent": 115
-          }
-        },
-        "x": {
-          "field": "2000",
-          "type": "quantitative",
-          "title": "Share of national births (%)",
-          "scale": {
-            "zero": false
-          }
-        },
-        "x2": {
-          "field": "2023"
+        "type": "bar",
+        "width": {
+          "band": 0.6
         }
       }
     },
     {
-      "mark": {
-        "type": "point",
-        "filled": true,
-        "size": 200,
-        "shape": "circle"
-      },
-      "encoding": {
-        "y": {
-          "field": "group",
-          "type": "nominal",
-          "sort": [
-            "-2023"
-          ]
-        },
-        "x": {
-          "field": "2000",
-          "type": "quantitative"
-        },
-        "color": {
-          "datum": "2000",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "2000",
-              "2023"
-            ],
-            "range": [
-              "var(--blue)",
-              "var(--accent)"
-            ]
-          },
-          "legend": {
-            "orient": "right",
-            "title": "Year",
-            "labelFont": "JetBrains Mono",
-            "titleFont": "JetBrains Mono"
-          }
-        },
-        "tooltip": [
-          {
-            "field": "group",
-            "title": "Ethnicity"
-          },
-          {
-            "field": "2000",
-            "title": "Share 2000 (%)",
-            "format": ".1f"
-          }
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "point",
-        "filled": true,
-        "size": 200,
-        "shape": "circle"
-      },
-      "encoding": {
-        "y": {
-          "field": "group",
-          "type": "nominal",
-          "sort": [
-            "-2023"
-          ]
-        },
-        "x": {
-          "field": "2023",
-          "type": "quantitative"
-        },
-        "color": {
-          "datum": "2023",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "2000",
-              "2023"
-            ],
-            "range": [
-              "var(--blue)",
-              "var(--accent)"
-            ]
-          }
-        },
-        "tooltip": [
-          {
-            "field": "group",
-            "title": "Ethnicity"
-          },
-          {
-            "field": "2000",
-            "title": "Share 2000 (%)",
-            "format": ".1f"
-          },
-          {
-            "field": "2023",
-            "title": "Share 2023 (%)",
-            "format": ".1f"
-          }
-        ]
-      }
-    },
-    {
-      "transform": [
-        {
-          "calculate": "(datum['2000'] + datum['2023'])/2",
-          "as": "mid"
-        },
-        {
-          "filter": "datum.group == 'Chinese'"
-        }
-      ],
       "mark": {
         "type": "text",
-        "align": "center",
-        "baseline": "bottom",
-        "dy": -12,
-        "fontSize": 9,
+        "fontSize": 10,
         "font": "JetBrains Mono",
-        "color": "var(--accent)"
+        "fontWeight": "bold"
       },
       "encoding": {
-        "y": {
-          "field": "group",
-          "type": "nominal",
-          "sort": [
-            "-2023"
-          ]
-        },
-        "x": {
-          "field": "mid",
-          "type": "quantitative"
-        },
         "text": {
-          "value": "Chinese share: 21.5% \u2192 9.8%  \u2193"
+          "field": "births",
+          "type": "quantitative",
+          "aggregate": "sum",
+          "format": ".0%"
+        },
+        "color": {
+          "value": "white"
+        },
+        "detail": {
+          "field": "group"
         }
       }
     }
