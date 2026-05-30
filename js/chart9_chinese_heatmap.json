@@ -101,13 +101,17 @@
     {
       "transform": [
         {
-          "filter": "datum.year == 2000 || datum.year == 2023"
+          "filter": "datum.state == 'Pulau Pinang' && datum.year == 2001"
         }
       ],
       "mark": {
         "type": "text",
-        "fontSize": 8,
-        "font": "JetBrains Mono"
+        "align": "left",
+        "fontSize": 9,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold",
+        "color": "white",
+        "dx": -4
       },
       "encoding": {
         "x": {
@@ -124,16 +128,7 @@
           }
         },
         "text": {
-          "field": "share_pct",
-          "type": "quantitative",
-          "format": ".0f"
-        },
-        "color": {
-          "condition": {
-            "test": "datum.share_pct > 28",
-            "value": "white"
-          },
-          "value": "var(--muted)"
+          "value": "Pulau Pinang: 39% in 2000 \u2192 22% by 2023, fading like every other row"
         }
       }
     }

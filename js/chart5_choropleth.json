@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Choropleth map of Malaysia with interactive year slider",
   "width": "container",
-  "height": 440,
+  "height": 360,
   "params": [
     {
       "name": "year_select",
@@ -79,7 +79,7 @@
         "color": {
           "field": "rate",
           "type": "quantitative",
-          "title": "Birth Rate (\u2030)",
+          "title": "Birth Rate (per 1,000)",
           "scale": {
             "domain": [
               10,
@@ -185,7 +185,7 @@
             "lat1": 5.8,
             "lon2": 103.1,
             "lat2": 5.0,
-            "text": "Highest: Terengganu (21.6\u2030)",
+            "text": "Highest: Terengganu (21.6 per 1,000)",
             "align": "left"
           },
           {
@@ -193,7 +193,7 @@
             "lat1": 2.8,
             "lon2": 101.69,
             "lat2": 3.14,
-            "text": "Lowest: Kuala Lumpur (10.7\u2030)",
+            "text": "Lowest: Kuala Lumpur (10.7 per 1,000)",
             "align": "right"
           },
           {
@@ -201,7 +201,7 @@
             "lat1": 4.6,
             "lon2": 101.0,
             "lat2": 4.6,
-            "text": "Steepest drop: Perak (-11.1\u2030)",
+            "text": "Steepest drop: Perak (-11.1 per 1,000)",
             "align": "right"
           }
         ]

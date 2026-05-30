@@ -194,9 +194,9 @@
         "text": {
           "condition": {
             "test": "datum.state == 'W.P. Labuan'",
-            "value": "Smallest decline ↑"
+            "value": "Smallest decline \u2191"
           },
-          "value": "Steepest decline ↓"
+          "value": "Steepest decline \u2193"
         }
       }
     },
@@ -205,7 +205,10 @@
         "type": "rule",
         "color": "var(--accent)",
         "strokeWidth": 1.2,
-        "strokeDash": [3, 3]
+        "strokeDash": [
+          3,
+          3
+        ]
       },
       "encoding": {
         "x": {
@@ -234,7 +237,7 @@
           "value": 14
         },
         "text": {
-          "value": "Nat. avg: −9.2‰"
+          "value": "Nat. avg: \u22129.2"
         }
       }
     }

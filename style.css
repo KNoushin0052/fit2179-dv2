@@ -176,7 +176,7 @@ body.light nav {
 .hero-subtitle {
     font-size: 0.95rem;
     color: var(--muted);
-    max-width: 100%;
+    max-width: 68ch;
     margin-bottom: 1.5rem;
     line-height: 1.65;
     font-weight: 300;
@@ -240,7 +240,7 @@ body.light nav {
 .section-body {
     font-size: 0.92rem;
     color: var(--muted);
-    max-width: 100%;
+    max-width: 68ch;
     margin-bottom: 1.25rem;
     line-height: 1.6;
     font-weight: 300;
