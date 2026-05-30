@@ -55,6 +55,16 @@
     {
       "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
       "as": "group"
+    },
+    {
+      "stack": "share",
+      "groupby": ["year"],
+      "sort": [{"field": "group", "order": "ascending"}],
+      "as": ["lower", "upper"]
+    },
+    {
+      "calculate": "(datum.lower + datum.upper) / 2",
+      "as": "midpoint"
     }
   ],
   "encoding": {
@@ -156,10 +166,9 @@
           "field": "group"
         },
         "y": {
-          "field": "share",
+          "field": "midpoint",
           "type": "quantitative",
-          "stack": "normalize",
-          "bandPosition": 0.5
+          "stack": null
         }
       }
     }
