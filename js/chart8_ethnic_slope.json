@@ -126,6 +126,7 @@
           "field": "births",
           "type": "quantitative",
           "aggregate": "sum",
+          "stack": "normalize",
           "format": ".0%"
         },
         "color": {
