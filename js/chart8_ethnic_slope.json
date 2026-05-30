@@ -37,6 +37,22 @@
       ]
     },
     {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "births",
+          "as": "year_total"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
+    },
+    {
+      "calculate": "datum.births / datum.year_total",
+      "as": "share"
+    },
+    {
       "calculate": "datum.ethnicity == 'bumi_malay' ? 'Bumiputera Malay' : datum.ethnicity == 'chinese' ? 'Chinese' : datum.ethnicity == 'indian' ? 'Indian' : 'Other Bumiputera'",
       "as": "group"
     }
@@ -52,7 +68,7 @@
       }
     },
     "y": {
-      "field": "births",
+      "field": "share",
       "type": "quantitative",
       "stack": "normalize",
       "title": "Share of national births",
@@ -80,7 +96,7 @@
       },
       "legend": {
         "orient": "top",
-        "columns": 4,
+        "columns": 2,
         "titleFont": "JetBrains Mono",
         "labelFont": "JetBrains Mono",
         "labelFontSize": 11
@@ -97,6 +113,11 @@
       {
         "field": "group",
         "title": "Ethnicity"
+      },
+      {
+        "field": "share",
+        "title": "Share",
+        "format": ".1%"
       },
       {
         "field": "births",
@@ -119,18 +140,14 @@
         "type": "text",
         "fontSize": 10,
         "font": "JetBrains Mono",
-        "fontWeight": "bold"
+        "fontWeight": "bold",
+        "color": "white"
       },
       "encoding": {
         "text": {
-          "field": "births",
+          "field": "share",
           "type": "quantitative",
-          "aggregate": "sum",
-          "stack": "normalize",
           "format": ".0%"
-        },
-        "color": {
-          "value": "white"
         },
         "detail": {
           "field": "group"
