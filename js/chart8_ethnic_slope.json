@@ -134,6 +134,33 @@
           "band": 0.6
         }
       }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "font": "JetBrains Mono",
+        "fontWeight": "bold",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "text": {
+          "field": "share",
+          "type": "quantitative",
+          "format": ".0%"
+        },
+        "detail": {
+          "field": "group"
+        },
+        "y": {
+          "field": "share",
+          "type": "quantitative",
+          "stack": "normalize",
+          "bandPosition": 0.5
+        },
+        "color": {
+          "value": "white"
+        }
+      }
     }
   ]
-}
