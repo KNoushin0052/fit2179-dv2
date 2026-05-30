@@ -29,7 +29,7 @@ html {
     --font-display: 'DM Serif Display', Georgia, serif;
     --font-body: 'Source Serif 4', Georgia, serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --col-width: 1100px;
+    --col-width: ch;
     --chart-radius: 4px;
     --transition: 0.3s ease;
 }
